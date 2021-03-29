@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [7.2.23] - 2021-03-29
+### Changed
+- RestClientProcessor now handles bad request (400) responses by throwing a BadRequestException
+
 ## [7.2.2] - 2020-11-18
 ### Added
 - Moved in EmptyFeatureFetcher from framework-api
