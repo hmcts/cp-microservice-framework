@@ -92,6 +92,22 @@ public class PreparedStatementWrapper implements AutoCloseable {
         return result;
     }
 
+    public void setFetchSize(final int fetchSize) throws SQLException {
+        try {
+
+            final boolean autoCommitEnabled = preparedStatement.getConnection().getAutoCommit();
+            if (autoCommitEnabled) {
+                // For fetchSize to work, we need autocommit to be set to false
+                preparedStatement.getConnection().setAutoCommit(false);
+            }
+
+            this.preparedStatement.setFetchSize(fetchSize);
+
+        } catch (SQLException e) {
+            handle(e, this);
+        }
+    }
+
     private PreparedStatementWrapper(final Connection connection, final PreparedStatement preparedStatement) {
         this.closeables.add(preparedStatement);
         this.closeables.add(connection);
