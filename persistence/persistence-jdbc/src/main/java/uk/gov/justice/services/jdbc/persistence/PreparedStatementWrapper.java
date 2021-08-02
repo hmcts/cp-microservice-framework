@@ -106,7 +106,7 @@ public class PreparedStatementWrapper implements AutoCloseable {
                 // For fetchSize to work, we need autocommit to be set to false
                 preparedStatement.getConnection().setAutoCommit(false);
                 if (LOGGER.isErrorEnabled()) {
-                    LOGGER.error("Error ", new NotInTransactionException());
+                    LOGGER.error("Error ", new NotInTransactionException("Attempting to execute a query outside of a transaction is not allowed"));
                 }
             }
 
