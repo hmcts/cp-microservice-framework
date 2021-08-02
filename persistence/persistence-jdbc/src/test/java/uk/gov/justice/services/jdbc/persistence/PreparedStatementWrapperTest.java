@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +49,7 @@ public class PreparedStatementWrapperTest {
     @Test
     public void shouldCloseConnectionAndStatementWhenQueryExecutionThrowsException() throws SQLException {
         final String query = "someQuery2";
+        when(preparedStatement.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(query)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenThrow(new SQLException());
         final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query);
@@ -58,6 +60,7 @@ public class PreparedStatementWrapperTest {
         }
 
         final InOrder inOrder = inOrder(preparedStatement, connection);
+        inOrder.verify(preparedStatement).setFetchSize(100);
         inOrder.verify(preparedStatement).close();
         inOrder.verify(connection).close();
     }
@@ -67,7 +70,7 @@ public class PreparedStatementWrapperTest {
         final String query = "someQuery3";
         when(connection.prepareStatement(query)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
-
+        when(preparedStatement.getConnection()).thenReturn(connection);
 
         final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query);
         ps.executeQuery();
@@ -76,6 +79,7 @@ public class PreparedStatementWrapperTest {
 
         final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
 
+        inOrder.verify(preparedStatement).setFetchSize(100);
         inOrder.verify(resultSet).close();
         inOrder.verify(preparedStatement).close();
         inOrder.verify(connection).close();
@@ -181,8 +185,6 @@ public class PreparedStatementWrapperTest {
         final InOrder inOrder = inOrder(preparedStatement, connection);
         inOrder.verify(preparedStatement).close();
         inOrder.verify(connection).close();
-
-
     }
 
     @Test
@@ -226,5 +228,45 @@ public class PreparedStatementWrapperTest {
 
     }
 
+    @Test
+    public void shouldSetAutoCommitToFalseIfItsTrue() throws SQLException {
+        final String query = "someQuery3";
+        when(connection.prepareStatement(query)).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(preparedStatement.getConnection()).thenReturn(connection);
+
+        when(connection.getAutoCommit()).thenReturn(true);
+
+        final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query);
+        ps.executeQuery();
+
+        ps.close();
+
+        final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
+
+        inOrder.verify(connection).setAutoCommit(false);
+        inOrder.verify(preparedStatement).setFetchSize(100);
+    }
+
+
+    @Test
+    public void shouldNotChangeAutoCommitToFalseIfItsFalse() throws SQLException {
+        final String query = "someQuery3";
+        when(connection.prepareStatement(query)).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(preparedStatement.getConnection()).thenReturn(connection);
+
+        when(connection.getAutoCommit()).thenReturn(false);
+
+        final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query);
+        ps.executeQuery();
+
+        ps.close();
+
+        final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
+
+        inOrder.verify(connection, never()).setAutoCommit(false);
+        inOrder.verify(preparedStatement).setFetchSize(100);
+    }
 
 }

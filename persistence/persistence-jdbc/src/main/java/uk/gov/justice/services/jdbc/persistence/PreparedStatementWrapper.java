@@ -8,7 +8,12 @@ import java.sql.Timestamp;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PreparedStatementWrapper implements AutoCloseable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PreparedStatementWrapper.class);
+    private static final int FETCH_SIZE = 100;
     private final PreparedStatement preparedStatement;
     private final Deque<AutoCloseable> closeables = new LinkedList<>();
 
@@ -74,6 +79,7 @@ public class PreparedStatementWrapper implements AutoCloseable {
     public ResultSet executeQuery() throws SQLException {
         ResultSet resultSet = null;
         try {
+            setFetchSize();
             resultSet = preparedStatement.executeQuery();
             this.closeables.addFirst(resultSet);
         } catch (SQLException e) {
@@ -92,16 +98,19 @@ public class PreparedStatementWrapper implements AutoCloseable {
         return result;
     }
 
-    public void setFetchSize(final int fetchSize) throws SQLException {
+    private void setFetchSize() throws SQLException {
         try {
 
             final boolean autoCommitEnabled = preparedStatement.getConnection().getAutoCommit();
             if (autoCommitEnabled) {
                 // For fetchSize to work, we need autocommit to be set to false
                 preparedStatement.getConnection().setAutoCommit(false);
+                if (LOGGER.isErrorEnabled()) {
+                    LOGGER.error("Error ", new NotInTransactionException());
+                }
             }
 
-            this.preparedStatement.setFetchSize(fetchSize);
+            this.preparedStatement.setFetchSize(FETCH_SIZE);
 
         } catch (SQLException e) {
             handle(e, this);

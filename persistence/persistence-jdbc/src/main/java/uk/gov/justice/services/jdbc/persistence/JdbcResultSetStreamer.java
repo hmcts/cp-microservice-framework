@@ -16,11 +16,8 @@ import java.util.stream.Stream;
  */
 public class JdbcResultSetStreamer {
 
-    private static final int FETCH_SIZE = 100;
-
     public <T> Stream<T> streamOf(final PreparedStatementWrapper psWrapper, final Function<ResultSet, T> resultSetToEntityMapper) throws SQLException {
 
-        psWrapper.setFetchSize(FETCH_SIZE);
         final ResultSet resultSet = psWrapper.executeQuery();
 
         return internalStreamOf(psWrapper, resultSet, resultSetToEntityMapper);
