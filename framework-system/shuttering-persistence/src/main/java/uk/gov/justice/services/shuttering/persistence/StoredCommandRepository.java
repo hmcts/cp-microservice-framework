@@ -28,7 +28,7 @@ public class StoredCommandRepository {
             "(envelope_id, command_json_envelope, destination, date_received) " +
             "VALUES (?, ?, ?, ?) " +
             "ON CONFLICT DO NOTHING";
-    private static final String TRUNCATE_STORED_COMMAND_SQL = "TRUNCATE stored_command";
+    private static final String DELETE_FROM_STORED_COMMAND = "DELETE from stored_command";
     private static final String DELETE_STORED_COMMAND_SQL = "DELETE FROM stored_command WHERE envelope_id = ?";
 
     @Inject
@@ -114,7 +114,7 @@ public class StoredCommandRepository {
         final DataSource dataSource = systemJdbcDataSourceProvider.getDataSource();
 
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(TRUNCATE_STORED_COMMAND_SQL)) {
+             final PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FROM_STORED_COMMAND)) {
             preparedStatement.executeUpdate();
 
         } catch (final SQLException e) {
