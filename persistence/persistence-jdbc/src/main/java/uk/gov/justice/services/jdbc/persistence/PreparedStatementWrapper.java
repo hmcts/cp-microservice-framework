@@ -79,7 +79,6 @@ public class PreparedStatementWrapper implements AutoCloseable {
     public ResultSet executeQuery() throws SQLException {
         ResultSet resultSet = null;
         try {
-            setFetchSize();
             resultSet = preparedStatement.executeQuery();
             this.closeables.addFirst(resultSet);
         } catch (SQLException e) {
@@ -98,7 +97,7 @@ public class PreparedStatementWrapper implements AutoCloseable {
         return result;
     }
 
-    private void setFetchSize() throws SQLException {
+    public void setFetchSize() throws SQLException {
         try {
 
             final boolean autoCommitEnabled = preparedStatement.getConnection().getAutoCommit();
@@ -138,7 +137,9 @@ public class PreparedStatementWrapper implements AutoCloseable {
         this.closeables.forEach(c -> {
             try (AutoCloseable c1 = c) {
             } catch (Exception e) {
-                throw new JdbcRepositoryException(e);
+                if (LOGGER.isTraceEnabled()) {
+                    LOGGER.trace("Failed to close resource", e);
+                }
             }
         });
     }

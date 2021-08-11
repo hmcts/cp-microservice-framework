@@ -28,7 +28,7 @@ public class StoredCommandRepository {
             "(envelope_id, command_json_envelope, destination, date_received) " +
             "VALUES (?, ?, ?, ?) " +
             "ON CONFLICT DO NOTHING";
-    private static final String DELETE_FROM_STORED_COMMAND = "DELETE from stored_command";
+    private static final String DELETE_FROM_STORED_COMMAND = "TRUNCATE stored_command";
     private static final String DELETE_STORED_COMMAND_SQL = "DELETE FROM stored_command WHERE envelope_id = ?";
 
     @Inject

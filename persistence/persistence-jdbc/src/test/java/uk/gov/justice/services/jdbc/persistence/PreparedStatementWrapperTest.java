@@ -60,7 +60,6 @@ public class PreparedStatementWrapperTest {
         }
 
         final InOrder inOrder = inOrder(preparedStatement, connection);
-        inOrder.verify(preparedStatement).setFetchSize(100);
         inOrder.verify(preparedStatement).close();
         inOrder.verify(connection).close();
     }
@@ -79,7 +78,6 @@ public class PreparedStatementWrapperTest {
 
         final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
 
-        inOrder.verify(preparedStatement).setFetchSize(100);
         inOrder.verify(resultSet).close();
         inOrder.verify(preparedStatement).close();
         inOrder.verify(connection).close();
@@ -207,7 +205,6 @@ public class PreparedStatementWrapperTest {
 
     }
 
-
     @Test
     public void shouldCloseStatementOnExceptionOnSetLong() throws SQLException {
         final String query = "dummy";
@@ -229,7 +226,7 @@ public class PreparedStatementWrapperTest {
     }
 
     @Test
-    public void shouldSetAutoCommitToFalseIfItsTrue() throws SQLException {
+    public void shouldSetAutoCommitToFalseIfItsTrueOnSetFetchSize() throws SQLException {
         final String query = "someQuery3";
         when(connection.prepareStatement(query)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -237,10 +234,9 @@ public class PreparedStatementWrapperTest {
 
         when(connection.getAutoCommit()).thenReturn(true);
 
-        final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query);
-        ps.executeQuery();
-
-        ps.close();
+        try(final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query)) {
+            ps.setFetchSize();
+        }
 
         final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
 
@@ -248,9 +244,8 @@ public class PreparedStatementWrapperTest {
         inOrder.verify(preparedStatement).setFetchSize(100);
     }
 
-
     @Test
-    public void shouldNotChangeAutoCommitToFalseIfItsFalse() throws SQLException {
+    public void shouldNotChangeAutoCommitToFalseIfItsFalseOnSetFetchSize() throws SQLException {
         final String query = "someQuery3";
         when(connection.prepareStatement(query)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -258,10 +253,9 @@ public class PreparedStatementWrapperTest {
 
         when(connection.getAutoCommit()).thenReturn(false);
 
-        final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query);
-        ps.executeQuery();
-
-        ps.close();
+        try(final PreparedStatementWrapper ps = PreparedStatementWrapper.valueOf(connection, query)){
+            ps.setFetchSize();
+        }
 
         final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
 

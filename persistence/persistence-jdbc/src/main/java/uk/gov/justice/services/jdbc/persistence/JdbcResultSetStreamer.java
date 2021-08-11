@@ -13,6 +13,9 @@ import java.util.stream.Stream;
 
 /**
  * Provides methods for returning result sets as streams
+ * WARNING: the returned stream needs to be closed,
+ * preferably in a try-with-resource otherwise,
+ * connections, statement, etc are left open
  */
 public class JdbcResultSetStreamer {
 
