@@ -7,7 +7,7 @@
     <parent>
         <artifactId>microservice-framework</artifactId>
         <groupId>uk.gov.justice.services</groupId>
-        <version>7.2.24-SNAPSHOT</version>
+        <version>7.2.24-DD-14203-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.justice.metrics</groupId>
