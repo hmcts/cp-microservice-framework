@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class PreparedStatementWrapper implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(PreparedStatementWrapper.class);
-    private static final int FETCH_SIZE = 100;
+    private static final int FETCH_SIZE = 400;
     private final PreparedStatement preparedStatement;
     private final Deque<AutoCloseable> closeables = new LinkedList<>();
 

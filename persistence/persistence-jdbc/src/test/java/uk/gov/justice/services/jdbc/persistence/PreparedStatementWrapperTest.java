@@ -241,7 +241,7 @@ public class PreparedStatementWrapperTest {
         final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
 
         inOrder.verify(connection).setAutoCommit(false);
-        inOrder.verify(preparedStatement).setFetchSize(100);
+        inOrder.verify(preparedStatement).setFetchSize(400);
     }
 
     @Test
@@ -260,7 +260,7 @@ public class PreparedStatementWrapperTest {
         final InOrder inOrder = inOrder(resultSet, preparedStatement, connection);
 
         inOrder.verify(connection, never()).setAutoCommit(false);
-        inOrder.verify(preparedStatement).setFetchSize(100);
+        inOrder.verify(preparedStatement).setFetchSize(400);
     }
 
 }
