@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [8.0.0-M1] - 2021-09-38
+## [8.0.0] - 2021-09-28
 ### Changed
 - Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
 - Updated framework-libraries to version 8.0.0
