@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.0.0-M1] - 2021-09-38
+### Changed
+- Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
+- Updated framework-libraries to version 8.0.0
+
 ## [7.2.23] - 2021-03-29
 ### Changed
 - RestClientProcessor now handles bad request (400) responses by throwing a BadRequestException
