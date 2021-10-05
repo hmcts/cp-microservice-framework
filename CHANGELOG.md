@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.0.1] - 2021-10-04
+### Changed
+- Re-release of pom to fix corrupt file in artifactory. No other changes
+
 ## [8.0.0] - 2021-09-28
 ### Changed
 - Bumped the version to 8.0.0 to match the final release version of the Java 8 framework
