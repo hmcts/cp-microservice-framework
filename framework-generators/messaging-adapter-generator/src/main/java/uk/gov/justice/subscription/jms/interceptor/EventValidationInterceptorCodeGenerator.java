@@ -21,23 +21,19 @@ import com.squareup.javapoet.TypeSpec;
  * Should generate a custom EventValidationInterceptor that uses a custom Event Filter. Something like this:
  *
  * <pre>
- *  {@code
- *
  *     import static uk.gov.justice.services.messaging.jms.HeaderConstants.JMS_HEADER_CPPNAME;
  *
  *     public class MyCustomEventValidationInterceptor extends JsonSchemaValidationInterceptor {
  *
- *         @literal @Inject
+ *         &#64;literal &#64;Inject
  *         private MyCustomEventFilter eventFilter;
  *
- *         @literal @Override
+ *         &#64;literal &#64;Override
  *         public boolean shouldValidate(final TextMessage message) throws JMSException {
  *             final String messageName = message.getStringProperty(JMS_HEADER_CPPNAME);
  *             return eventFilter.accepts(messageName);
  *         }
  *     }
- *
- * }
  * </pre>
  */
 public class EventValidationInterceptorCodeGenerator {

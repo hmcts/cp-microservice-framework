@@ -30,28 +30,24 @@ import com.squareup.javapoet.TypeSpec;
  * Something like this:
  *
  * <pre>
- *  {@code
- *
  *     public class MyCustomEventInterceptorChainProvider implements InterceptorChainEntryProvider {
  *
- *          private final List<InterceptorChainEntry> interceptorChainEntries = new ArrayList<>();
+ *          private final List&lt;InterceptorChainEntry&gt; interceptorChainEntries = new ArrayList&lt;&gt;();
  *
  *          public ExampleEventInterceptorChainProvider() {
  *              interceptorChainEntries.add(new InterceptorChainEntry(2000, MyCustomEventFilterInterceptor.class));
  *          }
  *
- *          @literal @Override
+ *          &#64;literal &#64;Override
  *          public String component() {
  *              return "MY_CUSTOM_EVENT_LISTENER";
  *          }
  *
- *          @literal @Override
- *          public List<InterceptorChainEntry> interceptorChainTypes() {
+ *          &#64;literal &#64;Override
+ *          public List&lt;InterceptorChainEntry&gt; interceptorChainTypes() {
  *              return interceptorChainEntries;
  *          }
  *     }
- *
- * }
  * </pre>
  */
 public class EventInterceptorChainProviderCodeGenerator {

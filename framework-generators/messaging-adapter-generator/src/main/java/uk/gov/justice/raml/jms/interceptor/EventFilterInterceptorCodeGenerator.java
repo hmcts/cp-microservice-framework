@@ -20,11 +20,10 @@ import com.squareup.javapoet.TypeSpec;
  * Should generate a custom EventFilterInterceptor that uses a custom Event Filter. Something like this:
  *
  * <pre>
- *  {@code
  *
  *     public class MyCustomEventFilterInterceptor implements Interceptor {
  *
- *         @literal @Inject
+ *         &#64;literal &#64;Inject
  *         private MyCustomEventFilter eventFilter;
  *
  *         public InterceptorContext process(final InterceptorContext interceptorContext, final InterceptorChain interceptorChain) {
@@ -36,9 +35,6 @@ import com.squareup.javapoet.TypeSpec;
  *             return interceptorContext;
  *         }
  *     }
- *
- *
- * }
  * </pre>
  */
 public class EventFilterInterceptorCodeGenerator {
@@ -48,7 +44,7 @@ public class EventFilterInterceptorCodeGenerator {
     private final EventFilterFieldCodeGenerator eventFilterFieldCodeGenerator = new EventFilterFieldCodeGenerator();
 
     /**
-     * Generate a custom EventFilterInterceptor which uses a custom {@see uk.gov.justice.services.event.buffer.api.EventFilter}
+     * Generate a custom EventFilterInterceptor which uses a custom {@link uk.gov.justice.services.event.buffer.api.EventFilter}
      *
      * @param classNameFactory     creates the class name for this generated class
      * @return a TypeSpec that will generate the java source file
