@@ -92,6 +92,7 @@ public class JsonEnvelopeBuilder {
      * will continue to support additional builder operations
      *
      * @param rootObject the complete constructed payload to use
+     * @return this
      */
     public JsonEnvelopeBuilder withPayloadFrom(final JsonObject rootObject) {
         payload = new JsonObjectBuilderWrapper(rootObject);

@@ -19,16 +19,13 @@ import org.raml.model.Resource;
  * Something like this:
  *
  * <pre>
- *  {@code
- *
  *      public class MyCommandHandlerJmsHandlerDestinationNameProvider implements JmsCommandHandlerDestinationNameProvider {
  *
- *          @Override
+ *          &#64;Override
  *          public String destinationName() {
  *              return "my.handler.command";
  *          }
  *      }
- * }
  * </pre>
  */
 public class JmsCommandHandlerDestinationNameProviderCodeGenerator {

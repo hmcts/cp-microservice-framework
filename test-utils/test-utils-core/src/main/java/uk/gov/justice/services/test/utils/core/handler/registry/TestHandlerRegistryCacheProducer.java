@@ -7,7 +7,7 @@ import javax.enterprise.inject.Produces;
 
 /**
  * Test version of HandlerRegistryCacheProducer to stop open ejb freaking out about
- * @Singletons in its web scope
+ * &#64;Singletons in its web scope
  */
 public class TestHandlerRegistryCacheProducer {
 

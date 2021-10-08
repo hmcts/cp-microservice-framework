@@ -15,8 +15,6 @@ import java.util.UUID;
  * To Use:
  *
  * <pre>
- *     <blockquote>
- *
  *         import static uk.gov.justice.services.test.utils.core.envelopes.EnvelopeStreamGenerator.envelopeStreamGenerator;
  *         import static uk.gov.justice.services.test.utils.core.envelopes.StreamDefBuilder.aStream;
  *
@@ -29,20 +27,19 @@ import java.util.UUID;
  *         final UUID streamId_2 = randomUUID();
  *
  *
- *         final List<JsonEnvelope> envelopes = envelopeStreamGenerator()
+ *         final List&lt;JsonEnvelope&gt; envelopes = envelopeStreamGenerator()
  *         .withStreamOf(aStream()
  *                     .withStreamId(streamId_1)
  *                     .withStreamSize(streamSize)
- *                     .withEnvelopeCreator(() -> myJsonEnvelopeGenerator_1)
- *                     .withEnvelopeCreator(() -> myJsonEnvelopeGenerator_2)
+ *                     .withEnvelopeCreator(() -&gt; myJsonEnvelopeGenerator_1)
+ *                     .withEnvelopeCreator(() -&gt; myJsonEnvelopeGenerator_2)
  *         )
  *         .withStreamOf(aStream()
  *                        .withStreamId(streamId_2)
  *                        .withStreamSize(streamSize)
- *                        .withEnvelopeCreator(() -> myJsonEnvelopeGenerator_3)
+ *                        .withEnvelopeCreator(() -&gt; myJsonEnvelopeGenerator_3)
  *         ).generateAll();
  *
- *     </blockquote>
  * </pre>
  */
 public class EnvelopeStreamGenerator {

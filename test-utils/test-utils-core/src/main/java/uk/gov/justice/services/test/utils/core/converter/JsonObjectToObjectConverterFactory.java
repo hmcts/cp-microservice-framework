@@ -12,6 +12,8 @@ public class JsonObjectToObjectConverterFactory {
 
     /**
      * @deprecated Please use JsonObjectConvertersFactory directly in your tests
+     *
+     * @return A fully configured {@link JsonObjectToObjectConverter}
      */
     @Deprecated
     public static JsonObjectToObjectConverter createJsonObjectToObjectConverter() {
