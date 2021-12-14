@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [7.3.0] - 2021-12-14
+### Changed
+- Updated log4j2 to 2.15.0 to fix security vulnerability https://www.randori.com/blog/cve-2021-44228/
+- Updated framework-libraries to 7.3.0
+
 ## [7.2.23] - 2021-03-29
 ### Changed
 - RestClientProcessor now handles bad request (400) responses by throwing a BadRequestException
