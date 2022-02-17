@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.0.2] - 2022-02-17
+### Changed
+- Updated framework-libraries to 8.0.2
+- Updated common-bom to 8.0.4 to update log4j2 to 2.17.0
+
 ## [8.0.1] - 2021-10-04
 ### Changed
 - Re-release of pom to fix corrupt file in artifactory. No other changes
