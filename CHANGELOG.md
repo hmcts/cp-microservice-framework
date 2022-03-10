@@ -5,9 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [8.0.3] - 2022-03-02
+## [8.0.4] - 2022-03-10
 ### Changed
-- Updated framework-libraries to 8.0.3
+- Updated framework-libraries to 8.0.4
+  - pull in changes to filestore to allow hard delete of files
 
 ## [8.0.2] - 2022-02-17
 ### Changed
