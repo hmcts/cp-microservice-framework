@@ -52,7 +52,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <configuration>
-                    <changeLogFile>liquibase/framework-system-changelog.xml</changeLogFile>
+                    <changeLogFile>liquibase-files/framework-system-changelog.xml</changeLogFile>
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://localhost:5432/frameworksystem</url>
                     <username>framework</username>
