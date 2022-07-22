@@ -5,9 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.0.5] - 2022-07-22
+### Changed
+- Updated framework-libraries to 8.0.5 in order to
+  - Update API path for alfresco read material endpoint
+  
 ## [8.0.4] - 2022-03-10
 ### Changed
-- Updated framework-libraries to 8.0.4
+- Updated framework-libraries to 8.0.4 in order to
   - pull in changes to filestore to allow hard delete of files
 
 ## [8.0.2] - 2022-02-17
