@@ -19,6 +19,8 @@ import uk.gov.justice.services.core.annotation.Adapter;
 import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
 import uk.gov.justice.services.generators.subscription.parser.JmsUriToDestinationConverter;
 import uk.gov.justice.services.generators.subscription.parser.SubscriptionWrapper;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.jms.EnvelopeConverter;
 import uk.gov.justice.services.messaging.logging.LoggerUtils;
 import uk.gov.justice.services.subscription.SubscriptionManager;
 import uk.gov.justice.services.subscription.annotation.SubscriptionName;
@@ -28,6 +30,7 @@ import uk.gov.justice.subscription.domain.subscriptiondescriptor.Subscription;
 import uk.gov.justice.subscription.domain.subscriptiondescriptor.SubscriptionsDescriptor;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -36,6 +39,7 @@ import javax.interceptor.Interceptors;
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import javax.jms.Topic;
 
 import com.squareup.javapoet.AnnotationSpec;
@@ -44,7 +48,10 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import org.apache.commons.lang3.time.StopWatch;
 import org.jboss.ejb3.annotation.Pool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +67,7 @@ public class MessageListenerCodeGenerator {
     private static final String ACTIVATION_CONFIG_PARAMETER = "activationConfig";
     private static final String SUBSCRIPTION_MANAGER = "subscriptionManager";
     private static final String JMS_PROCESSOR_FIELD = "subscriptionJmsProcessor";
+    private static final String ENVELOPE_CONVERTER_FIELD = "envelopeConverter";
     private static final String LOGGER_FIELD = "LOGGER";
 
     private static final String DESTINATION_TYPE = "destinationType";
@@ -88,7 +96,7 @@ public class MessageListenerCodeGenerator {
                       final CommonGeneratorProperties commonGeneratorProperties,
                       final ClassNameFactory classNameFactory) {
         return classSpecFrom(subscriptionWrapper, subscription, commonGeneratorProperties, classNameFactory)
-                .addMethod(generateOnMessageMethod())
+                .addMethod(generateOnMessageMethod(subscriptionWrapper))
                 .build();
     }
 
@@ -126,6 +134,9 @@ public class MessageListenerCodeGenerator {
                             .addAnnotation(AnnotationSpec.builder(SubscriptionName.class)
                                     .addMember(DEFAULT_ANNOTATION_PARAMETER, "$S", subscription.getName())
                                     .build())
+                            .build())
+                    .addField(FieldSpec.builder(ClassName.get(EnvelopeConverter.class), ENVELOPE_CONVERTER_FIELD)
+                            .addAnnotation(Inject.class)
                             .build())
                     .addField(FieldSpec.builder(ClassName.get(SubscriptionJmsProcessor.class), JMS_PROCESSOR_FIELD)
                             .addAnnotation(Inject.class)
@@ -185,10 +196,24 @@ public class MessageListenerCodeGenerator {
      *
      * @return the {@link MethodSpec} that represents the onMessage method
      */
-    private MethodSpec generateOnMessageMethod() {
+    private MethodSpec generateOnMessageMethod(final SubscriptionWrapper subscriptionWrapper) {
+
+        final SubscriptionsDescriptor subscriptionsDescriptor = subscriptionWrapper.getSubscriptionsDescriptor();
+        final String serviceComponent = subscriptionsDescriptor.getServiceComponent().toUpperCase();
 
         final String messageFieldName = "message";
+        final String jsonEnvelopeFieldName = "jsonEnvelope";
 
+        final ClassName string = ClassName.get(String.class);
+        final ClassName uuid = ClassName.get(UUID.class);
+        final ClassName optional = ClassName.get("java.util", "Optional");
+        final TypeName stringOptional = ParameterizedTypeName.get(optional, string);
+        final TypeName uuidOptional = ParameterizedTypeName.get(optional, uuid);
+
+        final String clientCorrelationIdFieldName = "clientCorrelationId";
+        final String messageIdFieldName = "messageId";
+        final String streamIdFieldName = "streamId";
+        final String stopWatchFieldName = "stopWatch";
         return MethodSpec.methodBuilder("onMessage")
                 .addModifiers(PUBLIC)
                 .addAnnotation(Override.class)
@@ -197,10 +222,59 @@ public class MessageListenerCodeGenerator {
                         .build())
                 .addCode(CodeBlock.builder()
                         .addStatement("$T.trace(LOGGER, () -> \"Received JMS message\")", LoggerUtils.class)
+
+                        .addStatement("$T $L = null", stringOptional, clientCorrelationIdFieldName)
+                        .addStatement("$T $L = null", UUID.class, messageIdFieldName)
+                        .addStatement("$T $L = null", uuidOptional, streamIdFieldName)
+
+                        .beginControlFlow("if ($L instanceof $T)", messageFieldName, TextMessage.class)
+                        .addStatement("final $T $L = ($T) $L.fromMessage(($T) $L)",
+                                JsonEnvelope.class,
+                                jsonEnvelopeFieldName,
+                                JsonEnvelope.class,
+                                ENVELOPE_CONVERTER_FIELD,
+                                TextMessage.class,
+                                messageFieldName)
+                        .addStatement("$L = $L.metadata().clientCorrelationId()",
+                                clientCorrelationIdFieldName,
+                                jsonEnvelopeFieldName)
+                        .addStatement("$L = $L.metadata().id()",
+                                messageIdFieldName,
+                                jsonEnvelopeFieldName)
+                        .addStatement("$L = $L.metadata().streamId()",
+                                streamIdFieldName,
+                                jsonEnvelopeFieldName)
+
+                        .addStatement("LOGGER.error(\"TIMING $L: MDB class name: \" + getClass().getName())", serviceComponent)
+                        .addStatement("LOGGER.error(\"TIMING $L: $L: '\" + $L + \"', $L: '\" + $L + \"', $L: '\" + $L + \"'. Received JMS message\")",
+                                serviceComponent,
+                                messageIdFieldName,
+                                messageIdFieldName,
+                                streamIdFieldName,
+                                streamIdFieldName,
+                                clientCorrelationIdFieldName,
+                                clientCorrelationIdFieldName
+                        )
+                        .endControlFlow()
+
+                        .addStatement("final $T $L = new $T()", StopWatch.class, stopWatchFieldName, StopWatch.class)
+                        .addStatement("$L.start()", stopWatchFieldName)
+
                         .addStatement("$L.process($L, $L)",
                                 JMS_PROCESSOR_FIELD,
                                 messageFieldName,
                                 SUBSCRIPTION_MANAGER)
+                        .addStatement("$L.stop()", stopWatchFieldName)
+                        .addStatement("LOGGER.error(\"TIMING $L: $L: '\" + $L + \"', $L: '\" + $L + \"', $L: '\" + $L + \"'. jmsProcessor.process(...) took \" + $L.getTime() + \" milliseconds\")",
+                                serviceComponent,
+                                messageIdFieldName,
+                                messageIdFieldName,
+                                streamIdFieldName,
+                                streamIdFieldName,
+                                clientCorrelationIdFieldName,
+                                clientCorrelationIdFieldName,
+                                stopWatchFieldName
+                        )
                         .build())
                 .build();
     }
