@@ -8,7 +8,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [17.0.0-M5] - 2023-03-24
 ### Changed
 - Remove illegal-access argument from surefire plugin
-- Make pojo generator to perform null safe assignment of additionalProperties inside constructor
+- Make pojo generator to perform null safe assignment of additionalProperties inside constructor 
 - 
 ## [17.0.0-M4] - 2023-02-15
 ### Changed
