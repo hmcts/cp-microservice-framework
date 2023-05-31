@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.0.6] - 2023-05-31
+### Changed
+- Updated framework-libraries to 8.0.5 in order to
+  - Remove unnecessary logging of 'skipping generation' message in pojo generator
+
 ## [8.0.5] - 2022-07-22
 ### Changed
 - Updated framework-libraries to 8.0.5 in order to
