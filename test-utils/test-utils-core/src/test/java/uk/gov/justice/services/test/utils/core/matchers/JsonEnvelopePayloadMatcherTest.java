@@ -2,7 +2,7 @@ package uk.gov.justice.services.test.utils.core.matchers;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -12,8 +12,8 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 import org.junit.Test;
 

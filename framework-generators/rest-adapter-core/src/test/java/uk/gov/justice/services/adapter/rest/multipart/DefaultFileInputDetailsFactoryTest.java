@@ -3,7 +3,6 @@ package uk.gov.justice.services.adapter.rest.multipart;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static javax.ws.rs.core.MediaType.TEXT_XML_TYPE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;

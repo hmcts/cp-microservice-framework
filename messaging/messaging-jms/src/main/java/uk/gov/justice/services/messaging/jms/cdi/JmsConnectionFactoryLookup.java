@@ -4,10 +4,11 @@ import static java.lang.String.format;
 
 import uk.gov.justice.services.messaging.jms.JndiException;
 
-import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import jakarta.inject.Inject;
+import jakarta.jms.ConnectionFactory;
 
 public class JmsConnectionFactoryLookup {
 

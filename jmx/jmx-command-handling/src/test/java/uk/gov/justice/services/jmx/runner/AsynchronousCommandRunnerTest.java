@@ -16,7 +16,7 @@ import uk.gov.justice.services.jmx.state.observers.SystemCommandStateBean;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.enterprise.concurrent.ManagedExecutorService;
+import jakarta.enterprise.concurrent.ManagedExecutorService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,8 +1,7 @@
 package uk.gov.justice.services.generators.test.utils.builder;
 
 
-import javax.ws.rs.core.HttpHeaders;
-
+import jakarta.ws.rs.core.HttpHeaders;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.jboss.resteasy.specimpl.ResteasyHttpHeaders;
 

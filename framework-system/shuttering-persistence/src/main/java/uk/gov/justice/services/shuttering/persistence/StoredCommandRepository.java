@@ -16,9 +16,9 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 
 public class StoredCommandRepository {

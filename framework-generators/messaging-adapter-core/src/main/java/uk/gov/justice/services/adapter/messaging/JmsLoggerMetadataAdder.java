@@ -1,6 +1,6 @@
 package uk.gov.justice.services.adapter.messaging;
 
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
@@ -11,10 +11,10 @@ import uk.gov.justice.services.messaging.logging.TraceLogger;
 
 import java.util.Optional;
 
-import javax.inject.Inject;
-import javax.interceptor.InvocationContext;
-import javax.jms.TextMessage;
-import javax.json.JsonObjectBuilder;
+import jakarta.inject.Inject;
+import jakarta.interceptor.InvocationContext;
+import jakarta.jms.TextMessage;
+import jakarta.json.JsonObjectBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.MDC;

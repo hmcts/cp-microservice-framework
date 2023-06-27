@@ -1,11 +1,10 @@
 package uk.gov.justice.services.messaging;
 
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import javax.json.JsonObject;
-
+import jakarta.json.JsonObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -15,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class JsonEnvelopeWriterTest {
 
     private static final String EXPECTED_JSON =
-            "\n{\n" +
+            "{\n" +
                     "    \"aProperty\": \"value a\",\n" +
                     "    \"bProperty\": \"value b\",\n" +
                     "    \"cProperty\": \"value c\",\n" +

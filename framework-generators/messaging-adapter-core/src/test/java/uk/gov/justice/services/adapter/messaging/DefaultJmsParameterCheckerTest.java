@@ -5,7 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 
-import javax.jms.TextMessage;
+import jakarta.jms.TextMessage;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

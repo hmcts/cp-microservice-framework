@@ -1,19 +1,18 @@
 package uk.gov.justice.services.common.rest;
 
-import static javax.json.Json.createObjectBuilder;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.status;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.status;
 
 import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
 import uk.gov.justice.services.core.json.JsonSchemaValidationException;
 import uk.gov.justice.services.core.json.JsonValidationLoggerHelper;
 
-import javax.inject.Inject;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
-
+import jakarta.inject.Inject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 
 @Provider

@@ -1,17 +1,16 @@
 package uk.gov.justice.services.core.json;
 
+import static jakarta.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static java.lang.String.join;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 

@@ -18,7 +18,7 @@ import uk.gov.justice.services.messaging.logging.HttpTraceLoggerHelper;
 import uk.gov.justice.services.messaging.logging.TraceLogger;
 import uk.gov.justice.services.test.utils.core.compiler.JavaCompilerUtility;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import org.junit.Before;
 import org.junit.Rule;

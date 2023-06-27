@@ -11,7 +11,7 @@ import uk.gov.justice.services.jmx.system.command.client.connection.JmxParameter
 import java.util.List;
 import java.util.Optional;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;

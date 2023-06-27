@@ -1,7 +1,7 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
-import static javax.jms.Session.AUTO_ACKNOWLEDGE;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.jms.Session.AUTO_ACKNOWLEDGE;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,13 +17,12 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.jms.Topic;
-
+import jakarta.jms.Connection;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
+import jakarta.jms.Topic;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

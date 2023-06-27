@@ -12,8 +12,8 @@
     <artifactId>unifiedsearch-client-generator</artifactId>
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -66,12 +66,6 @@
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>test-utils-core</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.resteasy</groupId>
-                    <artifactId>resteasy-jaxrs</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
@@ -127,10 +121,16 @@
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>javax</groupId>
-                        <artifactId>javaee-api</artifactId>
-                        <version>${javaee-api.version}</version>
+                        <groupId>jakarta.platform</groupId>
+                        <artifactId>jakarta.jakartaee-api</artifactId>
+                        <version>${jakartaee-api.version}</version>
                         <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.parsson</groupId>
+                        <artifactId>parsson</artifactId>
+                        <!-- HERE!!! -->
+                        <version>1.1.1</version>
                     </dependency>
                 </dependencies>
             </plugin>

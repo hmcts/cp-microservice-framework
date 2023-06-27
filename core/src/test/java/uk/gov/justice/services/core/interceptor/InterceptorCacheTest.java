@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import javax.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.Bean;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

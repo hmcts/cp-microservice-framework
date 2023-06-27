@@ -4,7 +4,7 @@ import uk.gov.justice.services.jmx.system.command.client.connection.JMXConnector
 import uk.gov.justice.services.jmx.system.command.client.connection.JmxParameters;
 import uk.gov.justice.services.jmx.system.command.client.connection.MBeanConnector;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class SystemCommanderClientFactory {
 

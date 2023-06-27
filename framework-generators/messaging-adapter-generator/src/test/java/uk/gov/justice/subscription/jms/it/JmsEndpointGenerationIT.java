@@ -80,12 +80,12 @@ import uk.gov.justice.subscription.domain.eventsource.DefaultEventSourceDefiniti
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Topic;
+import jakarta.annotation.Resource;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.jms.JMSException;
+import jakarta.jms.Topic;
 
 import org.apache.openejb.jee.WebApp;
 import org.apache.openejb.junit.ApplicationComposer;

@@ -26,19 +26,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.raml.model.Action;
@@ -216,19 +215,19 @@ class JaxRsInterfaceGenerator {
     private AnnotationSpec annotationFor(final ActionType actionType) {
         switch (actionType) {
             case DELETE:
-                return AnnotationSpec.builder(javax.ws.rs.DELETE.class).build();
+                return AnnotationSpec.builder(jakarta.ws.rs.DELETE.class).build();
 
             case GET:
-                return AnnotationSpec.builder(javax.ws.rs.GET.class).build();
+                return AnnotationSpec.builder(jakarta.ws.rs.GET.class).build();
 
             case PATCH:
                 return AnnotationSpec.builder(PATCH.class).build();
 
             case POST:
-                return AnnotationSpec.builder(javax.ws.rs.POST.class).build();
+                return AnnotationSpec.builder(jakarta.ws.rs.POST.class).build();
 
             case PUT:
-                return AnnotationSpec.builder(javax.ws.rs.PUT.class).build();
+                return AnnotationSpec.builder(jakarta.ws.rs.PUT.class).build();
 
             default:
                 throw new IllegalStateException(String.format("Unsupported httpAction type %s", actionType));

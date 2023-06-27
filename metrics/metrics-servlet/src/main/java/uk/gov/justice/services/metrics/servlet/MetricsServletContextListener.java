@@ -1,9 +1,8 @@
 package uk.gov.justice.services.metrics.servlet;
 
-import static com.codahale.metrics.servlets.MetricsServlet.ContextListener;
-
-import javax.inject.Inject;
-import javax.servlet.annotation.WebListener;
+import io.dropwizard.metrics.servlets.MetricsServlet;
+import jakarta.inject.Inject;
+import jakarta.servlet.annotation.WebListener;
 
 import com.codahale.metrics.MetricRegistry;
 
@@ -11,7 +10,7 @@ import com.codahale.metrics.MetricRegistry;
  * Annotated context listener for wiring up the metrics servlet.
  */
 @WebListener
-public class MetricsServletContextListener extends ContextListener {
+public class MetricsServletContextListener extends MetricsServlet.ContextListener {
 
     @Inject
     MetricRegistry metricRegistry;

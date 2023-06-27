@@ -3,7 +3,7 @@ package uk.gov.justice.services.metrics.servlet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.annotation.WebListener;
 
 import org.junit.Before;
 import org.junit.Test;

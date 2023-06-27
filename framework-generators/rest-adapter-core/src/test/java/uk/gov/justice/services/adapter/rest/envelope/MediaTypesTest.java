@@ -4,7 +4,7 @@ import static java.nio.charset.Charset.defaultCharset;
 import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;

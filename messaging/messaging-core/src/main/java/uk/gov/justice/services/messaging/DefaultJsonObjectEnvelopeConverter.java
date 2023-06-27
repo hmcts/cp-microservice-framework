@@ -1,24 +1,23 @@
 package uk.gov.justice.services.messaging;
 
 
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.ValueType.OBJECT;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.json.JsonValue.ValueType.OBJECT;
 import static uk.gov.justice.services.messaging.JsonEnvelope.METADATA;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 
 import java.io.StringReader;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
-import javax.json.JsonValue.ValueType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 
 /**
  * A converter class to convert between {@link JsonEnvelope} and {@link JsonObject}.
@@ -53,7 +52,7 @@ public class DefaultJsonObjectEnvelopeConverter implements JsonObjectEnvelopeCon
         final JsonObjectBuilder builder = createObjectBuilder();
         builder.add(METADATA, metadata.asJsonObject());
 
-        final ValueType payloadType = envelope.payload().getValueType();
+        final JsonValue.ValueType payloadType = envelope.payload().getValueType();
         if (payloadType == OBJECT) {
             final JsonObject payloadAsJsonObject = envelope.payloadAsJsonObject();
             payloadAsJsonObject.keySet().forEach(key -> builder.add(key, payloadAsJsonObject.get(key)));

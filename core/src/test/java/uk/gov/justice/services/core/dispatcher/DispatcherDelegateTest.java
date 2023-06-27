@@ -11,8 +11,8 @@ import uk.gov.justice.services.core.envelope.RequestResponseEnvelopeValidator;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
-import javax.json.Json;
-import javax.json.JsonValue;
+import jakarta.json.Json;
+import jakarta.json.JsonValue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

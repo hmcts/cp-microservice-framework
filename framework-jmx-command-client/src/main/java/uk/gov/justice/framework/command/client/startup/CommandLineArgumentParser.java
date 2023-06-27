@@ -11,7 +11,7 @@ import uk.gov.justice.framework.command.client.io.ToConsolePrinter;
 
 import java.util.Optional;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;

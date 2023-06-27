@@ -1,8 +1,8 @@
 package uk.gov.justice.services.messaging.spi;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.NULL;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.json.JsonValue.NULL;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,12 +32,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 import com.google.common.testing.EqualsTester;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import org.junit.Before;
 import org.junit.Test;
 

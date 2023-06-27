@@ -6,8 +6,8 @@ import static org.hamcrest.core.Is.is;
 
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
 import org.junit.Test;
 

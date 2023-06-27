@@ -1,8 +1,9 @@
 package uk.gov.justice.services.messaging.spi;
 
 
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.ValueType.OBJECT;
+
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.json.JsonValue.ValueType.OBJECT;
 
 import uk.gov.justice.services.messaging.JsonObjects;
 
@@ -10,9 +11,10 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+
 
 class JsonObjectBuilderWrapper {
 

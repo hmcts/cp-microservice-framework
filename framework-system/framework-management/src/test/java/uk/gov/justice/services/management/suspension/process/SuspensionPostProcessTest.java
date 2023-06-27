@@ -21,7 +21,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.enterprise.event.Event;
+import jakarta.enterprise.event.Event;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

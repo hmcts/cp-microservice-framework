@@ -2,7 +2,7 @@ package uk.gov.justice.services.core.dispatcher;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -27,7 +27,7 @@ import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
 
 import java.util.List;
 
-import javax.json.JsonValue;
+import jakarta.json.JsonValue;
 
 import org.junit.Before;
 import org.junit.Test;

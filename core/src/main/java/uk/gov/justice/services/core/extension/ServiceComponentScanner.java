@@ -1,6 +1,5 @@
 package uk.gov.justice.services.core.extension;
 
-import static java.util.Collections.synchronizedList;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.services.core.annotation.ServiceComponentLocation.componentLocationFrom;
 
@@ -14,20 +13,17 @@ import uk.gov.justice.services.core.annotation.DirectAdapter;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterDeploymentValidation;
+import jakarta.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 import org.slf4j.Logger;
 
 /**
@@ -37,13 +33,16 @@ public class ServiceComponentScanner implements Extension {
 
     private static final Logger LOGGER = getLogger(ServiceComponentScanner.class);
 
-    private List<Object> events = synchronizedList(new ArrayList<>());
-
     @SuppressWarnings("unused")
-    <T> void processAnnotatedType(@Observes final ProcessAnnotatedType<T> pat) {
-        final AnnotatedType<T> annotatedType = pat.getAnnotatedType();
+    <T> void processAnnotatedType(@Observes final ProcessAnnotatedType<T> processAnnotatedType, final BeanManager beanManager) {
+        final AnnotatedType<T> annotatedType = processAnnotatedType.getAnnotatedType();
         if (annotatedType.isAnnotationPresent(Event.class)) {
-            events.add(new EventFoundEvent(annotatedType.getJavaClass(), annotatedType.getAnnotation(Event.class).value()));
+            beanManager
+                    .getEvent()
+                    .select(EventFoundEvent.class)
+                    .fire(new EventFoundEvent(
+                            annotatedType.getJavaClass(),
+                            annotatedType.getAnnotation(Event.class).value()));
         }
     }
 
@@ -54,9 +53,7 @@ public class ServiceComponentScanner implements Extension {
         allBeansFrom(beanManager)
                 .filter(this::isServiceComponent)
                 .filter(bean -> isNotDirectComponentWithoutAdapter(bean, directAdapters))
-                .forEach(this::processServiceComponentsForEvents);
-
-        fireAllCollectedEvents(beanManager);
+                .forEach(bean -> processServiceComponentsForEvents(bean, beanManager));
     }
 
     private Stream<Bean<?>> allBeansFrom(final BeanManager beanManager) {
@@ -78,14 +75,20 @@ public class ServiceComponentScanner implements Extension {
      *
      * @param bean a bean that has an annotation and could be of interest to the framework wiring.
      */
-    private void processServiceComponentsForEvents(final Bean<?> bean) {
+    private void processServiceComponentsForEvents(final Bean<?> bean, final BeanManager beanManager) {
 
         final ComponentNameExtractor componentNameExtractor = new ComponentNameExtractor();
         final Class<?> beanClass = bean.getBeanClass();
 
         LOGGER.info("Found class {} as part of component {}", beanClass.getSimpleName(), componentNameExtractor.componentFrom(beanClass));
 
-        events.add(new ServiceComponentFoundEvent(componentNameExtractor.componentFrom(beanClass), bean, componentLocationFrom(beanClass)));
+        beanManager
+                .getEvent()
+                .select(ServiceComponentFoundEvent.class)
+                .fire(new ServiceComponentFoundEvent(
+                        componentNameExtractor.componentFrom(beanClass),
+                        bean,
+                        componentLocationFrom(beanClass)));
     }
 
     private boolean isNotDirectComponentWithoutAdapter(final Bean<?> bean, final Set<Bean<?>> directAdapters) {
@@ -101,9 +104,5 @@ public class ServiceComponentScanner implements Extension {
         }
 
         return true;
-    }
-
-    private void fireAllCollectedEvents(final BeanManager beanManager) {
-        events.forEach(beanManager::fireEvent);
     }
 }

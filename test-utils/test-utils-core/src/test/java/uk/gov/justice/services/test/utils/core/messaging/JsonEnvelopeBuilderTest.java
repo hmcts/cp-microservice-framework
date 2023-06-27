@@ -5,8 +5,8 @@ import static com.jayway.jsonassert.JsonAssert.with;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.math.BigDecimal.ONE;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createArrayBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
@@ -28,10 +28,10 @@ import uk.gov.justice.services.messaging.MetadataBuilder;
 
 import java.util.UUID;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 
 import org.junit.Test;
 

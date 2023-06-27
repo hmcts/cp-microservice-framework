@@ -7,7 +7,7 @@ import uk.gov.justice.services.jmx.system.command.client.MBeanClientConnectionEx
 import java.io.IOException;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 import javax.security.sasl.SaslException;

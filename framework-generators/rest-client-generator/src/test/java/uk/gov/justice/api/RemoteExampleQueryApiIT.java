@@ -90,9 +90,9 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
 
-import javax.annotation.Priority;
-import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.inject.Inject;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.openejb.OpenEjbContainer;

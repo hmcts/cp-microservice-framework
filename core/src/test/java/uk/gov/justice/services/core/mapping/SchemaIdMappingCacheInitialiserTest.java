@@ -12,7 +12,7 @@ import uk.gov.justice.services.core.extension.BeanInstantiater;
 
 import java.util.Map;
 
-import javax.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.Bean;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

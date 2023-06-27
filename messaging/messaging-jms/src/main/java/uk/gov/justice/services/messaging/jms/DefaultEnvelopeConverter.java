@@ -7,11 +7,11 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.jms.exception.JmsConverterException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.jms.TextMessage;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
 
 /**
  * Implementation of {@link EnvelopeConverter} for {@link JsonEnvelope}

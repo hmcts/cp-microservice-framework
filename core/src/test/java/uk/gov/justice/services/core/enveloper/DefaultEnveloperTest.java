@@ -2,7 +2,7 @@ package uk.gov.justice.services.core.enveloper;
 
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -22,7 +22,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import java.util.UUID;
 
-import javax.json.JsonValue;
+import jakarta.json.JsonValue;
 
 import org.junit.Before;
 import org.junit.Test;

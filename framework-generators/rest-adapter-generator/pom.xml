@@ -13,8 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -61,32 +61,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
+            <groupId>org.eclipse.parsson</groupId>
+            <artifactId>parsson</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.johnzon</groupId>-->
-<!--            <artifactId>johnzon-core</artifactId>-->
-<!--            <version>1.2.9</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.tomee</groupId>
             <artifactId>openejb-cxf-rs</artifactId>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.johnzon</groupId>-->
-<!--                    <artifactId>johnzon-core</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.johnzon</groupId>-->
-<!--                    <artifactId>johnzon-jsonb</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.johnzon</groupId>-->
-<!--                    <artifactId>johnzon-jaxrs</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -242,10 +223,21 @@
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>
-                        <groupId>javax</groupId>
-                        <artifactId>javaee-api</artifactId>
-                        <version>${javaee-api.version}</version>
+                        <groupId>jakarta.platform</groupId>
+                        <artifactId>jakarta.jakartaee-api</artifactId>
+                        <version>${jakartaee-api.version}</version>
                         <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                        <!-- HERE!!! -->
+                        <version>2.3.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.parsson</groupId>
+                        <artifactId>parsson</artifactId>
+                        <version>1.1.1</version>
                     </dependency>
                     <dependency>
                         <groupId>uk.gov.justice.maven.generator</groupId>

@@ -13,11 +13,10 @@ import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.messaging.jms.exception.JmsConverterException;
 
-import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
-
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
+import jakarta.json.JsonObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -8,10 +8,10 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.messaging.jms.JndiException;
 
-import javax.jms.ConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import jakarta.jms.ConnectionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

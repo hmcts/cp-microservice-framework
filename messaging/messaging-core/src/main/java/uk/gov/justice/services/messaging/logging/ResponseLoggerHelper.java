@@ -4,10 +4,11 @@ import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 
 import java.util.Optional;
 
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.json.Json;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 
 public final class ResponseLoggerHelper {
 

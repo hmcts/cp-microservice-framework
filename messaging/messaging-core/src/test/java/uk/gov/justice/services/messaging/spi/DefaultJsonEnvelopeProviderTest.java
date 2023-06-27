@@ -1,8 +1,8 @@
 package uk.gov.justice.services.messaging.spi;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static jakarta.json.Json.createObjectBuilder;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -15,9 +15,8 @@ import uk.gov.justice.services.messaging.MetadataBuilder;
 
 import java.util.UUID;
 
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
-
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 import org.junit.Test;
 
 public class DefaultJsonEnvelopeProviderTest {

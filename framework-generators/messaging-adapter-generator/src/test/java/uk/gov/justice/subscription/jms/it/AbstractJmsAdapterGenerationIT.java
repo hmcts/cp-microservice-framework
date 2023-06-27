@@ -1,6 +1,6 @@
 package uk.gov.justice.subscription.jms.it;
 
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.junit.Assert.fail;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
@@ -9,15 +9,14 @@ import uk.gov.justice.artemis.EmbeddedArtemisServer;
 
 import java.util.Properties;
 
-import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
-
+import jakarta.jms.Connection;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
+import jakarta.json.JsonObject;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.openejb.OpenEjbContainer;
 import org.apache.openejb.testing.Configuration;

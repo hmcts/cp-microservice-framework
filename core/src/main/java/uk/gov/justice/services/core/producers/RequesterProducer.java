@@ -2,7 +2,6 @@ package uk.gov.justice.services.core.producers;
 
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.dispatcher.DispatcherCache;
-import uk.gov.justice.services.core.dispatcher.DispatcherConfiguration;
 import uk.gov.justice.services.core.dispatcher.DispatcherDelegate;
 import uk.gov.justice.services.core.dispatcher.EnvelopePayloadTypeConverter;
 import uk.gov.justice.services.core.dispatcher.JsonEnvelopeRepacker;
@@ -10,10 +9,10 @@ import uk.gov.justice.services.core.dispatcher.SystemUserUtil;
 import uk.gov.justice.services.core.envelope.RequestResponseEnvelopeValidator;
 import uk.gov.justice.services.core.requester.Requester;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
 
 @SuppressWarnings("CdiInjectionPointsInspection")
 @ApplicationScoped

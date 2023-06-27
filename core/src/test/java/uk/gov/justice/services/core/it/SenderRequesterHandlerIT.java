@@ -1,7 +1,7 @@
 package uk.gov.justice.services.core.it;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -73,8 +73,8 @@ import uk.gov.justice.services.test.utils.messaging.jms.DummyJmsEnvelopeSender;
 
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.openejb.jee.Application;
 import org.apache.openejb.jee.WebApp;

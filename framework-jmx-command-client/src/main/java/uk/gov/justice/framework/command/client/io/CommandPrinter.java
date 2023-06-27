@@ -4,7 +4,7 @@ import uk.gov.justice.services.jmx.api.command.SystemCommandDetails;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class CommandPrinter {
 

@@ -23,7 +23,7 @@ import uk.gov.justice.services.eventsourcing.source.core.EventStream;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

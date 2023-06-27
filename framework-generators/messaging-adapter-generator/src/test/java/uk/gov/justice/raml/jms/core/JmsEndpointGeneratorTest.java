@@ -63,12 +63,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.inject.Inject;
-import javax.interceptor.Interceptors;
-import javax.jms.Message;
-import javax.jms.MessageListener;
+import jakarta.ejb.ActivationConfigProperty;
+import jakarta.ejb.MessageDriven;
+import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptors;
+import jakarta.jms.Message;
+import jakarta.jms.MessageListener;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.FeatureMatcher;

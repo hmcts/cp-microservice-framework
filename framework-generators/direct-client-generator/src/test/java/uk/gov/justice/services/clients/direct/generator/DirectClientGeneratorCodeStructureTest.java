@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.Rule;
 import org.junit.Test;

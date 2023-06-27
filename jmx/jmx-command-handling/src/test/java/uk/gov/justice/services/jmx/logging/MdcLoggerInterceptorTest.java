@@ -12,7 +12,7 @@ import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 
-import javax.interceptor.InvocationContext;
+import jakarta.interceptor.InvocationContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

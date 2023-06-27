@@ -14,8 +14,7 @@ import uk.gov.justice.services.core.annotation.DirectAdapter;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 
-import javax.inject.Inject;
-
+import jakarta.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

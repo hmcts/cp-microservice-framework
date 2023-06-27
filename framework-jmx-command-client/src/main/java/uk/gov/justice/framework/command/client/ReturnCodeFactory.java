@@ -10,7 +10,7 @@ import uk.gov.justice.services.jmx.api.SystemCommandInvocationFailedException;
 import uk.gov.justice.services.jmx.system.command.client.MBeanClientConnectionException;
 import uk.gov.justice.services.jmx.system.command.client.connection.JmxAuthenticationException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class ReturnCodeFactory {
 

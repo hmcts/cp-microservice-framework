@@ -3,7 +3,7 @@ package uk.gov.justice.services.adapter.messaging;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,9 +25,9 @@ import uk.gov.justice.services.messaging.logging.TraceLogger;
 
 import java.util.UUID;
 
-import javax.interceptor.InvocationContext;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
+import jakarta.interceptor.InvocationContext;
+import jakarta.jms.TextMessage;
+import jakarta.json.JsonObject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

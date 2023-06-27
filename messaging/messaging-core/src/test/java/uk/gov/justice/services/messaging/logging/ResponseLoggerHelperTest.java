@@ -5,10 +5,9 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 import static uk.gov.justice.services.messaging.logging.ResponseLoggerHelper.toResponseTrace;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.jayway.jsonassert.JsonAssert;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

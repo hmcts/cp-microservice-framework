@@ -41,7 +41,7 @@ import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.hamcrest.Matchers;
 import org.junit.Rule;

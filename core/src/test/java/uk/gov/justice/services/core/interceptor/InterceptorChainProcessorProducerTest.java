@@ -1,7 +1,7 @@
 package uk.gov.justice.services.core.interceptor;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -31,7 +31,7 @@ import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
 
 import java.util.LinkedList;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Test;

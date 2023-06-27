@@ -1,7 +1,7 @@
 package uk.gov.justice.services.clients.unifiedsearch.generator;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static jakarta.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -18,7 +18,7 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.unifiedsearch.TransformerApi;
 import uk.gov.justice.services.unifiedsearch.UnifiedSearchIndexer;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

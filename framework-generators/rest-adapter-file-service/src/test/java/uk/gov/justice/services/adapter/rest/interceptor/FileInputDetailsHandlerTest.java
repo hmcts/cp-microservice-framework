@@ -12,7 +12,7 @@ import uk.gov.justice.services.adapter.rest.multipart.FileInputDetails;
 
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

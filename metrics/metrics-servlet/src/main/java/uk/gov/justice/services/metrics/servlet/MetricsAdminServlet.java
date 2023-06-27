@@ -1,8 +1,8 @@
 package uk.gov.justice.services.metrics.servlet;
 
-import javax.servlet.annotation.WebServlet;
+import io.dropwizard.metrics.servlets.AdminServlet;
+import jakarta.servlet.annotation.WebServlet;
 
-import com.codahale.metrics.servlets.AdminServlet;
 
 /**
  * Annotated extension of the standard metrics admin servlet.

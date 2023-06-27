@@ -18,10 +18,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonString;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+
 
 /**
  * Implementation of metadata that uses a JsonObject internally to store the metadata.

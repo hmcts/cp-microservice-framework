@@ -1,8 +1,8 @@
 package uk.gov.justice.services.core.dispatcher;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.JsonValue.ValueType.OBJECT;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.json.JsonValue.ValueType.OBJECT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -17,8 +17,8 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 import org.junit.Test;
 

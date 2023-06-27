@@ -26,7 +26,7 @@ import uk.gov.justice.services.test.utils.core.compiler.JavaCompilerUtility;
 
 import java.io.File;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -16,9 +16,8 @@ import uk.gov.justice.services.common.annotation.ComponentNameExtractor;
 import uk.gov.justice.services.core.annotation.FrameworkComponent;
 import uk.gov.justice.services.core.interceptor.InterceptorChainProcessor;
 
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
-
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -1,8 +1,8 @@
 package uk.gov.justice.services.adapter.rest.filter;
 
-import static javax.json.Json.createObjectBuilder;
-import static javax.ws.rs.core.HttpHeaders.ACCEPT;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static jakarta.json.Json.createObjectBuilder;
+import static jakarta.ws.rs.core.HttpHeaders.ACCEPT;
+import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static uk.gov.justice.services.adapter.rest.envelope.MediaTypes.JSON_MEDIA_TYPE_SUFFIX;
 import static uk.gov.justice.services.adapter.rest.envelope.MediaTypes.charsetFrom;
@@ -27,13 +27,12 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 

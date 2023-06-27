@@ -8,7 +8,7 @@ import uk.gov.justice.services.jmx.system.command.client.MBeanClientException;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
