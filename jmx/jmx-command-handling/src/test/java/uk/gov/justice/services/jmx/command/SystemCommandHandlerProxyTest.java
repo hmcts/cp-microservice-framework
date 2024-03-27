@@ -13,6 +13,7 @@ import uk.gov.justice.services.jmx.api.command.SystemCommand;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -23,6 +24,7 @@ public class SystemCommandHandlerProxyTest {
     public void shouldInvokeTheCommandHandlerMethod() throws Exception {
 
         final UUID commandId = UUID.randomUUID();
+        final Optional<UUID> commandRuntimeId = Optional.of(UUID.randomUUID());
         final TestCommand testCommand = new TestCommand();
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("someHandlerMethod", dummyHandler);
@@ -40,17 +42,18 @@ public class SystemCommandHandlerProxyTest {
 
         assertThat(dummyHandler.someHandlerMethodWasCalled(), is(false));
 
-        systemCommandHandlerProxy.invokeCommand(testCommand, commandId);
+        systemCommandHandlerProxy.invokeCommand(testCommand, commandId, commandRuntimeId);
 
         assertThat(dummyHandler.someHandlerMethodWasCalled(), is(true));
 
-        verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler);
+        verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler, commandRuntimeId);
     }
 
     @Test
     public void shouldFailIfTheMethodIsInaccessible() throws Exception {
 
         final UUID commandId = UUID.randomUUID();
+        final Optional<UUID> commandRuntimeId = Optional.of(UUID.randomUUID());
         final TestCommand testCommand = new TestCommand();
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("aPrivateMethod", dummyHandler);
@@ -64,20 +67,21 @@ public class SystemCommandHandlerProxyTest {
                 handlerMethodValidator);
 
         try {
-            systemCommandHandlerProxy.invokeCommand(testCommand, commandId);
+            systemCommandHandlerProxy.invokeCommand(testCommand, commandId, commandRuntimeId);
             fail();
         } catch (final SystemCommandInvocationException expected) {
             assertThat(expected.getMessage(), is("Failed to call method 'aPrivateMethod()' on " + dummyHandler.getClass().getName() + ". Is the method public?"));
             assertThat(expected.getCause(), is(instanceOf(IllegalAccessException.class)));
         }
 
-        verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler);
+        verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler, commandRuntimeId);
     }
 
     @Test
     public void shouldFailIfTheInvokedMethodThrowsAnException() throws Exception {
 
         final UUID commandId = UUID.randomUUID();
+        final Optional<UUID> commandRuntimeId = Optional.of(UUID.randomUUID());
         final TestCommand testCommand = new TestCommand();
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("anExceptionThrowingMethod", dummyHandler);
@@ -91,14 +95,14 @@ public class SystemCommandHandlerProxyTest {
                 handlerMethodValidator);
 
         try {
-            systemCommandHandlerProxy.invokeCommand(testCommand, commandId);
+            systemCommandHandlerProxy.invokeCommand(testCommand, commandId, commandRuntimeId);
             fail();
         } catch (final SystemCommandInvocationException expected) {
             assertThat(expected.getMessage(), is("IOException thrown when calling method 'anExceptionThrowingMethod()' on " + dummyHandler.getClass().getName()));
             assertThat(expected.getCause(), is(instanceOf(IOException.class)));
         }
 
-        verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler);
+        verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler, commandRuntimeId);
     }
 
     private Method getMethod(final String methodName, final Object instance) {

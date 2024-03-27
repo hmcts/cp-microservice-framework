@@ -7,6 +7,7 @@ import uk.gov.justice.services.jmx.api.command.SystemCommand;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SystemCommandHandlerProxy {
@@ -31,9 +32,9 @@ public class SystemCommandHandlerProxy {
         return instance;
     }
 
-    public void invokeCommand(final SystemCommand systemCommand, final UUID commandId) throws SystemCommandInvocationException {
+    public void invokeCommand(final SystemCommand systemCommand, final UUID commandId, final Optional<UUID> commandRuntimeId) throws SystemCommandInvocationException {
 
-        handlerMethodValidator.checkHandlerMethodIsValid(method, instance);
+        handlerMethodValidator.checkHandlerMethodIsValid(method, instance, commandRuntimeId);
 
         try {
             method.invoke(instance, systemCommand, commandId);

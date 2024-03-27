@@ -9,6 +9,7 @@ import uk.gov.justice.services.jmx.api.command.SystemCommand;
 import uk.gov.justice.services.jmx.api.domain.SystemCommandStatus;
 import uk.gov.justice.services.jmx.state.observers.SystemCommandStateBean;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -29,8 +30,7 @@ public class AsynchronousCommandRunner {
     @Inject
     private UtcClock clock;
 
-
-    public UUID run(final SystemCommand systemCommand) {
+    public UUID run(final SystemCommand systemCommand, final Optional<UUID> commandRuntimeId) {
 
         final UUID commandId = randomUUID();
 
@@ -39,7 +39,8 @@ public class AsynchronousCommandRunner {
         managedExecutorService.submit(new RunSystemCommandTask(
                 systemCommandRunner,
                 systemCommand,
-                commandId
+                commandId,
+                commandRuntimeId
         ));
 
         return commandId;

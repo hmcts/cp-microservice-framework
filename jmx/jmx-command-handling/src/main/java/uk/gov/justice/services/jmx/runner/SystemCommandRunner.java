@@ -8,6 +8,7 @@ import uk.gov.justice.services.jmx.api.SystemCommandInvocationFailedException;
 import uk.gov.justice.services.jmx.api.command.SystemCommand;
 import uk.gov.justice.services.jmx.command.SystemCommandStore;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -27,16 +28,23 @@ public class SystemCommandRunner {
     private Logger logger;
 
     @Transactional(NEVER)
-    public void run(final SystemCommand systemCommand, final UUID commandId) {
+    public void run(final SystemCommand systemCommand, final UUID commandId, final Optional<UUID> commandRuntimeId) {
 
         try {
-            systemCommandStore.findCommandProxy(systemCommand).invokeCommand(systemCommand, commandId);
+            systemCommandStore.findCommandProxy(systemCommand).invokeCommand(systemCommand, commandId, commandRuntimeId);
         } catch (final Throwable e) {
-            final String message = format("Failed to run System Command '%s'", systemCommand.getName());
-            logger.error(message, e);
+            final StringBuilder message = new StringBuilder(format("Failed to run System Command '%s'", systemCommand.getName()));
+
+            commandRuntimeId.ifPresent(commandRuntimeUuid -> message.append(format(" for %s '%s'", systemCommand.commandRuntimeIdType(), commandRuntimeUuid)));
+
+            logger.error(message.toString(), e);
 
             throw new SystemCommandInvocationFailedException(
-                    message + ". Caused by " + e.getClass().getName() + ": " + e.getMessage(),
+                    message.append(". Caused by ")
+                            .append(e.getClass().getName())
+                            .append(": ")
+                            .append(e.getMessage())
+                            .toString(),
                     stackTraceProvider.getStackTrace(e));
         }
     }
