@@ -28,7 +28,8 @@ public class CommandExecutor {
             commandPrinter.printSystemCommands(systemCommandDetails);
         } else {
             final String commandName = commandLine.getOptionValue("command");
-            systemCommandInvoker.runSystemCommand(commandName, jmxParameters);
+            final String commandRuntimeId = commandLine.getOptionValue("crid");
+            systemCommandInvoker.runSystemCommand(commandName, commandRuntimeId, jmxParameters);
         }
     }
 }

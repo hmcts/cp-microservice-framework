@@ -3,11 +3,13 @@ package uk.gov.justice.framework.command.client.jmx;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.*;
 
+import org.hamcrest.CoreMatchers;
+import uk.gov.justice.framework.command.client.CommandLineException;
 import uk.gov.justice.framework.command.client.io.ToConsolePrinter;
 import uk.gov.justice.services.jmx.api.SystemCommandInvocationFailedException;
 import uk.gov.justice.services.jmx.api.UnrunnableSystemCommandException;
@@ -42,7 +44,7 @@ public class SystemCommandInvokerTest {
     private SystemCommandInvoker systemCommandInvoker;
 
     @Test
-    public void shouldMakeJmxCallToRetrieveTheListOfCommands() throws Exception {
+    public void shouldInvokeMbeanWithCommandNameGivenCommandRuntimeIdNotSupplied() {
 
         final String contextName = "my-context";
         final String host = "localhost";
@@ -62,7 +64,7 @@ public class SystemCommandInvokerTest {
         when(systemCommanderClient.getRemote(contextName)).thenReturn(systemCommanderMBean);
         when(systemCommanderMBean.call(commandName)).thenReturn(commandId);
 
-        systemCommandInvoker.runSystemCommand(commandName, jmxParameters);
+        systemCommandInvoker.runSystemCommand(commandName, null, jmxParameters);
 
         final InOrder inOrder = inOrder(
                 toConsolePrinter,
@@ -79,6 +81,71 @@ public class SystemCommandInvokerTest {
         inOrder.verify(systemCommanderMBean).call(commandName);
         inOrder.verify(toConsolePrinter).printf("System command '%s' with id '%s' successfully sent to %s", commandName, commandId, contextName);
         inOrder.verify(commandPoller).runUntilComplete(systemCommanderMBean, commandId, commandName);
+    }
+
+    @Test
+    public void shouldInvokeMbeanWithCommandNameAndRuntimeIdGivenCommandRuntimeIdIsSupplied() {
+        final String contextName = "my-context";
+        final String host = "localhost";
+        final int port = 92834;
+        final String commandName = "SOME_COMMAND";
+        final UUID commandRuntimeId = UUID.randomUUID();
+        final UUID commandId = randomUUID();
+
+        final JmxParameters jmxParameters = mock(JmxParameters.class);
+        final SystemCommanderClient systemCommanderClient = mock(SystemCommanderClient.class);
+        final SystemCommanderMBean systemCommanderMBean = mock(SystemCommanderMBean.class);
+
+        when(jmxParameters.getContextName()).thenReturn(contextName);
+        when(jmxParameters.getHost()).thenReturn(host);
+        when(jmxParameters.getPort()).thenReturn(port);
+        when(jmxParameters.getCredentials()).thenReturn(empty());
+        when(systemCommanderClientFactory.create(jmxParameters)).thenReturn(systemCommanderClient);
+        when(systemCommanderClient.getRemote(contextName)).thenReturn(systemCommanderMBean);
+        when(systemCommanderMBean.callWithRuntimeId(commandName, commandRuntimeId)).thenReturn(commandId);
+
+        systemCommandInvoker.runSystemCommand(commandName, commandRuntimeId.toString(), jmxParameters);
+
+        final InOrder inOrder = inOrder(
+                toConsolePrinter,
+                systemCommanderClientFactory,
+                systemCommanderClient,
+                systemCommanderMBean,
+                commandPoller);
+
+        inOrder.verify(toConsolePrinter).printf("Running system command '%s'", commandName);
+        inOrder.verify(toConsolePrinter).printf("Connecting to %s context at '%s' on port %d", contextName, host, port);
+        inOrder.verify(systemCommanderClientFactory).create(jmxParameters);
+        inOrder.verify(toConsolePrinter).printf("Connected to %s context", contextName);
+        inOrder.verify(systemCommanderClient).getRemote(contextName);
+        inOrder.verify(systemCommanderMBean).callWithRuntimeId(commandName, commandRuntimeId);
+        inOrder.verify(toConsolePrinter).printf("System command '%s' with id '%s' successfully sent to %s", commandName, commandId, contextName);
+        inOrder.verify(commandPoller).runUntilComplete(systemCommanderMBean, commandId, commandName);
+    }
+
+    @Test
+    public void shouldLogMessageAndThrowExceptionWhenSuppliedCommandRuntimeIdIsNotUUID() {
+        final String contextName = "my-context";
+        final String host = "localhost";
+        final int port = 92834;
+        final String commandName = "SOME_COMMAND";
+        final String commandRuntimeId = "NOT_UUID_INVALID";
+        final UUID commandId = randomUUID();
+
+        final JmxParameters jmxParameters = mock(JmxParameters.class);
+        final SystemCommanderClient systemCommanderClient = mock(SystemCommanderClient.class);
+        final SystemCommanderMBean systemCommanderMBean = mock(SystemCommanderMBean.class);
+
+        when(jmxParameters.getContextName()).thenReturn(contextName);
+        when(jmxParameters.getHost()).thenReturn(host);
+        when(jmxParameters.getPort()).thenReturn(port);
+        when(jmxParameters.getCredentials()).thenReturn(empty());
+        when(systemCommanderClientFactory.create(jmxParameters)).thenReturn(systemCommanderClient);
+        when(systemCommanderClient.getRemote(contextName)).thenReturn(systemCommanderMBean);
+        when(systemCommanderMBean.call(commandName)).thenReturn(commandId);
+
+        final CommandLineException e = assertThrows(CommandLineException.class, () -> systemCommandInvoker.runSystemCommand(commandName, commandRuntimeId, jmxParameters));
+        assertThat(e.getMessage(), is("Unable to invoke command as supplied commandRuntimeId is not uuid format: " + commandRuntimeId));
     }
 
     @Test
@@ -105,7 +172,7 @@ public class SystemCommandInvokerTest {
         when(systemCommanderClient.getRemote(contextName)).thenReturn(systemCommanderMBean);
         when(systemCommanderMBean.call(commandName)).thenReturn(commandId);
 
-        systemCommandInvoker.runSystemCommand(commandName, jmxParameters);
+        systemCommandInvoker.runSystemCommand(commandName, null, jmxParameters);
 
         final InOrder inOrder = inOrder(
                 toConsolePrinter,
@@ -150,7 +217,7 @@ public class SystemCommandInvokerTest {
         when(systemCommanderClient.getRemote(contextName)).thenReturn(systemCommanderMBean);
         doThrow(unrunnableSystemCommandException).when(systemCommanderMBean).call(commandName);
 
-        systemCommandInvoker.runSystemCommand(commandName, jmxParameters);
+        systemCommandInvoker.runSystemCommand(commandName, "", jmxParameters);
 
         final InOrder inOrder = inOrder(
                 toConsolePrinter,
@@ -191,7 +258,7 @@ public class SystemCommandInvokerTest {
         when(systemCommanderClient.getRemote(contextName)).thenReturn(systemCommanderMBean);
         doThrow(systemCommandInvocationFailedException).when(systemCommanderMBean).call(commandName);
 
-        systemCommandInvoker.runSystemCommand(commandName, jmxParameters);
+        systemCommandInvoker.runSystemCommand(commandName, null, jmxParameters);
 
         final InOrder inOrder = inOrder(
                 toConsolePrinter,

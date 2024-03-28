@@ -7,6 +7,8 @@ import uk.gov.justice.framework.command.client.cdi.producers.WeldFactory;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.inject.WeldInstance;
 
+import java.util.UUID;
+
 public class Bootstrapper {
 
     private final WeldFactory weldFactory;
@@ -32,6 +34,7 @@ public class Bootstrapper {
     public static void main(String[] args) {
 
         final String command = "PING";
+        final String commandRuntimeId = "";
         final String contextName = "people";
 
         final String userName = "admin";
@@ -40,6 +43,7 @@ public class Bootstrapper {
 
         final String[] arguments = {
             "-c", command,
+            "-rcid", commandRuntimeId,
             "-u", userName,
             "-pw", password,
             "-cn", contextName
