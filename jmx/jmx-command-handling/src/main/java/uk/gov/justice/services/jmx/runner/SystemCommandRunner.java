@@ -31,6 +31,13 @@ public class SystemCommandRunner {
     public void run(final SystemCommand systemCommand, final UUID commandId, final Optional<UUID> commandRuntimeId) {
 
         try {
+
+            if(commandRuntimeId.isPresent())  {
+                logger.info(format("Running system command '%s' with %s '%s'", systemCommand.getName(), systemCommand.commandRuntimeIdType(), commandRuntimeId.get()));
+            } else {
+                logger.info("Running system command '%s'");
+            }
+
             systemCommandStore.findCommandProxy(systemCommand).invokeCommand(systemCommand, commandId, commandRuntimeId);
         } catch (final Throwable e) {
             final StringBuilder message = new StringBuilder(format("Failed to run System Command '%s'", systemCommand.getName()));

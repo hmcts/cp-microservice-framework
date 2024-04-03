@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 import uk.gov.justice.services.jmx.api.InvalidHandlerMethodException;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.Test;

@@ -1,8 +1,11 @@
 package uk.gov.justice.services.jmx.bootstrap;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import uk.gov.justice.services.jmx.command.CommandHandlerMethodArgumentFactory;
 
 import org.junit.Test;
 
@@ -43,5 +46,10 @@ public class ObjectFactoryTest {
     @Test
     public void shouldCreateBlacklistedCommandsFilter() throws Exception {
         assertThat(objectFactory.blacklistedCommandsFilter(), is(notNullValue()));
+    }
+
+    @Test
+    public void shouldCreateCommandHandlerMethodArgumentFactory() throws Exception {
+        assertThat(objectFactory.commandHandlerMethodArgumentFactory(), is(instanceOf(CommandHandlerMethodArgumentFactory.class)));
     }
 }
