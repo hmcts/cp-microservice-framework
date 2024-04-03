@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.1.0-M2] - 2024-04-03
+### Added
+- New temporary JmxCommand that logs the passed commandRuntimeId passed from the client
+### Fixed
+- commandRuntimeId now correctly passed to the Jmx handler classes
+
 ## [8.1.0-M1] - 2024-03-28
 ### Changed
 - Update JmxClient to allow for an optional uuid to be passed to SystemCommandHandlers

@@ -16,12 +16,18 @@ public class SystemCommandHandlerProxy {
     private final Method method;
     private final Object instance;
     private final HandlerMethodValidator handlerMethodValidator;
+    private final CommandHandlerMethodArgumentFactory commandHandlerMethodArgumentFactory;
 
-    public SystemCommandHandlerProxy(final String commandName, final Method method, final Object instance, final HandlerMethodValidator handlerMethodValidator) {
+    public SystemCommandHandlerProxy(
+            final String commandName, final Method method,
+            final Object instance,
+            final HandlerMethodValidator handlerMethodValidator,
+            final CommandHandlerMethodArgumentFactory commandHandlerMethodArgumentFactory) {
         this.commandName = commandName;
         this.method = method;
         this.instance = instance;
         this.handlerMethodValidator = handlerMethodValidator;
+        this.commandHandlerMethodArgumentFactory = commandHandlerMethodArgumentFactory;
     }
 
     public String getCommandName() {
@@ -36,8 +42,13 @@ public class SystemCommandHandlerProxy {
 
         handlerMethodValidator.checkHandlerMethodIsValid(method, instance, commandRuntimeId);
 
+        final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
+                systemCommand,
+                commandId,
+                commandRuntimeId);
+
         try {
-            method.invoke(instance, systemCommand, commandId);
+            method.invoke(instance, methodArguments);
         } catch (final IllegalAccessException e) {
 
             final String message = format("Failed to call method '%s()' on %s. Is the method public?",
@@ -58,5 +69,4 @@ public class SystemCommandHandlerProxy {
                     targetException);
         }
     }
-
 }
