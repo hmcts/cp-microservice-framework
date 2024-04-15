@@ -30,6 +30,8 @@ public class AsynchronousCommandRunner {
     @Inject
     private UtcClock clock;
 
+    @Inject SystemCommandInvocationFailureHandler systemCommandInvocationFailureHandler;
+
     public UUID run(final SystemCommand systemCommand, final Optional<UUID> commandRuntimeId) {
 
         final UUID commandId = randomUUID();
@@ -40,7 +42,8 @@ public class AsynchronousCommandRunner {
                 systemCommandRunner,
                 systemCommand,
                 commandId,
-                commandRuntimeId
+                commandRuntimeId,
+                systemCommandInvocationFailureHandler
         ));
 
         return commandId;

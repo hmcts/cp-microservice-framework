@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.1.0-M3] - 2024-04-15
+### Changed
+- Update command status as failed, when system command invocation fails
+
 ## [8.1.0-M2] - 2024-04-03
 ### Added
 - New temporary JmxCommand that logs the passed commandRuntimeId passed from the client

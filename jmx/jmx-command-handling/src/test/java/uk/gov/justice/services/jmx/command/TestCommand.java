@@ -9,4 +9,9 @@ public class TestCommand extends BaseSystemCommand {
     public TestCommand() {
         super(TEST_COMMAND, "This is a command used for testing");
     }
+
+    @Override
+    public String commandRuntimeIdType() {
+        return "EVENT_ID";
+    }
 }
