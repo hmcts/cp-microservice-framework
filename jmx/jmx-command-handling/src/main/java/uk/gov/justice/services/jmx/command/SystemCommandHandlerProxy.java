@@ -2,6 +2,7 @@ package uk.gov.justice.services.jmx.command;
 
 import static java.lang.String.format;
 
+import uk.gov.justice.services.jmx.api.InvalidHandlerMethodException;
 import uk.gov.justice.services.jmx.api.SystemCommandInvocationException;
 import uk.gov.justice.services.jmx.api.command.SystemCommand;
 
@@ -39,16 +40,16 @@ public class SystemCommandHandlerProxy {
     }
 
     public void invokeCommand(final SystemCommand systemCommand, final UUID commandId, final Optional<UUID> commandRuntimeId) throws SystemCommandInvocationException {
-
-        handlerMethodValidator.checkHandlerMethodIsValid(method, instance, commandRuntimeId);
-
-        final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
-                systemCommand,
-                commandId,
-                commandRuntimeId);
-
         try {
+            handlerMethodValidator.checkHandlerMethodIsValid(method, instance, commandRuntimeId);
+            final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
+                    systemCommand,
+                    commandId,
+                    commandRuntimeId);
             method.invoke(instance, methodArguments);
+        } catch (final InvalidHandlerMethodException e) {
+
+            throw new SystemCommandInvocationException(e.getMessage(), e);
         } catch (final IllegalAccessException e) {
 
             final String message = format("Failed to call method '%s()' on %s. Is the method public?",
