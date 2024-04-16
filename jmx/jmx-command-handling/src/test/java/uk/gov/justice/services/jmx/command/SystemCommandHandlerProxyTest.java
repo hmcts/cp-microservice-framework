@@ -6,12 +6,12 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.justice.services.jmx.command.TestCommand.TEST_COMMAND;
 
+import uk.gov.justice.services.jmx.api.InvalidHandlerMethodException;
 import uk.gov.justice.services.jmx.api.SystemCommandInvocationException;
 import uk.gov.justice.services.jmx.api.command.SystemCommand;
 
@@ -124,6 +124,33 @@ public class SystemCommandHandlerProxyTest {
         }
 
         verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler, commandRuntimeId);
+    }
+
+    @Test
+    public void shouldConvertAndThrowExceptionOnInvalidMethodException() throws Exception {
+
+        final UUID commandId = randomUUID();
+        final Optional<UUID> commandRuntimeId = of(randomUUID());
+        final TestCommand testCommand = new TestCommand();
+        final DummyHandler dummyHandler = new DummyHandler();
+        final Method method = getMethod("anExceptionThrowingMethod", dummyHandler);
+        final InvalidHandlerMethodException invalidHandlerMethodException = new InvalidHandlerMethodException("Found invalid number of method arguments");
+
+        final HandlerMethodValidator handlerMethodValidator = mock(HandlerMethodValidator.class);
+        final CommandHandlerMethodArgumentFactory commandHandlerMethodArgumentFactory = mock(CommandHandlerMethodArgumentFactory.class);
+        doThrow(invalidHandlerMethodException).when(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler, commandRuntimeId);
+        final SystemCommandHandlerProxy systemCommandHandlerProxy = new SystemCommandHandlerProxy(
+                testCommand.getName(),
+                method,
+                dummyHandler,
+                handlerMethodValidator,
+                commandHandlerMethodArgumentFactory);
+
+        final SystemCommandInvocationException exception = assertThrows(SystemCommandInvocationException.class,
+                () -> systemCommandHandlerProxy.invokeCommand(testCommand, commandId, commandRuntimeId));
+
+        assertThat(exception.getMessage(), is("Found invalid number of method arguments"));
+        assertThat(exception.getCause(), is(invalidHandlerMethodException));
     }
 
     private Method getMethod(final String methodName, final Object instance) {

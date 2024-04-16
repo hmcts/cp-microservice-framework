@@ -42,6 +42,9 @@ public class AsynchronousCommandRunnerTest {
     private SystemCommandRunner systemCommandRunner;
 
     @Mock
+    private SystemCommandInvocationFailureHandler systemCommandInvocationFailureHandler;
+
+    @Mock
     private UtcClock clock;
 
     @InjectMocks
@@ -83,5 +86,6 @@ public class AsynchronousCommandRunnerTest {
         assertThat(getValueOfField(runSystemCommandTask, "systemCommandRunner", SystemCommandRunner.class), is(systemCommandRunner));
         assertThat(getValueOfField(runSystemCommandTask, "systemCommand", SystemCommand.class), is(systemCommand));
         assertThat(getValueOfField(runSystemCommandTask, "commandId", UUID.class), is(commandId));
+        assertThat(getValueOfField(runSystemCommandTask, "systemCommandInvocationFailureHandler", SystemCommandInvocationFailureHandler.class), is(systemCommandInvocationFailureHandler));
     }
 }

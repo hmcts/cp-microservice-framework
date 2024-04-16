@@ -13,20 +13,20 @@ import java.util.UUID;
 public class HandlerMethodValidator {
 
 
-    public void checkHandlerMethodIsValid(final Method handlerMethod, final Object instance, final Optional<UUID> commandRuntimeId) {
+    public void checkHandlerMethodIsValid(final Method handlerMethod, final Object instance, final Optional<UUID> commandRuntimeId) throws InvalidHandlerMethodException {
 
         checkMethodPublic(handlerMethod, instance);
         checkMethodParameters(handlerMethod, instance, commandRuntimeId);
     }
 
-    private void checkMethodPublic(final Method handlerMethod, final Object instance) {
+    private void checkMethodPublic(final Method handlerMethod, final Object instance) throws InvalidHandlerMethodException {
 
         if (!isPublic(handlerMethod.getModifiers())) {
             throw new InvalidHandlerMethodException(format("Handler method '%s' on class '%s' is not public.", handlerMethod.getName(), instance.getClass().getName()));
         }
     }
 
-    private void checkMethodParameters(final Method handlerMethod, final Object instance, final Optional<UUID> commandRuntimeId) {
+    private void checkMethodParameters(final Method handlerMethod, final Object instance, final Optional<UUID> commandRuntimeId) throws InvalidHandlerMethodException {
         final Class<?>[] parameterTypes = handlerMethod.getParameterTypes();
 
         if (commandRuntimeId.isPresent()) {
