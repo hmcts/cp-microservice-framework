@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [8.1.0-M3] - 2024-04-15
+## [8.1.0-M4] - 2024-04-16
 ### Changed
 - Update command status as failed, when system command invocation fails
 
