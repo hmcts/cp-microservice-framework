@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [8.0.8] - 2024-04-17
+### Added
+- Add LOG_RUNTIME_ID system command and it's handler to log command runtime id
+- Add REPLAY_EVENT_TO_EVENT_LISTENER and REPLAY_EVENT_TO_EVENT_INDEXER system commands to replay single event
+
 ## [8.0.7] - 2024-01-11
 ### Changed
 - Update to framework-libraries to 8.0.7
