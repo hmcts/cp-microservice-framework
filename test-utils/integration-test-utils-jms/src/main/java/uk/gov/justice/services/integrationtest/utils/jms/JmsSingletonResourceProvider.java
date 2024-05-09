@@ -4,6 +4,7 @@ import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonEnvelopeMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonPathMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
+import uk.gov.justice.services.messaging.DefaultJsonObjectEnvelopeConverter;
 import uk.gov.justice.services.test.utils.core.messaging.TopicFactory;
 
 class JmsSingletonResourceProvider {
@@ -41,7 +42,7 @@ class JmsSingletonResourceProvider {
     private static JmsMessageClientFactory jmsMessageClientFactory() {
         return new JmsMessageClientFactory(jmsMessageProducerFactory,
                 new ToStringMessageConverter(),
-                new ToJsonEnvelopeMessageConverter(),
+                new ToJsonEnvelopeMessageConverter(new DefaultJsonObjectEnvelopeConverter()),
                 new ToJsonPathMessageConverter(),
                 new JmsMessageReader(),
                 jmsMessageConsumerPool);

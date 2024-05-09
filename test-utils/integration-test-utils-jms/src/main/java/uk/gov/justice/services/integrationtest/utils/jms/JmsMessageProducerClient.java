@@ -34,7 +34,6 @@ public class JmsMessageProducerClient {
 
     //Add convenient methods to send message
     public void sendMessage(final String commandName, final JsonObject payload) {
-
         final JsonEnvelope jsonEnvelope = createEnvelope(commandName, payload);
 
         sendMessage(commandName, jsonEnvelope);
@@ -42,21 +41,22 @@ public class JmsMessageProducerClient {
 
     public void sendMessage(final String commandName, final JsonEnvelope jsonEnvelope) {
         if (messageProducer == null) {
-            throw new RuntimeException("Message producer not started. Please call startProducer(...) first.");
+            throw new JmsMessagingClientException("Message producer should not be null. Invoke createProducer(...) first");
         }
 
-        @SuppressWarnings("deprecation") final String json = jsonEnvelope.toDebugStringPrettyPrint();
+        @SuppressWarnings("deprecation")
+        final String json = jsonEnvelope.toDebugStringPrettyPrint();
 
         try {
             final TextMessage message = createTextMessage(commandName, json);
             messageProducer.send(message);
         } catch (final JMSException e) {
-            throw new RuntimeException("Failed to send message. commandName: '" + commandName + "', json: " + json, e);
+            throw new JmsMessagingClientException("Failed to send message. commandName: '" + commandName + "', json: " + json, e);
         }
     }
 
     private TextMessage createTextMessage(String commandName, String json) throws JMSException {
-        final TextMessage message = jmsMessageProducerFactory.getSession().createTextMessage(); //TODO not a nice way to get session find out alternate way to get session for creating TextMessage
+        final TextMessage message = jmsMessageProducerFactory.getSession(QUEUE_URI).createTextMessage();
         message.setText(json);
         message.setStringProperty("CPPNAME", commandName);
 

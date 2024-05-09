@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
  */
 public class JmsResourceManagementExtension implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback, CloseableResource {
 
-    private static final JmsMessageConsumerPool jmsMessageConsumerPool = getJmsMessageConsumerPool();
+    private static JmsMessageConsumerPool jmsMessageConsumerPool = getJmsMessageConsumerPool();
 
-    private static final JmsMessageProducerFactory jmsMessageProducerFactory = getJmsMessageProducerFactory();
+    private static JmsMessageProducerFactory jmsMessageProducerFactory = getJmsMessageProducerFactory();
 
     private static boolean registered = false;
 
@@ -24,7 +24,7 @@ public class JmsResourceManagementExtension implements BeforeAllCallback, Before
     public void beforeAll(final ExtensionContext context) {
         if (!registered) { //Not a nice way but there is no other elegant way to achieve this i.e. register hook only once
             registered = true;
-            context.getRoot().getStore(GLOBAL).put("Clean JMS connections", this);
+            context.getRoot().getStore(GLOBAL).put("Clean JMS resources", this);
         }
     }
 

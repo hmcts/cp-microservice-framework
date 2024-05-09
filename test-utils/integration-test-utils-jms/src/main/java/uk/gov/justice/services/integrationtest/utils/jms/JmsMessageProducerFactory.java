@@ -24,19 +24,13 @@ class JmsMessageProducerFactory {
         this.topicFactory = topicFactory;
     }
 
-    MessageProducer getOrCreateMessageProducer(
-            final String topicName,
-            final String queueUri) {
-
-        if (session == null) {
-            session = jmsSessionFactory.session(queueUri);
-        }
-
-
+    MessageProducer getOrCreateMessageProducer(final String topicName, final String queueUri) {
+        createSessionIfNull(queueUri);
         return messageProducers.computeIfAbsent(topicName, this::createMessageProducer);
     }
 
-    Session getSession() {
+    Session getSession(String queueUri) {
+        createSessionIfNull(queueUri);
         return session;
     }
 
@@ -49,6 +43,12 @@ class JmsMessageProducerFactory {
             jmsSessionFactory.close(); //closes session and underlying connection, connectionFactory
         } catch (JMSException e) {
             throw new JmsMessagingClientException("Failed to close producers", e);
+        }
+    }
+
+    private void createSessionIfNull(String queueUri) {
+        if (session == null) {
+            session = jmsSessionFactory.create(queueUri);
         }
     }
 

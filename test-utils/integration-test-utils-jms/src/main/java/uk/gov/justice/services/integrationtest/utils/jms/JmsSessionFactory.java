@@ -20,7 +20,7 @@ class JmsSessionFactory implements AutoCloseable {
         this.activeMQConnectionFactory = activeMQConnectionFactory;
     }
 
-    Session session(final String queueUri) {
+    Session create(final String queueUri) {
 
         try {
             activeMQConnectionFactory.setBrokerURL(queueUri);

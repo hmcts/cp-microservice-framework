@@ -6,7 +6,11 @@ import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
 
 public class ToJsonEnvelopeMessageConverter implements MessageConverter<JsonEnvelope> {
 
-    private final JsonObjectEnvelopeConverter jsonEnvelopeConverter = new DefaultJsonObjectEnvelopeConverter();
+    private final JsonObjectEnvelopeConverter jsonEnvelopeConverter;
+
+    public ToJsonEnvelopeMessageConverter(JsonObjectEnvelopeConverter jsonEnvelopeConverter) {
+        this.jsonEnvelopeConverter = jsonEnvelopeConverter;
+    }
 
     @Override
     public JsonEnvelope convert(String message) {
