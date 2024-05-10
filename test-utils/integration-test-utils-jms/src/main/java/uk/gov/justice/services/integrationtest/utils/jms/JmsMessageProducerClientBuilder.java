@@ -1,5 +1,7 @@
 package uk.gov.justice.services.integrationtest.utils.jms;
 
+import com.google.common.annotations.VisibleForTesting;
+
 public class JmsMessageProducerClientBuilder {
     private final JmsMessageClientFactory jmsMessageClientFactory;
     private final String topicName;
@@ -12,9 +14,14 @@ public class JmsMessageProducerClientBuilder {
         return new JmsMessageProducerClientBuilder("jms.topic.%s.event".formatted(contextName));
     }
 
-    private JmsMessageProducerClientBuilder(final String topicName) {
+    @VisibleForTesting
+    JmsMessageProducerClientBuilder(final String topicName, final JmsSingletonResourceProvider jmsSingletonResourceProvider) {
         this.topicName = topicName;
-        this.jmsMessageClientFactory = new JmsSingletonResourceProvider().getJmsMessageClientFactory();
+        this.jmsMessageClientFactory = jmsSingletonResourceProvider.getJmsMessageClientFactory();
+    }
+
+    private JmsMessageProducerClientBuilder(final String topicName) {
+        this(topicName, new JmsSingletonResourceProvider());
     }
 
     public JmsMessageProducerClient build() {

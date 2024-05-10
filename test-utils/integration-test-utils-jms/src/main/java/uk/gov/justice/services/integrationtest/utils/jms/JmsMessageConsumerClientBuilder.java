@@ -1,5 +1,7 @@
 package uk.gov.justice.services.integrationtest.utils.jms;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +25,21 @@ public class JmsMessageConsumerClientBuilder {
         return new JmsMessageConsumerClientBuilder(topicName);
     }
 
-    private JmsMessageConsumerClientBuilder(final String topicName) {
+    @VisibleForTesting
+    JmsMessageConsumerClientBuilder(final String topicName, final JmsSingletonResourceProvider jmsSingletonResourceProvider) {
         this.topicName = topicName;
-        this.jmsMessageClientFactory = new JmsSingletonResourceProvider().getJmsMessageClientFactory();
+        this.jmsMessageClientFactory = jmsSingletonResourceProvider.getJmsMessageClientFactory();
+    }
+
+    private JmsMessageConsumerClientBuilder(final String topicName) {
+        this(topicName, new JmsSingletonResourceProvider());
     }
 
     public JmsMessageConsumerClientBuilder withEventNames(final String eventName, final String...additionalEventNames) {
+        if(eventName == null || eventName.isBlank()) {
+            throw new JmsMessagingClientException("eventName must be supplied");
+        }
+
         this.eventNames.add(eventName);
 
         if(additionalEventNames != null && additionalEventNames.length > 0) {
