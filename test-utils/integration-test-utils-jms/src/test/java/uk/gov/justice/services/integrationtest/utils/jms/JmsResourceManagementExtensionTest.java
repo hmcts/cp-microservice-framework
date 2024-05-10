@@ -2,30 +2,39 @@ package uk.gov.justice.services.integrationtest.utils.jms;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 import static org.mockito.Mockito.*;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getField;
 
+@ExtendWith(MockitoExtension.class)
 class JmsResourceManagementExtensionTest {
 
+    @Mock
     private JmsMessageConsumerPool jmsMessageConsumerPool;
 
+    @Mock
     private JmsMessageProducerFactory jmsMessageProducerFactory;
 
-    private final JmsResourceManagementExtension jmsResourceManagementExtension = new JmsResourceManagementExtension();
+    private JmsResourceManagementExtension jmsResourceManagementExtension;
 
     @BeforeEach
-    void setUp() throws Exception {
-        jmsMessageConsumerPool = mock(JmsMessageConsumerPool.class);
-        jmsMessageProducerFactory = mock(JmsMessageProducerFactory.class);
-        //Not nice to use reflection to set static field values, but defining constructor enforces to pass those arguments when using that extension in junit tests
-        //TODO try defining no args constructor and a private arguments constructor for tests and see if it still works
-        setStaticField(JmsResourceManagementExtension.class, "jmsMessageConsumerPool", jmsMessageConsumerPool);
-        setStaticField(JmsResourceManagementExtension.class, "jmsMessageProducerFactory", jmsMessageProducerFactory);
+    void setUp() {
+        jmsResourceManagementExtension = new JmsResourceManagementExtension(jmsMessageConsumerPool, jmsMessageProducerFactory);
+    }
+
+    @Test
+    void shouldHaveDefaultConstructorForJunitExtensionToWork() {
+        final JmsResourceManagementExtension result = new JmsResourceManagementExtension();
+
+        assertNotNull(result);
     }
 
     @Test

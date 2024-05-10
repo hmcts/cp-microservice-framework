@@ -1,5 +1,6 @@
 package uk.gov.justice.services.integrationtest.utils.jms;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -14,11 +15,23 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
  */
 public class JmsResourceManagementExtension implements BeforeAllCallback, BeforeEachCallback, AfterAllCallback, CloseableResource {
 
-    private static JmsMessageConsumerPool jmsMessageConsumerPool = getJmsMessageConsumerPool();
+    private final JmsMessageConsumerPool jmsMessageConsumerPool;
 
-    private static JmsMessageProducerFactory jmsMessageProducerFactory = getJmsMessageProducerFactory();
+    private final JmsMessageProducerFactory jmsMessageProducerFactory;
 
     private static boolean registered = false;
+
+    public JmsResourceManagementExtension() {
+        this(new JmsSingletonResourceProvider().getJmsMessageConsumerPool(),
+                new JmsSingletonResourceProvider().getJmsMessageProducerFactory());
+
+    }
+
+    @VisibleForTesting
+    JmsResourceManagementExtension(JmsMessageConsumerPool jmsMessageConsumerPool, JmsMessageProducerFactory jmsMessageProducerFactory) {
+        this.jmsMessageConsumerPool = jmsMessageConsumerPool;
+        this.jmsMessageProducerFactory = jmsMessageProducerFactory;
+    }
 
     @Override
     public void beforeAll(final ExtensionContext context) {
@@ -52,13 +65,5 @@ public class JmsResourceManagementExtension implements BeforeAllCallback, Before
     public void close() {
         jmsMessageConsumerPool.close();
         jmsMessageProducerFactory.close();
-    }
-
-    private static JmsMessageConsumerPool getJmsMessageConsumerPool() {
-        return new JmsSingletonResourceProvider().getJmsMessageConsumerPool();
-    }
-
-    private static JmsMessageProducerFactory getJmsMessageProducerFactory() {
-        return new JmsSingletonResourceProvider().getJmsMessageProducerFactory();
     }
 }
