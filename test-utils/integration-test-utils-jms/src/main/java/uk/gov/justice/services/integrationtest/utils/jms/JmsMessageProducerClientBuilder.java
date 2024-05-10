@@ -1,8 +1,7 @@
 package uk.gov.justice.services.integrationtest.utils.jms;
 
 public class JmsMessageProducerClientBuilder {
-    private final JmsMessageClientFactory jmsMessageClientFactory = createJmsMessageClientFactory();
-
+    private final JmsMessageClientFactory jmsMessageClientFactory;
     private final String topicName;
 
     public static JmsMessageProducerClientBuilder newPublicJmsMessageProducerClientBuilder() {
@@ -15,6 +14,7 @@ public class JmsMessageProducerClientBuilder {
 
     private JmsMessageProducerClientBuilder(final String topicName) {
         this.topicName = topicName;
+        this.jmsMessageClientFactory = new JmsSingletonResourceProvider().getJmsMessageClientFactory();
     }
 
     public JmsMessageProducerClient build() {
@@ -22,9 +22,5 @@ public class JmsMessageProducerClientBuilder {
         jmsMessageProducerClient.createProducer(topicName);
 
         return jmsMessageProducerClient;
-    }
-
-    private static JmsMessageClientFactory createJmsMessageClientFactory() {
-        return new JmsSingletonResourceProvider().getJmsMessageClientFactory();
     }
 }

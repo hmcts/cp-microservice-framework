@@ -6,7 +6,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class JmsMessageConsumerClientBuilder {
-    private static final JmsMessageClientFactory jmsMessageClientFactory = createJmsMessageClientFactory();
+    private final JmsMessageClientFactory jmsMessageClientFactory;
 
     private final String topicName;
     private final List<String> eventNames = new ArrayList<>();
@@ -25,6 +25,7 @@ public class JmsMessageConsumerClientBuilder {
 
     private JmsMessageConsumerClientBuilder(final String topicName) {
         this.topicName = topicName;
+        this.jmsMessageClientFactory = new JmsSingletonResourceProvider().getJmsMessageClientFactory();
     }
 
     public JmsMessageConsumerClientBuilder withEventNames(final String eventName, final String...additionalEventNames) {
@@ -46,9 +47,5 @@ public class JmsMessageConsumerClientBuilder {
         jmsMessageConsumerClient.startConsumer(topicName, eventNames);
 
         return jmsMessageConsumerClient;
-    }
-
-    private static JmsMessageClientFactory createJmsMessageClientFactory() {
-        return new JmsSingletonResourceProvider().getJmsMessageClientFactory();
     }
 }
