@@ -8,9 +8,9 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 
@@ -54,115 +54,47 @@ public class JmsMessageConsumerClient {
     }
 
     public Optional<String> retrieveMessageNoWait() {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
-        try {
-            return jmsMessageReader.retrieveMessageNoWait(messageConsumer, toStringMessageConverter);
-        } catch (JMSException e) {
-            throw new JmsMessagingClientException("Failed to read message", e);
-        }
+        return readMessage(() -> jmsMessageReader.retrieveMessageNoWait(messageConsumer, toStringMessageConverter));
     }
 
     public Optional<String> retrieveMessage() {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
         return retrieveMessage(TIMEOUT_IN_MILLIS);
     }
 
-    public Optional<String> retrieveMessage(final long timeout) {
-        //TODO Refactor to extract common code
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
 
-        try {
-            return jmsMessageReader.retrieveMessage(messageConsumer, toStringMessageConverter, timeout);
-        } catch (JMSException e) {
-            throw new JmsMessagingClientException("Failed to read message", e);
-        }
+    public Optional<String> retrieveMessage(final long timeout) {
+        return readMessage(() -> jmsMessageReader.retrieveMessage(messageConsumer, toStringMessageConverter, timeout));
     }
 
     //Add more convenient methods
     public Optional<JsonEnvelope> retrieveMessageAsJsonEnvelopeNoWait() {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
-        try {
-            return jmsMessageReader.retrieveMessageNoWait(messageConsumer, toJsonEnvelopeMessageConverter);
-        } catch (JMSException e) {
-            throw new JmsMessagingClientException("Failed to read message", e);
-        }
+        return readMessage(() -> jmsMessageReader.retrieveMessageNoWait(messageConsumer, toJsonEnvelopeMessageConverter));
     }
 
     public Optional<JsonEnvelope> retrieveMessageAsJsonEnvelope() {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
         return retrieveMessageAsJsonEnvelope(TIMEOUT_IN_MILLIS);
     }
 
     public Optional<JsonEnvelope> retrieveMessageAsJsonEnvelope(final long timeout) {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
-        try {
-            return jmsMessageReader.retrieveMessage(messageConsumer, toJsonEnvelopeMessageConverter, timeout);
-        } catch (JMSException e) {
-            throw new JmsMessagingClientException("Failed to read message", e);
-        }
+        return readMessage(() -> jmsMessageReader.retrieveMessage(messageConsumer, toJsonEnvelopeMessageConverter, timeout));
     }
 
     public Optional<JsonPath> retrieveMessageAsJsonPathNoWait() {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
-        try {
-            return jmsMessageReader.retrieveMessageNoWait(messageConsumer, toJsonPathMessageConverter);
-        } catch (JMSException e) {
-            throw new JmsMessagingClientException("Failed to read message", e);
-        }
+        return readMessage(() -> jmsMessageReader.retrieveMessageNoWait(messageConsumer, toJsonPathMessageConverter));
     }
 
     public Optional<JsonPath> retrieveMessageAsJsonPath() {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
         return retrieveMessageAsJsonPath(TIMEOUT_IN_MILLIS);
     }
 
     public Optional<JsonPath> retrieveMessageAsJsonPath(final long timeout) {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
-        try {
-            return jmsMessageReader.retrieveMessage(messageConsumer, toJsonPathMessageConverter, timeout);
-        } catch (JMSException e) {
-            throw new JmsMessagingClientException("Failed to read message", e);
-        }
+        return readMessage(() -> jmsMessageReader.retrieveMessage(messageConsumer, toJsonPathMessageConverter, timeout));
     }
 
     public List<JsonPath> retrieveMessagesAsJsonPath(final int expectedCount) {
-        if(messageConsumer == null) {
-            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
-        }
-
-        final List<JsonPath> retrievedMessages = new ArrayList<>();
-
-        for(int cnt=0;cnt<expectedCount;cnt++) {
-            retrievedMessages.add(retrieveMessageAsJsonPath().orElse(null));
-        }
-
-        return retrievedMessages;
+        return IntStream.range(0, expectedCount)
+                .mapToObj(i -> retrieveMessageAsJsonPath().orElse(null))
+                .toList();
     }
 
     //This can be used if there is a requirement to clear a specific queue while test is in progress
@@ -172,5 +104,22 @@ public class JmsMessageConsumerClient {
         } catch (JMSException e) {
             throw new JmsMessagingClientException("Failed to clear messages", e);
         }
+    }
+
+    private <T> Optional<T> readMessage(MessageSupplier<T> supplier) {
+        if(messageConsumer == null) {
+            throw new JmsMessagingClientException("MessageConsumer is not started. Please call startConsumer(...) first");
+        }
+
+        try {
+            return supplier.get();
+        } catch (JMSException e) {
+            throw new JmsMessagingClientException("Failed to read message", e);
+        }
+    }
+
+    @FunctionalInterface
+    private interface MessageSupplier<T> {
+        Optional<T> get() throws JMSException;
     }
 }
