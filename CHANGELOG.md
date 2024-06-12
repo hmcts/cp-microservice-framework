@@ -5,6 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+## [17.5.1] - 2024-06-12
+### Added
+- Add maven-sonar-plugin to pluginManagement (through maven-parent-pom)
+- Mark MessageProducerClient, MessageProducerClientBuilder classes as deprecated for removal
+
 ## [17.5.0] - 2024-06-05
 - JmsMessageConsumerClientProvider now returns JmsMessageConsumerClient interface rather than the implemening class
 

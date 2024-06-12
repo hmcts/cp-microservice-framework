@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 
+@Deprecated(since = "Please use JmsMessageProducerClientProvider instead of using this class", forRemoval = true)
 public class MessageProducerClientBuilder {
 
     private Optional<Integer> retryInterval = empty();

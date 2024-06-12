@@ -20,6 +20,7 @@ import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
  * Test utility class for sending messages to queues
  */
 @SuppressWarnings("unused")
+@Deprecated(since = "Please use JmsMessageProducerClientProvider to create instead of using this class", forRemoval = true)
 public class MessageProducerClient implements AutoCloseable {
 
     private static final String QUEUE_URI = queueUri();
