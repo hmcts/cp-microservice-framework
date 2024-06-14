@@ -7,11 +7,17 @@ import java.util.Optional;
 
 import io.restassured.path.json.JsonPath;
 
+import javax.json.JsonObject;
+
 public interface JmsMessageConsumerClient {
 
     Optional<String> retrieveMessageNoWait();
     Optional<String> retrieveMessage();
     Optional<String> retrieveMessage(final long timeout);
+
+    Optional<JsonObject> retrieveMessageAsJsonObjectNoWait();
+    Optional<JsonObject> retrieveMessageAsJsonObject();
+    Optional<JsonObject> retrieveMessageAsJsonObject(final long timeout);
     Optional<JsonEnvelope> retrieveMessageAsJsonEnvelopeNoWait();
     Optional<JsonEnvelope> retrieveMessageAsJsonEnvelope();
     Optional<JsonEnvelope> retrieveMessageAsJsonEnvelope(final long timeout);

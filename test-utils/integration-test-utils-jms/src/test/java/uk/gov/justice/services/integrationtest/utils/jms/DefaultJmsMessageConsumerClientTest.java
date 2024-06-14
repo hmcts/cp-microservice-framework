@@ -8,12 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonEnvelopeMessageConverter;
+import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonObjectMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonPathMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
+import javax.json.JsonObject;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,8 @@ class DefaultJmsMessageConsumerClientTest {
     private ToJsonEnvelopeMessageConverter toJsonEnvelopeMessageConverter;
     @Mock
     private ToJsonPathMessageConverter toJsonPathMessageConverter;
+    @Mock
+    private ToJsonObjectMessageConverter toJsonObjectMessageConverter;
 
     private DefaultJmsMessageConsumerClient defaultJmsMessageConsumerClient;
 
@@ -56,7 +60,8 @@ class DefaultJmsMessageConsumerClientTest {
                 jmsMessageReader,
                 toStringMessageConverter,
                 toJsonEnvelopeMessageConverter,
-                toJsonPathMessageConverter);
+                toJsonPathMessageConverter,
+                toJsonObjectMessageConverter);
     }
 
     @Test
@@ -167,6 +172,114 @@ class DefaultJmsMessageConsumerClientTest {
             void shouldThrowExceptionWhenMessageConsumerNotStarted() {
                 setField(defaultJmsMessageConsumerClient, "messageConsumer", null);
                 final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessage(1000));
+
+                assertThat(e.getMessage(), is("MessageConsumer is not started. Please call startConsumer(...) first"));
+            }
+        }
+    }
+
+    @Nested
+    class RetrieveMessageAsJsonObjectTest {
+
+        @BeforeEach
+        void setUp() {
+            setField(defaultJmsMessageConsumerClient, "messageConsumer", messageConsumer);
+        }
+
+        @Nested
+        class NoWaitTest {
+            @Test
+            void shouldDelegate() throws Exception {
+                final JsonObject jsonObject = mock(JsonObject.class);
+                when(jmsMessageReader.retrieveMessageNoWait(messageConsumer, toJsonObjectMessageConverter)).thenReturn(of(jsonObject));
+
+                final Optional<JsonObject> actualJsonObject = defaultJmsMessageConsumerClient.retrieveMessageAsJsonObjectNoWait();
+
+                assertThat(actualJsonObject, is(of(jsonObject)));
+            }
+
+            @Test
+            void shouldConvertJmsException() throws Exception {
+                doThrow(jmsException).when(jmsMessageReader).retrieveMessageNoWait(messageConsumer, toJsonObjectMessageConverter);
+
+                final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessageAsJsonObjectNoWait());
+
+                assertThat(e.getMessage(), is("Failed to read message"));
+                assertThat(e.getCause(), is(jmsException));
+            }
+
+            @Test
+            void shouldThrowExceptionWhenMessageConsumerNotStarted() {
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", null);
+                final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessageAsJsonObjectNoWait());
+
+                assertThat(e.getMessage(), is("MessageConsumer is not started. Please call startConsumer(...) first"));
+            }
+        }
+
+        @Nested
+        class WithDefaultTimeoutTest {
+
+            @Test
+            void shouldDelegate() throws Exception {
+                final JsonObject jsonObject = mock(JsonObject.class);
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", messageConsumer);
+                when(jmsMessageReader.retrieveMessage(messageConsumer, toJsonObjectMessageConverter, 20_000)).thenReturn(of(jsonObject));
+
+                final Optional<JsonObject> actualJsonObject = defaultJmsMessageConsumerClient.retrieveMessageAsJsonObject();
+
+                assertThat(actualJsonObject, is(of(jsonObject)));
+            }
+
+            @Test
+            void shouldConvertJmsException() throws Exception {
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", messageConsumer);
+                doThrow(jmsException).when(jmsMessageReader).retrieveMessage(messageConsumer, toJsonObjectMessageConverter, 20_000);
+
+                final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessageAsJsonObject());
+
+                assertThat(e.getMessage(), is("Failed to read message"));
+                assertThat(e.getCause(), is(jmsException));
+            }
+
+            @Test
+            void shouldThrowExceptionWhenMessageConsumerNotStarted() {
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", null);
+                final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessageAsJsonObject());
+
+                assertThat(e.getMessage(), is("MessageConsumer is not started. Please call startConsumer(...) first"));
+            }
+        }
+
+        @Nested
+        class WithTimeoutTest {
+
+            @Test
+            void shouldDelegate() throws Exception {
+                final JsonObject jsonObject = mock(JsonObject.class);
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", messageConsumer);
+                when(jmsMessageReader.retrieveMessage(messageConsumer, toJsonObjectMessageConverter, 1000)).thenReturn(of(jsonObject));
+
+                final Optional<JsonObject> actualJsonObject = defaultJmsMessageConsumerClient.retrieveMessageAsJsonObject(1000);
+
+                assertThat(actualJsonObject, is(of(jsonObject)));
+            }
+
+            @Test
+            void shouldConvertJmsException() throws Exception {
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", messageConsumer);
+                doThrow(jmsException).when(jmsMessageReader).retrieveMessage(messageConsumer, toJsonObjectMessageConverter, 1000);
+
+                final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessageAsJsonObject(1000));
+
+                assertThat(e.getMessage(), is("Failed to read message"));
+                assertThat(e.getCause(), is(jmsException));
+            }
+
+            @Test
+            void shouldThrowExceptionWhenMessageConsumerNotStarted() {
+                setField(defaultJmsMessageConsumerClient, "messageConsumer", null);
+                final JmsMessagingClientException e = assertThrows(JmsMessagingClientException.class, () -> defaultJmsMessageConsumerClient.retrieveMessageAsJsonObject(1000));
 
                 assertThat(e.getMessage(), is("MessageConsumer is not started. Please call startConsumer(...) first"));
             }

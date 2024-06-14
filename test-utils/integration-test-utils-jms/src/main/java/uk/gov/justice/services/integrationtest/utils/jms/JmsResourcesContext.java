@@ -3,6 +3,7 @@ package uk.gov.justice.services.integrationtest.utils.jms;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.time.StopWatch;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonEnvelopeMessageConverter;
+import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonObjectMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonPathMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
 import uk.gov.justice.services.messaging.DefaultJsonObjectEnvelopeConverter;
@@ -23,6 +24,7 @@ public class JmsResourcesContext {
                         new ToStringMessageConverter(),
                         new ToJsonEnvelopeMessageConverter(new DefaultJsonObjectEnvelopeConverter()),
                         new ToJsonPathMessageConverter(),
+                        new ToJsonObjectMessageConverter(),
                         new JmsMessageReader(),
                         jmsMessageConsumerPool),
                 new StopWatch());

@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonEnvelopeMessageConverter;
+import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonObjectMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonPathMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
 
@@ -25,6 +26,8 @@ class JmsMessageClientFactoryTest {
     private ToJsonEnvelopeMessageConverter toJsonEnvelopeMessageConverter;
     @Mock
     private ToJsonPathMessageConverter toJsonPathMessageConverter;
+    @Mock
+    private ToJsonObjectMessageConverter toJsonObjectMessageConverter;
     @Mock
     private JmsMessageReader jmsMessageReader;
     @Mock
@@ -51,5 +54,6 @@ class JmsMessageClientFactoryTest {
         assertThat(getValueOfField(defaultJmsMessageConsumerClient, "toStringMessageConverter", ToStringMessageConverter.class), is(toStringMessageConverter));
         assertThat(getValueOfField(defaultJmsMessageConsumerClient, "toJsonEnvelopeMessageConverter", ToJsonEnvelopeMessageConverter.class), is(toJsonEnvelopeMessageConverter));
         assertThat(getValueOfField(defaultJmsMessageConsumerClient, "toJsonPathMessageConverter", ToJsonPathMessageConverter.class), is(toJsonPathMessageConverter));
+        assertThat(getValueOfField(defaultJmsMessageConsumerClient, "toJsonObjectMessageConverter", ToJsonObjectMessageConverter.class), is(toJsonObjectMessageConverter));
     }
 }
