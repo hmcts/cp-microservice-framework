@@ -1,6 +1,7 @@
 package uk.gov.justice.services.integrationtest.utils.jms;
 
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonEnvelopeMessageConverter;
+import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonObjectMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonPathMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
 
@@ -10,6 +11,7 @@ class JmsMessageClientFactory {
     private final ToStringMessageConverter toStringMessageConverter;
     private final ToJsonEnvelopeMessageConverter toJsonEnvelopeMessageConverter;
     private final ToJsonPathMessageConverter toJsonPathMessageConverter;
+    private final ToJsonObjectMessageConverter toJsonObjectMessageConverter;
     private final JmsMessageReader jmsMessageReader;
     private final JmsMessageConsumerPool jmsMessageConsumerPool;
 
@@ -17,12 +19,14 @@ class JmsMessageClientFactory {
                             final ToStringMessageConverter toStringMessageConverter,
                             final ToJsonEnvelopeMessageConverter toJsonEnvelopeMessageConverter,
                             final ToJsonPathMessageConverter toJsonPathMessageConverter,
+                            final ToJsonObjectMessageConverter toJsonObjectMessageConverter,
                             final JmsMessageReader jmsMessageReader,
                             final JmsMessageConsumerPool jmsMessageConsumerPool) {
         this.jmsMessageProducerFactory = jmsMessageProducerFactory;
         this.toStringMessageConverter = toStringMessageConverter;
         this.toJsonEnvelopeMessageConverter = toJsonEnvelopeMessageConverter;
         this.toJsonPathMessageConverter = toJsonPathMessageConverter;
+        this.toJsonObjectMessageConverter = toJsonObjectMessageConverter;
         this.jmsMessageReader = jmsMessageReader;
         this.jmsMessageConsumerPool = jmsMessageConsumerPool;
     }
@@ -36,6 +40,7 @@ class JmsMessageClientFactory {
                 jmsMessageReader,
                 toStringMessageConverter,
                 toJsonEnvelopeMessageConverter,
-                toJsonPathMessageConverter);
+                toJsonPathMessageConverter,
+                toJsonObjectMessageConverter);
     }
 }

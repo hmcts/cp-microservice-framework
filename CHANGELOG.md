@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Added
+- Enhance JmsMessageConsumerClient to retrieve message as JsonObject 
 
 ## [17.5.1] - 2024-06-12
 ### Added

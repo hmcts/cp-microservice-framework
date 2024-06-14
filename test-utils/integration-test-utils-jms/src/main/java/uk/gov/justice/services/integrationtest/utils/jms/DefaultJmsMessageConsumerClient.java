@@ -1,20 +1,20 @@
 package uk.gov.justice.services.integrationtest.utils.jms;
 
-import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
-
+import io.restassured.path.json.JsonPath;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonEnvelopeMessageConverter;
+import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonObjectMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToJsonPathMessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.json.JsonObject;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-
-import io.restassured.path.json.JsonPath;
+import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 
 //TODO can this be renamed as Subscription?
 /**
@@ -33,6 +33,7 @@ public class DefaultJmsMessageConsumerClient implements JmsMessageConsumerClient
     private final ToStringMessageConverter toStringMessageConverter;
     private final ToJsonEnvelopeMessageConverter toJsonEnvelopeMessageConverter;
     private final ToJsonPathMessageConverter toJsonPathMessageConverter;
+    private final ToJsonObjectMessageConverter toJsonObjectMessageConverter;
 
     private final JmsMessageConsumerPool jmsMessageConsumerPool;
     private final JmsMessageReader jmsMessageReader;
@@ -43,12 +44,14 @@ public class DefaultJmsMessageConsumerClient implements JmsMessageConsumerClient
                                     final JmsMessageReader jmsMessageReader,
                                     final ToStringMessageConverter toStringMessageConverter,
                                     final ToJsonEnvelopeMessageConverter toJsonEnvelopeMessageConverter,
-                                    final ToJsonPathMessageConverter toJsonPathMessageConverter) {
+                                    final ToJsonPathMessageConverter toJsonPathMessageConverter,
+                                    final ToJsonObjectMessageConverter toJsonObjectMessageConverter) {
         this.jmsMessageConsumerPool = jmsMessageConsumerPool;
         this.jmsMessageReader = jmsMessageReader;
         this.toStringMessageConverter = toStringMessageConverter;
         this.toJsonEnvelopeMessageConverter = toJsonEnvelopeMessageConverter;
         this.toJsonPathMessageConverter = toJsonPathMessageConverter;
+        this.toJsonObjectMessageConverter = toJsonObjectMessageConverter;
     }
 
     void startConsumer(final String topicName, final List<String> eventNames) {
@@ -69,6 +72,22 @@ public class DefaultJmsMessageConsumerClient implements JmsMessageConsumerClient
     public Optional<String> retrieveMessage(final long timeout) {
         return readMessage(() -> jmsMessageReader.retrieveMessage(messageConsumer, toStringMessageConverter, timeout));
     }
+
+    @Override
+    public Optional<JsonObject> retrieveMessageAsJsonObjectNoWait() {
+        return readMessage(() -> jmsMessageReader.retrieveMessageNoWait(messageConsumer, toJsonObjectMessageConverter));
+    }
+
+    @Override
+    public Optional<JsonObject> retrieveMessageAsJsonObject() {
+        return retrieveMessageAsJsonObject(TIMEOUT_IN_MILLIS);
+    }
+
+    @Override
+    public Optional<JsonObject> retrieveMessageAsJsonObject(long timeout) {
+        return readMessage(() -> jmsMessageReader.retrieveMessage(messageConsumer, toJsonObjectMessageConverter, timeout));
+    }
+
 
     //Add more convenient methods
     @Override
