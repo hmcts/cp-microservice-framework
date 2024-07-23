@@ -4,7 +4,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
-## [17.5.4] - 2024-07-23
+## [17.5.5] - 2024-07-23
 - PEG-347: Jacksons SingleArgumentConstructor fix
 
 ## [17.5.3] - 2024-06-21
