@@ -425,7 +425,6 @@ public class MessageListenerCodeGeneratorTest {
 
         final SubscriptionWrapper subscriptionWrapper = new SubscriptionWrapper(subscriptionsDescriptor, eventSourceDefinitions);
 
-        final TypeSpec typeSpec = messageListenerCodeGenerator.generate(subscriptionWrapper, subscription, (CommonGeneratorProperties) generatorProperties, classNameFactory);
-        return typeSpec;
+        return messageListenerCodeGenerator.generate(subscriptionWrapper, subscription, (CommonGeneratorProperties) generatorProperties, classNameFactory);
     }
 }

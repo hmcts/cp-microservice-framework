@@ -45,7 +45,7 @@ public class JmsUriToDestinationTypeConverter {
      * @return a destination type by calling convert() only if the component type is an EVENT_PROCESSOR
      */
     public Optional<Class<? extends Destination>> convertForEventProcessor(final String serviceComponent, final String jmsUri) {
-        if (serviceComponent.contains(EVENT_PROCESSOR)) {
+        if (serviceComponent != null && serviceComponent.contains(EVENT_PROCESSOR)) {
             return convert(jmsUri);
         }
 

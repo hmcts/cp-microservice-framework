@@ -1,10 +1,13 @@
 package uk.gov.justice.subscription.jms.core;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+
+import java.util.Optional;
 
 import javax.jms.Destination;
 import javax.jms.Queue;
@@ -19,96 +22,96 @@ class JmsUriToDestinationTypeConverterTest {
     @Test
     public void shouldConvertJmsTopicUriToDestinationType() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("jms:topic:public.event").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("jms:topic:public.event");
 
-        assertThat(destinationType, is(Topic.class));
+        assertThat(destinationType, is(of(Topic.class)));
     }
 
     @Test
     public void shouldConvertJmsTopicUriToDestinationTypeCaseInsensitive() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("jms:toPIc:public.event").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("jms:toPIc:public.event");
 
-        assertThat(destinationType, is(Topic.class));
+        assertThat(destinationType, is(of(Topic.class)));
     }
 
     @Test
     public void shouldConvertJmsQueueUriToDestinationType() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("jms:queue:command.handler").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("jms:queue:command.handler");
 
-        assertThat(destinationType, is(Queue.class));
+        assertThat(destinationType, is(of(Queue.class)));
     }
 
     @Test
     public void shouldConvertJmsQueueUriToDestinationTypeCaseInsensitive() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("jms:quEUe:command.handler").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("jms:quEUe:command.handler");
 
-        assertThat(destinationType, is(Queue.class));
+        assertThat(destinationType, is(of(Queue.class)));
     }
 
     @Test
-    public void shouldConvertJmsInvalidUriToDestinationTypeNull() {
+    public void shouldConvertJmsInvalidUriToDestinationTypeEmpty() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("jms:xxqueue:command.handler").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("jms:xxqueue:command.handler");
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 
     @Test
-    public void shouldConvertHelloJmsdUriToDestinationTypeNull() {
+    public void shouldConvertHelloJmsdUriToDestinationTypeEmpty() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("hello").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType  = jmsUriToDestinationTypeConverter.convert("hello");
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 
     @Test
-    public void shouldConvertEmptyJmsdUriToDestinationTypeNull() {
+    public void shouldConvertEmptyJmsdUriToDestinationTypeEmpty() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("");
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 
     @Test
-    public void shouldConvertNullJmsdUriToDestinationTypeNull() {
+    public void shouldConvertNullJmsdUriToDestinationTypeEmpty() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert(null).orElse(null);
+        final Optional<Class<? extends Destination>> destinationType  = jmsUriToDestinationTypeConverter.convert(null);
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 
     @Test
-    public void shouldConvertJmsTopicInPositionZeroToDestinationTypeNull() {
+    public void shouldConvertJmsTopicInPositionZeroToDestinationTypeEmpty() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("topic:jms:public.event").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("topic:jms:public.event");
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 
     @Test
-    public void shouldConvertJmsTopicInPositionTwoToDestinationTypeNull() {
+    public void shouldConvertJmsTopicInPositionTwoToDestinationTypeEmpty() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convert("jms:alpha:topic:public.event").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convert("jms:alpha:topic:public.event");
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 
     @Test
     public void shouldConvertForEventProcessor() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convertForEventProcessor(EVENT_PROCESSOR, "jms:topic:public.event").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType  = jmsUriToDestinationTypeConverter.convertForEventProcessor(EVENT_PROCESSOR, "jms:topic:public.event");
 
-        assertThat(destinationType, is(Topic.class));
+        assertThat(destinationType, is(of(Topic.class)));
     }
 
     @Test
     public void shouldNotConvertForEventProcessorIfComponentIsEventListener() {
 
-        final Class<? extends Destination> destinationType = jmsUriToDestinationTypeConverter.convertForEventProcessor(EVENT_LISTENER, "jms:topic:public.event").orElse(null);
+        final Optional<Class<? extends Destination>> destinationType = jmsUriToDestinationTypeConverter.convertForEventProcessor(EVENT_LISTENER, "jms:topic:public.event");
 
-        assertThat(destinationType, is(nullValue()));
+        assertThat(destinationType, is(empty()));
     }
 }
