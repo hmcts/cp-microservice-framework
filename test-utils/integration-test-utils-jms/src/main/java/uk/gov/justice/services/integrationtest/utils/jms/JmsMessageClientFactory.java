@@ -43,4 +43,10 @@ class JmsMessageClientFactory {
                 toJsonPathMessageConverter,
                 toJsonObjectMessageConverter);
     }
+
+    DefaultJmsAsyncMessageConsumerAsyncClient createJmsMessageConsumerAsyncClient() {
+        return new DefaultJmsAsyncMessageConsumerAsyncClient(jmsMessageConsumerPool,
+                jmsMessageReader,
+                toJsonEnvelopeMessageConverter);
+    }
 }

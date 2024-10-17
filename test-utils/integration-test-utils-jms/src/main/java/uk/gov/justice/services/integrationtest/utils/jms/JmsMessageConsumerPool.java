@@ -5,6 +5,8 @@ import uk.gov.justice.services.test.utils.core.messaging.TopicFactory;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,6 +21,7 @@ class JmsMessageConsumerPool {
 
     private static final String MESSAGE_SELECTOR_TEMPLATE = "CPPNAME IN ('%s')";
     private final Map<MessageConsumerIdentifier, MessageConsumer> messageConsumers = new ConcurrentHashMap<>();
+    private final Map<MessageConsumerIdentifier, MessageConsumer> asyncMessageConsumers = new ConcurrentHashMap<>();
     private final Map<String, ActiveMQTopic> topics = new ConcurrentHashMap<>();
     private final JmsMessageConsumerFactory jmsMessageConsumerFactory;
     private final TopicFactory topicFactory;
@@ -36,9 +39,19 @@ class JmsMessageConsumerPool {
             final String topicName,
             final String queueUri,
             final List<String> eventNames) {
-        final String messageSelector = MESSAGE_SELECTOR_TEMPLATE.formatted(String.join(",", eventNames));
+        final String messageSelector = MESSAGE_SELECTOR_TEMPLATE.formatted(String.join("','", eventNames));
 
         return messageConsumers.computeIfAbsent(new MessageConsumerIdentifier(topicName, messageSelector),
+                (mcIdentifier) -> createMessageConsumer(mcIdentifier, queueUri));
+    }
+
+    MessageConsumer getOrCreateAsyncMessageConsumer(
+            final String topicName,
+            final String queueUri,
+            final List<String> eventNames) {
+        final String messageSelector = MESSAGE_SELECTOR_TEMPLATE.formatted(String.join("','", eventNames));
+
+        return asyncMessageConsumers.computeIfAbsent(new MessageConsumerIdentifier(topicName, messageSelector),
                 (mcIdentifier) -> createMessageConsumer(mcIdentifier, queueUri));
     }
 
@@ -62,6 +75,15 @@ class JmsMessageConsumerPool {
     }
 
     void closeConsumers() {
+        closeConsumers(messageConsumers);
+        closeConsumers(asyncMessageConsumers);
+    }
+
+    void closeAsyncConsumers() {
+        closeConsumers(asyncMessageConsumers);
+    }
+
+    void closeConsumers(Map<MessageConsumerIdentifier, MessageConsumer> messageConsumers) {
         try {
             for (final MessageConsumer messageConsumer : messageConsumers.values()) {
                 messageConsumer.close();

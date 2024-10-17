@@ -42,6 +42,7 @@ public class JmsResourceManagementExtension implements BeforeAllCallback, Before
     @Override
     public void beforeEach(final ExtensionContext extensionContext) {
         jmsResourcesContextProvider.get().clearMessages();
+        jmsResourcesContextProvider.get().closeAsyncConsumers();
     }
 
     /**

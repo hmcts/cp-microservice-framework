@@ -4,6 +4,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import io.restassured.path.json.JsonPath;
 

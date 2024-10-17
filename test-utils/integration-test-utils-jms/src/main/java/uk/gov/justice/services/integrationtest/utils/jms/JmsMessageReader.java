@@ -2,12 +2,14 @@ package uk.gov.justice.services.integrationtest.utils.jms;
 
 import uk.gov.justice.services.integrationtest.utils.jms.converters.MessageConverter;
 import uk.gov.justice.services.integrationtest.utils.jms.converters.ToStringMessageConverter;
+import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.TextMessage;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 
 class JmsMessageReader {
@@ -16,6 +18,17 @@ class JmsMessageReader {
 
     JmsMessageReader() {
         toStringMessageConverter = new ToStringMessageConverter();
+    }
+
+    <T> void registerCallBack(final MessageConsumer messageConsumer, final MessageConverter<T> messageConverter, final Consumer<T> onMessageCallBack) throws JMSException {
+        if (messageConsumer == null) {
+            throw new JmsMessagingClientException("Message consumer not started");
+        }
+
+        messageConsumer.setMessageListener(message -> {
+            final T convertedMessage = messageConverter.convert(getText((TextMessage) message));
+            onMessageCallBack.accept(convertedMessage);
+        });
     }
 
     <T> Optional<T> retrieveMessageNoWait(final MessageConsumer messageConsumer, final MessageConverter<T> messageConverter) throws JMSException {

@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+## Changed
+- Provide async Jms message consumer client to register callback on message arrival
+- Invoke clear messages before starting the consumer in JmsMessageConsumerClient
+- Fix message selector format issue when multiple events are registered to JMSMessageConsumerClient
+
 ## [17.5.7] - 2024-08-12
 - For EVENT_PROCESSORs, derive the destinationType (queue|topic) from event_sources.location.jms_uri in event-sources.yaml when RAML is used for the EVENT_PROCESSOR
 

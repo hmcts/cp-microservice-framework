@@ -49,6 +49,10 @@ public class JmsResourcesContext {
         jmsMessageConsumerPool.clearMessages();
     }
 
+    void closeAsyncConsumers() {
+        jmsMessageConsumerPool.closeAsyncConsumers();
+    }
+
     void closeConsumersAndProducers() {
         jmsMessageConsumerPool.closeConsumers();
         jmsMessageProducerFactory.closeProducers();

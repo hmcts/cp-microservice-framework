@@ -7,35 +7,31 @@ import java.util.List;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class JmsMessageConsumerClientProvider {
+public class JmsMessageConsumerAsyncClientProvider {
     private final JmsMessageClientFactory jmsMessageClientFactory;
 
     private final String topicName;
     private final List<String> eventNames = new ArrayList<>();
 
-    public static JmsMessageConsumerClientProvider newPublicJmsMessageConsumerClientProvider() {
-        return new JmsMessageConsumerClientProvider("jms.topic.public.event");
+    public static JmsMessageConsumerAsyncClientProvider newPublicJmsMessageConsumerAsyncClientProvider() {
+        return new JmsMessageConsumerAsyncClientProvider("jms.topic.public.event");
     }
 
-    public static JmsMessageConsumerClientProvider newPrivateJmsMessageConsumerClientProvider(final String contextName) {
-        return new JmsMessageConsumerClientProvider("jms.topic.%s.event".formatted(contextName));
-    }
-
-    public static JmsMessageConsumerClientProvider newJmsMessageConsumerClientBuilder(final String topicName) {
-        return new JmsMessageConsumerClientProvider(topicName);
+    public static JmsMessageConsumerAsyncClientProvider newPrivateJmsMessageConsumerAsyncClientProvider(final String contextName) {
+        return new JmsMessageConsumerAsyncClientProvider("jms.topic.%s.event".formatted(contextName));
     }
 
     @VisibleForTesting
-    JmsMessageConsumerClientProvider(final String topicName, final JmsResourcesContext jmsResourcesContext) {
+    JmsMessageConsumerAsyncClientProvider(final String topicName, final JmsResourcesContext jmsResourcesContext) {
         this.topicName = topicName;
         this.jmsMessageClientFactory = jmsResourcesContext.getJmsMessageClientFactory();
     }
 
-    private JmsMessageConsumerClientProvider(final String topicName) {
+    private JmsMessageConsumerAsyncClientProvider(final String topicName) {
         this(topicName, new JmsResourcesContextProvider().get());
     }
 
-    public JmsMessageConsumerClientProvider withEventNames(final String eventName, final String... additionalEventNames) {
+    public JmsMessageConsumerAsyncClientProvider withEventNames(final String eventName, final String... additionalEventNames) {
         if (eventName == null || eventName.isBlank()) {
             throw new JmsMessagingClientException("eventName must be supplied");
         }
@@ -49,7 +45,7 @@ public class JmsMessageConsumerClientProvider {
         return this;
     }
 
-    public JmsMessageConsumerClientProvider withEventNames(final List<String> eventNames) {
+    public JmsMessageConsumerAsyncClientProvider withEventNames(final List<String> eventNames) {
         if (eventNames == null || eventNames.isEmpty()) {
             throw new JmsMessagingClientException("eventNames must be supplied");
         }
@@ -59,16 +55,16 @@ public class JmsMessageConsumerClientProvider {
         return this;
     }
 
-    public JmsMessageConsumerClient getMessageConsumerClient() {
+    public JmsMessageConsumerAsyncClient getMessageConsumerAsyncClient() {
         if (eventNames.isEmpty()) {
             throw new JmsMessagingClientException("eventName(s) must be supplied");
         }
 
-        final DefaultJmsMessageConsumerClient jmsMessageConsumerClient = jmsMessageClientFactory
-                .createJmsMessageConsumerClient();
+        final DefaultJmsAsyncMessageConsumerAsyncClient jmsMessageConsumerAsyncClient = jmsMessageClientFactory
+                .createJmsMessageConsumerAsyncClient();
 
-        jmsMessageConsumerClient.startConsumer(topicName, eventNames);
+        jmsMessageConsumerAsyncClient.startConsumer(topicName, eventNames);
 
-        return jmsMessageConsumerClient;
+        return jmsMessageConsumerAsyncClient;
     }
 }

@@ -62,7 +62,7 @@ class JmsMessageConsumerPoolTest {
             final ActiveMQTopic topic = mock(ActiveMQTopic.class);
             final MessageConsumer messageConsumer = mock(MessageConsumer.class);
             when(topicFactory.createTopic(TOPIC_NAME)).thenReturn(topic);
-            when(jmsMessageConsumerFactory.createAndStart(topic, "CPPNAME IN ('event1,event2')", QUEUE_URI)).thenReturn(messageConsumer);
+            when(jmsMessageConsumerFactory.createAndStart(topic, "CPPNAME IN ('event1','event2')", QUEUE_URI)).thenReturn(messageConsumer);
 
             final MessageConsumer result = jmsMessageConsumerPool.getOrCreateMessageConsumer(TOPIC_NAME, QUEUE_URI, List.of("event1", "event2"));
 

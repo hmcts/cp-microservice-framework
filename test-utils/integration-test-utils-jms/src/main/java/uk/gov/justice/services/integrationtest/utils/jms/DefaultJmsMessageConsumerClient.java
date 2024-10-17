@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 
-//TODO can this be renamed as Subscription?
 /**
  * Use {@link JmsMessageConsumerClientProvider} to create instance
  * It's safe to create multiple instances of this class with same parameters, as underlying jms consumer is cached and it retrieves existing consumer
@@ -56,6 +55,7 @@ public class DefaultJmsMessageConsumerClient implements JmsMessageConsumerClient
 
     void startConsumer(final String topicName, final List<String> eventNames) {
         this.messageConsumer = jmsMessageConsumerPool.getOrCreateMessageConsumer(topicName, QUEUE_URI, eventNames);
+        clearMessages();
     }
 
     @Override
