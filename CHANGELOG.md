@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+
+## [17.100.0-M1] - 2024-10-2811
 ### Changed
 - Jmx commands can now have and extra optional String `command-runtime-string` that can ba
    passed to JmxCommandHandlers via the JmxCommandHandling framework
