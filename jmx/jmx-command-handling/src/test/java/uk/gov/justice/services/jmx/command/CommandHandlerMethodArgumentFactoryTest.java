@@ -1,12 +1,12 @@
 package uk.gov.justice.services.jmx.command;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.justice.services.jmx.api.command.BaseSystemCommand;
+import uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters;
+import uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters.JmxCommandRuntimeParametersBuilder;
 
 import java.util.UUID;
 
@@ -28,10 +28,13 @@ public class CommandHandlerMethodArgumentFactoryTest {
         final SystemCommandWithoutCommandId systemCommandWithoutCommandId = new SystemCommandWithoutCommandId();
         final UUID commandId = randomUUID();
 
+        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
+                .build();
+
         final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
                 systemCommandWithoutCommandId,
                 commandId,
-                empty());
+                jmxCommandRuntimeParameters);
 
         assertThat(methodArguments.length, is(2));
         assertThat(methodArguments[0], is(systemCommandWithoutCommandId));
@@ -44,11 +47,14 @@ public class CommandHandlerMethodArgumentFactoryTest {
         final SystemCommandWithCommandId systemCommandWithCommandId = new SystemCommandWithCommandId();
         final UUID commandId = randomUUID();
         final UUID commandRuntimeId = randomUUID();
+        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
+                .withCommandRuntimeId(commandRuntimeId)
+                .build();
 
         final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
                 systemCommandWithCommandId,
                 commandId,
-                of(commandRuntimeId));
+                jmxCommandRuntimeParameters);
 
         assertThat(methodArguments.length, is(3));
         assertThat(methodArguments[0], is(systemCommandWithCommandId));
