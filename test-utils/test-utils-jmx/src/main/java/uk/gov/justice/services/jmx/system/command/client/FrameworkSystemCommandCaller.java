@@ -1,7 +1,7 @@
 package uk.gov.justice.services.jmx.system.command.client;
 
 import static uk.gov.justice.services.jmx.api.mbean.CommandRunMode.GUARDED;
-import static uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters.empty;
+import static uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters.withNoCommandParameters;
 import static uk.gov.justice.services.jmx.system.command.client.connection.JmxParametersBuilder.jmxParameters;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.getHost;
 
@@ -26,7 +26,7 @@ public class FrameworkSystemCommandCaller {
     private final JmxCommandRuntimeParameters jmxCommandRuntimeParameters;
     private final TestSystemCommanderClientFactory testSystemCommanderClientFactory;
 
-    public FrameworkSystemCommandCaller(final String contextName) {
+    public FrameworkSystemCommandCaller(final String contextName, final JmxCommandRuntimeParameters jmxCommandRuntimeParameters) {
         this(jmxParameters()
                 .withContextName(contextName)
                 .withHost(HOST)
@@ -34,7 +34,7 @@ public class FrameworkSystemCommandCaller {
                 .withUsername(USERNAME)
                 .withPassword(PASSWORD)
                 .build(),
-                empty());
+                jmxCommandRuntimeParameters);
     }
 
     public FrameworkSystemCommandCaller(

@@ -26,7 +26,7 @@ public class JmxCommandRuntimeParameters implements Serializable {
         return commandRuntimeString;
     }
 
-    public static JmxCommandRuntimeParameters empty() {
+    public static JmxCommandRuntimeParameters withNoCommandParameters() {
         return new JmxCommandRuntimeParameters(null, null);
     }
 

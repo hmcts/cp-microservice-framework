@@ -5,7 +5,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
-## [17.100.0-M1] - 2024-10-2811
+## [17.100.0-M2] - 2024-10-29
+### Changed
+- Renamed methods in JmxCommandRuntimeParameters
+
+## [17.100.0-M1] - 2024-10-28
 ### Changed
 - Jmx commands can now have and extra optional String `command-runtime-string` that can ba
    passed to JmxCommandHandlers via the JmxCommandHandling framework

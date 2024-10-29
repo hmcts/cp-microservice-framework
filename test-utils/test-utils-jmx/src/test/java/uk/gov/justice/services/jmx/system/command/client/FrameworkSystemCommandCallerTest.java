@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.jmx.api.mbean.CommandRunMode.GUARDED;
+import static uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters.withNoCommandParameters;
 import static uk.gov.justice.services.management.suspension.commands.SuspendCommand.SUSPEND;
 import static uk.gov.justice.services.management.suspension.commands.UnsuspendCommand.UNSUSPEND;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.getHost;
@@ -84,7 +85,9 @@ public class FrameworkSystemCommandCallerTest {
     public void shouldCreateWithCorrectDefaultParametersIfInstantiatingUsingTheContextName() throws Exception {
 
         final String contextName = "contextName";
-        final FrameworkSystemCommandCaller frameworkSystemCommandCaller = new FrameworkSystemCommandCaller(contextName);
+        final FrameworkSystemCommandCaller frameworkSystemCommandCaller = new FrameworkSystemCommandCaller(
+                contextName,
+                withNoCommandParameters());
 
         final JmxParameters jmxParameters = getValueOfField(frameworkSystemCommandCaller, "jmxParameters", JmxParameters.class);
 

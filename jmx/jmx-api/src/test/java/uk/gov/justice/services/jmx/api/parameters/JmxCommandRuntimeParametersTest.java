@@ -2,8 +2,6 @@ package uk.gov.justice.services.jmx.api.parameters;
 
 import static java.nio.file.Files.createFile;
 import static java.nio.file.Files.newOutputStream;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,7 +40,7 @@ public class JmxCommandRuntimeParametersTest {
     }
 
     @Test
-    public void shouldReturnEmptyCommandRuntimeIdIfNotSetInTheBuilder() throws Exception {
+    public void shouldReturnNoRuntimeParametersCommandCommandIdIfNotSetInTheBuilder() throws Exception {
 
         final String comandRuntimeString = "some-command-runtime-string";
 
@@ -55,7 +53,7 @@ public class JmxCommandRuntimeParametersTest {
     }
 
     @Test
-    public void shouldReturnEmptyCommandRuntimeStringIfNotSetInTheBuilder() throws Exception {
+    public void shouldReturnNoRuntimeParametersCommandCommandStringIfNotSetInTheBuilder() throws Exception {
 
         final UUID commandRuntimeId = randomUUID();
 
@@ -68,8 +66,8 @@ public class JmxCommandRuntimeParametersTest {
     }
 
     @Test
-    public void shouldCreateEmptyJmxParameters() throws Exception {
-        final JmxCommandRuntimeParameters emptyJmxCommandRuntimeParameters = JmxCommandRuntimeParameters.empty();
+    public void shouldCreateWithNoCommandParametersJmxParameters() throws Exception {
+        final JmxCommandRuntimeParameters emptyJmxCommandRuntimeParameters = JmxCommandRuntimeParameters.withNoCommandParameters();
         assertThat(emptyJmxCommandRuntimeParameters.getCommandRuntimeId(), is(nullValue()));
         assertThat(emptyJmxCommandRuntimeParameters.getCommandRuntimeString(), is(nullValue()));
     }
