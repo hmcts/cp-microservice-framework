@@ -23,32 +23,12 @@ public class CommandHandlerMethodArgumentFactoryTest {
     private CommandHandlerMethodArgumentFactory commandHandlerMethodArgumentFactory;
 
     @Test
-    public void shouldCreateArrayOfTwoArgumentsIfCommandRuntimeIdIsEmpty() throws Exception {
-
-        final SystemCommandWithoutCommandId systemCommandWithoutCommandId = new SystemCommandWithoutCommandId();
-        final UUID commandId = randomUUID();
-
-        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
-                .build();
-
-        final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
-                systemCommandWithoutCommandId,
-                commandId,
-                jmxCommandRuntimeParameters);
-
-        assertThat(methodArguments.length, is(2));
-        assertThat(methodArguments[0], is(systemCommandWithoutCommandId));
-        assertThat(methodArguments[1], is(commandId));
-    }
-
-    @Test
-    public void shouldCreateArrayOfThreeArgumentsIfCommandRuntimeIdIsPresent() throws Exception {
+    public void shouldCreateArrayOfThreeArgumentsOfSystemCommandCommandIdAndJmxRuntimeParameters() throws Exception {
 
         final SystemCommandWithCommandId systemCommandWithCommandId = new SystemCommandWithCommandId();
         final UUID commandId = randomUUID();
-        final UUID commandRuntimeId = randomUUID();
         final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
-                .withCommandRuntimeId(commandRuntimeId)
+                .withCommandRuntimeId(randomUUID())
                 .build();
 
         final Object[] methodArguments = commandHandlerMethodArgumentFactory.createMethodArguments(
@@ -59,15 +39,9 @@ public class CommandHandlerMethodArgumentFactoryTest {
         assertThat(methodArguments.length, is(3));
         assertThat(methodArguments[0], is(systemCommandWithCommandId));
         assertThat(methodArguments[1], is(commandId));
-        assertThat(methodArguments[2], is(commandRuntimeId));
+        assertThat(methodArguments[2], is(jmxCommandRuntimeParameters));
     }
 
-    private static class SystemCommandWithoutCommandId extends BaseSystemCommand {
-
-        SystemCommandWithoutCommandId() {
-            super("COMMAND_WITHOUT_COMMAND_ID", "Dummy command without commandRuntimeId");
-        }
-    }
     private static class SystemCommandWithCommandId extends BaseSystemCommand {
 
         SystemCommandWithCommandId() {
