@@ -5,7 +5,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 ### Fixed
-- JdbcResultSetStreamer now correctly streams data using statement.setFetchSize(). The Default fetch size is 200. This can be overridden with JNDI prop jdbc.statement.fetchSize 
+- JdbcResultSetStreamer now correctly streams data using statement.setFetchSize(). The Default fetch size is 200. This can be overridden with JNDI prop jdbc.statement.fetchSize
+
+## [17.100.0-M2] - 2024-10-29
+### Changed
+- Renamed methods in JmxCommandRuntimeParameters
+
+## [17.100.0-M1] - 2024-10-28
+### Changed
+- Jmx commands can now have and extra optional String `command-runtime-string` that can ba
+   passed to JmxCommandHandlers via the JmxCommandHandling framework
 
 ## [17.6.9] - 2024-10-11
 ### Fixed
