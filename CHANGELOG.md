@@ -55,6 +55,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
   - Update jobstore to process tasks with higher priority first
   - Fix for Jackson single argument constructor issue inspired from  https://github.com/FasterXML/jackson-databind/issues/1498
 
+## [17.5.7] - 2024-08-12
+- For EVENT_PROCESSORs, derive the destinationType (queue|topic) from event_sources.location.jms_uri in event-sources.yaml when RAML is used for the EVENT_PROCESSOR
+
+## [17.5.6] - 2024-08-06
+- For EVENT_PROCESSORs, derive the destinationType (queue|topic) from event_sources.location.jms_uri in event-sources.yaml when YAML is  used for the EVENT_PROCESSOR
+
+## [17.5.5] - 2024-07-23
+- PEG-347: Jacksons SingleArgumentConstructor fix
+
 ## [17.6.1] - 2024-07-12
 ### Changed
 - Adding maxSession for all MessageDrivenBeans 
