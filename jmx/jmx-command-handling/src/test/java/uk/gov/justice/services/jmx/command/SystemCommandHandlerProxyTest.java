@@ -16,6 +16,7 @@ import uk.gov.justice.services.jmx.api.InvalidHandlerMethodException;
 import uk.gov.justice.services.jmx.api.SystemCommandInvocationException;
 import uk.gov.justice.services.jmx.api.command.SystemCommand;
 import uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters;
+import uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters.JmxCommandRuntimeParametersBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -30,10 +31,10 @@ public class SystemCommandHandlerProxyTest {
 
         final TestCommand testCommand = new TestCommand();
         final UUID commandId = randomUUID();
-        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParameters.JmxCommandRuntimeParametersBuilder()
+        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
                 .build();
 
-        final Object[] methodArguments = {testCommand, commandId};
+        final Object[] methodArguments = {testCommand, commandId, jmxCommandRuntimeParameters};
 
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("someHandlerMethod", dummyHandler);
@@ -56,7 +57,6 @@ public class SystemCommandHandlerProxyTest {
         assertThat(dummyHandler.someHandlerMethodWasCalled(), is(false));
 
         systemCommandHandlerProxy.invokeCommand(testCommand, commandId, jmxCommandRuntimeParameters);
-
         assertThat(dummyHandler.someHandlerMethodWasCalled(), is(true));
 
         verify(handlerMethodValidator).checkHandlerMethodIsValid(method, dummyHandler, jmxCommandRuntimeParameters);
@@ -69,9 +69,9 @@ public class SystemCommandHandlerProxyTest {
         final TestCommand testCommand = new TestCommand();
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("aPrivateMethod", dummyHandler);
-        final Object[] methodArguments = {testCommand, commandId};
-        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParameters.JmxCommandRuntimeParametersBuilder()
+        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
                 .build();
+        final Object[] methodArguments = {testCommand, commandId, jmxCommandRuntimeParameters};
 
         final HandlerMethodValidator handlerMethodValidator = mock(HandlerMethodValidator.class);
         final CommandHandlerMethodArgumentFactory commandHandlerMethodArgumentFactory = mock(CommandHandlerMethodArgumentFactory.class);
@@ -103,9 +103,9 @@ public class SystemCommandHandlerProxyTest {
         final TestCommand testCommand = new TestCommand();
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("anExceptionThrowingMethod", dummyHandler);
-        final Object[] methodArguments = {testCommand, commandId};
-        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParameters.JmxCommandRuntimeParametersBuilder()
+        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
                 .build();
+        final Object[] methodArguments = {testCommand, commandId, jmxCommandRuntimeParameters};
 
         final HandlerMethodValidator handlerMethodValidator = mock(HandlerMethodValidator.class);
         final CommandHandlerMethodArgumentFactory commandHandlerMethodArgumentFactory = mock(CommandHandlerMethodArgumentFactory.class);
@@ -138,7 +138,7 @@ public class SystemCommandHandlerProxyTest {
         final DummyHandler dummyHandler = new DummyHandler();
         final Method method = getMethod("anExceptionThrowingMethod", dummyHandler);
         final InvalidHandlerMethodException invalidHandlerMethodException = new InvalidHandlerMethodException("Found invalid number of method arguments");
-        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParameters.JmxCommandRuntimeParametersBuilder()
+        final JmxCommandRuntimeParameters jmxCommandRuntimeParameters = new JmxCommandRuntimeParametersBuilder()
                 .build();
 
         final HandlerMethodValidator handlerMethodValidator = mock(HandlerMethodValidator.class);
@@ -174,16 +174,16 @@ public class SystemCommandHandlerProxyTest {
         private boolean someHandlerMethodCalled = false;
 
         @HandlesSystemCommand(TEST_COMMAND)
-        public void someHandlerMethod(final TestCommand testCommand, final UUID commandId) {
+        public void someHandlerMethod(final TestCommand testCommand, final UUID commandId, final JmxCommandRuntimeParameters jmxCommandRuntimeParameters) {
             someHandlerMethodCalled = true;
         }
 
         @HandlesSystemCommand("PRIVATE_TEST_COMMAND")
-        private void aPrivateMethod(final SystemCommand systemCommand, final UUID commandId) {
+        private void aPrivateMethod(final SystemCommand systemCommand, final UUID commandId, final JmxCommandRuntimeParameters jmxCommandRuntimeParameters) {
         }
 
         @HandlesSystemCommand("DODGY_TEST_COMMAND")
-        public void anExceptionThrowingMethod(final SystemCommand systemCommand, final UUID commandId) throws IOException {
+        public void anExceptionThrowingMethod(final SystemCommand systemCommand, final UUID commandId, final JmxCommandRuntimeParameters jmxCommandRuntimeParameters) throws IOException {
             throw new IOException("Ooops");
         }
 

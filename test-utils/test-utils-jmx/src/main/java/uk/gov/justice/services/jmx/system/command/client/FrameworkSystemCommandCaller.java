@@ -1,7 +1,6 @@
 package uk.gov.justice.services.jmx.system.command.client;
 
 import static uk.gov.justice.services.jmx.api.mbean.CommandRunMode.GUARDED;
-import static uk.gov.justice.services.jmx.api.parameters.JmxCommandRuntimeParameters.withNoCommandParameters;
 import static uk.gov.justice.services.jmx.system.command.client.connection.JmxParametersBuilder.jmxParameters;
 import static uk.gov.justice.services.test.utils.common.host.TestHostProvider.getHost;
 

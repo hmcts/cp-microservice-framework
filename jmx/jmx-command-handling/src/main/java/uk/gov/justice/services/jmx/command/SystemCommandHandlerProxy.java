@@ -48,7 +48,6 @@ public class SystemCommandHandlerProxy {
                     jmxCommandRuntimeParameters);
             method.invoke(instance, methodArguments);
         } catch (final InvalidHandlerMethodException e) {
-
             throw new SystemCommandInvocationException(e.getMessage(), e);
         } catch (final IllegalAccessException e) {
 
