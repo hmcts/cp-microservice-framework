@@ -6,15 +6,16 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.jms.EnvelopeConverter;
 import uk.gov.justice.services.messaging.logging.JmsMessageLoggerHelper;
 import uk.gov.justice.services.messaging.logging.TraceLogger;
+import uk.gov.justice.services.subscription.JsonEnvelopeProcessingFailureHandler;
 import uk.gov.justice.services.subscription.SubscriptionManager;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * In order to minimise the amount of generated code in the JMS Listener implementation classes,
@@ -24,22 +25,27 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultSubscriptionJmsProcessor implements SubscriptionJmsProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSubscriptionJmsProcessor.class);
+    @Inject
+    private EnvelopeConverter envelopeConverter;
 
     @Inject
-    EnvelopeConverter envelopeConverter;
+    private TraceLogger traceLogger;
 
     @Inject
-    TraceLogger traceLogger;
+    private JmsMessageLoggerHelper jmsMessageLoggerHelper;
 
     @Inject
-    JmsMessageLoggerHelper jmsMessageLoggerHelper;
+    private JsonEnvelopeProcessingFailureHandler jsonEnvelopeProcessingFailureHandler;
+
+
+    @Inject
+    private Logger logger;
 
     @Override
     public void process(final Message message,
                         final SubscriptionManager subscriptionManager) {
 
-        traceLogger.trace(LOGGER, () -> format("Processing JMS message: %s", jmsMessageLoggerHelper.toJmsTraceString(message)));
+        traceLogger.trace(logger, () -> format("Processing JMS message: %s", jmsMessageLoggerHelper.toJmsTraceString(message)));
 
         if (!(message instanceof TextMessage)) {
             try {
@@ -51,8 +57,14 @@ public class DefaultSubscriptionJmsProcessor implements SubscriptionJmsProcessor
         }
 
         final JsonEnvelope jsonEnvelope = envelopeConverter.fromMessage((TextMessage) message);
-        traceLogger.trace(LOGGER, () -> format("JMS message converted to envelope: %s", jsonEnvelope));
-        subscriptionManager.process(jsonEnvelope);
-        traceLogger.trace(LOGGER, () -> format("JMS message processed: %s", jsonEnvelope));
+
+        try {
+            traceLogger.trace(logger, () -> format("JMS message converted to envelope: %s", jsonEnvelope));
+            subscriptionManager.process(jsonEnvelope);
+            traceLogger.trace(logger, () -> format("JMS message processed: %s", jsonEnvelope));
+        } catch (final Exception e) {
+            jsonEnvelopeProcessingFailureHandler.onJsonEnvelopeProcessingFailure(jsonEnvelope, e);
+            throw new JmsMessageHandlingException("Error processing JMS message", e);
+        }
     }
 }
