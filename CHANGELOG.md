@@ -5,7 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 ### Changed
-- Bump version to 17.101.1
+- Bump version framework-libraries version to 17.101.1
+  - Expose prometheus metrics through /internal/metrics/prometheus endpoint
+  - Provide timerRegistrar bean to register timer with metricsRegistry
+  - Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to
+    stop liquibase collecting anonymous analytics if we should ever upgrade to liquibase  
+    4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics
 
 ## [17.101.3] - 2024-12-03
 ### Changed
