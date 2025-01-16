@@ -24,11 +24,9 @@ public class ValidParameterCollectionBuilder implements ParameterCollectionBuild
 
     private final Collection<Parameter> parameters = new ArrayList<>();
 
-    private final HttpParameterEncoder httpParameterEncoder;
     private final Logger logger;
 
-    public ValidParameterCollectionBuilder(final HttpParameterEncoder httpParameterEncoder, final Logger logger) {
-        this.httpParameterEncoder = httpParameterEncoder;
+    public ValidParameterCollectionBuilder(final Logger logger) {
         this.logger = logger;
     }
 
@@ -79,20 +77,7 @@ public class ValidParameterCollectionBuilder implements ParameterCollectionBuild
 
     private void addParam(final String name, final String value, final ParameterType type) {
         try {
-
-            final String encodedValue = httpParameterEncoder.encodeForHtmlAttribute(value);
-
-            if (! encodedValue.equals(value)) {
-                logger.warn(format("SUSPICIOUS HTTP PARAMETER DETECTED: The http parameter '%s' " +
-                        "was encoded to prevent cross site scripting attack. " +
-                        "Original parameter value '%s' " +
-                        "encoded as '%s'",
-                        name,
-                        value,
-                        encodedValue));
-            }
-
-            parameters.add(DefaultParameter.valueOf(name, encodedValue, type));
+            parameters.add(DefaultParameter.valueOf(name, value, type));
         } catch (IllegalArgumentException e) {
             throw new BadRequestException(INVALID_PARAM_VALUE, e);
         }

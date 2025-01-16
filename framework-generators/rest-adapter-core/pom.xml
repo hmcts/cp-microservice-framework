@@ -58,10 +58,6 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-multipart-provider</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-        </dependency>
 
         <!-- Test dependencies -->
         <dependency>

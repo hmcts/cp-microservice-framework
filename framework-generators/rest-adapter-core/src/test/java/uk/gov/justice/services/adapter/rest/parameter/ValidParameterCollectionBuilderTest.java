@@ -9,7 +9,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
 
@@ -25,9 +24,6 @@ import org.slf4j.Logger;
 
 @ExtendWith(MockitoExtension.class)
 public class ValidParameterCollectionBuilderTest {
-
-    @Mock
-    private HttpParameterEncoder httpParameterEncoder;
 
     @Mock
     private Logger logger;
@@ -47,30 +43,12 @@ public class ValidParameterCollectionBuilderTest {
         final String originalParameterValue = "ParameterValue";
         final String encodedParameterValue = "ParameterValue";
 
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue)).thenReturn(encodedParameterValue);
         validParameterCollectionBuilder.putRequired("Name1", originalParameterValue, ParameterType.STRING);
 
         final Collection<Parameter> validParameters = validParameterCollectionBuilder.parameters();
 
         assertThat(validParameters.size(), is(1));
         assertThat(validParameters.iterator().next().getStringValue(), is(encodedParameterValue));
-    }
-
-    @Test
-    public void shouldLogWaringIfParameterGetsEncodedToGuardAgainstCrossSiteScriptingAttack() throws Exception {
-
-        final String originalParameterValue = "PossiblyEvilParameterValue";
-        final String encodedParameterValue = "EncodedParameterValue";
-
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue)).thenReturn(encodedParameterValue);
-        validParameterCollectionBuilder.putRequired("Name1", originalParameterValue, ParameterType.STRING);
-
-        final Collection<Parameter> validParameters = validParameterCollectionBuilder.parameters();
-
-        assertThat(validParameters.size(), is(1));
-        assertThat(validParameters.iterator().next().getStringValue(), is(encodedParameterValue));
-
-        verify(logger).warn("SUSPICIOUS HTTP PARAMETER DETECTED: The http parameter 'Name1' was encoded to prevent cross site scripting attack. Original parameter value 'PossiblyEvilParameterValue' encoded as 'EncodedParameterValue'");
     }
 
     @Test
@@ -86,8 +64,6 @@ public class ValidParameterCollectionBuilderTest {
         final String originalParameterValue = "OptionalValue1";
         final String encodedParameterValue = "OptionalValue1";
 
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue)).thenReturn(encodedParameterValue);
-        
         validParameterCollectionBuilder.putOptional("OptionalName1", originalParameterValue, ParameterType.STRING);
 
         Collection<Parameter> validParameters = validParameterCollectionBuilder.parameters();
@@ -109,12 +85,6 @@ public class ValidParameterCollectionBuilderTest {
         final String encodedParameterValue_2 = "OptionalValue2";
         final String encodedParameterValue_3 = "1111";
         final String encodedParameterValue_4 = "567";
-
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue_1)).thenReturn(encodedParameterValue_1);
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue_2)).thenReturn(encodedParameterValue_2);
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue_3)).thenReturn(encodedParameterValue_3);
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue_4)).thenReturn(encodedParameterValue_4);
-
 
         validParameterCollectionBuilder
                 .putRequired("paramName1", originalParameterValue_1, ParameterType.STRING)
@@ -153,8 +123,6 @@ public class ValidParameterCollectionBuilderTest {
         final String originalParameterValue = "NonNumeric";
         final String encodedParameterValue = "NonNumeric";
 
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue)).thenReturn(encodedParameterValue);
-
         final BadRequestException badRequestException = assertThrows(BadRequestException.class, () ->
                 validParameterCollectionBuilder
                         .putRequired("param", originalParameterValue, ParameterType.NUMERIC)
@@ -170,8 +138,6 @@ public class ValidParameterCollectionBuilderTest {
         final String originalParameterValue = "NonNumeric";
         final String encodedParameterValue = "NonNumeric";
 
-        when(httpParameterEncoder.encodeForHtmlAttribute(originalParameterValue)).thenReturn(encodedParameterValue);
-
         final BadRequestException badRequestException = assertThrows(BadRequestException.class, () ->
                 validParameterCollectionBuilder
                         .putOptional("param", originalParameterValue, ParameterType.NUMERIC)
@@ -184,7 +150,6 @@ public class ValidParameterCollectionBuilderTest {
     @Test
     public void shouldThrowExceptionInCaseOfInvalidBooleanParamValue() throws Exception {
         final String parameterValue = "NonBoolean";
-        when(httpParameterEncoder.encodeForHtmlAttribute(parameterValue)).thenReturn(parameterValue);
         final BadRequestException badRequestException = assertThrows(BadRequestException.class, () ->
                 validParameterCollectionBuilder
                         .putRequired("param", parameterValue, ParameterType.BOOLEAN)
@@ -197,7 +162,6 @@ public class ValidParameterCollectionBuilderTest {
     @Test
     public void shouldThrowExceptionInCaseOfInvalidBooleanParamValue2() throws Exception {
         final String parameterValue = "NonBoolean";
-        when(httpParameterEncoder.encodeForHtmlAttribute(parameterValue)).thenReturn(parameterValue);
         final BadRequestException badRequestException = assertThrows(BadRequestException.class, () ->
                 validParameterCollectionBuilder
                         .putOptional("param", parameterValue, ParameterType.BOOLEAN)
