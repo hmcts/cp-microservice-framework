@@ -7,14 +7,11 @@ import org.slf4j.LoggerFactory;
 
 public class ValidParameterCollectionBuilderFactory implements ParameterCollectionBuilderFactory {
 
-    @Inject
-    private HttpParameterEncoder httpParameterEncoder;
-
     @Override
     public ParameterCollectionBuilder create() {
 
         final Logger logger = LoggerFactory.getLogger(ParameterCollectionBuilder.class);
 
-        return new ValidParameterCollectionBuilder(httpParameterEncoder, logger);
+        return new ValidParameterCollectionBuilder(logger);
     }
 }
