@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import uk.gov.justice.api.resource.DefaultCommandApiPhotographsUseridResource;
 import uk.gov.justice.services.adapter.rest.mapping.ActionMapper;
 import uk.gov.justice.services.adapter.rest.multipart.FileInputDetailsFactory;
-import uk.gov.justice.services.adapter.rest.parameter.HttpParameterEncoder;
 import uk.gov.justice.services.adapter.rest.parameter.Parameter;
 import uk.gov.justice.services.adapter.rest.parameter.ParameterCollectionBuilderFactory;
 import uk.gov.justice.services.adapter.rest.parameter.ValidParameterCollectionBuilder;
@@ -85,9 +84,6 @@ public class RestAdaptorGenerator_MultipartAdditionalPropertiesTest {
     @Mock
     private InputPart additionalProperty;
 
-    @Mock
-    private HttpParameterEncoder httpParameterEncoder;
-
     @Captor
     private ArgumentCaptor<Collection<Parameter>> parametersCaptor;
 
@@ -103,13 +99,12 @@ public class RestAdaptorGenerator_MultipartAdditionalPropertiesTest {
         inputPartList.add(additionalProperty);
         inputParts.put(DOCUMENT_TYPE, inputPartList);
 
-        when(validParameterCollectionBuilderFactory.create()).thenReturn(new ValidParameterCollectionBuilder(httpParameterEncoder, mock(Logger.class)));
+        when(validParameterCollectionBuilderFactory.create()).thenReturn(new ValidParameterCollectionBuilder(mock(Logger.class)));
         when(multipartFormDataInput.getFormDataMap()).thenReturn(inputParts);
         when(additionalProperty.getMediaType()).thenReturn(mediaType);
         when(mediaType.getType()).thenReturn("text");
         when(additionalProperty.getBodyAsString()).thenReturn(BODY);
         when(actionMapper.actionOf(any(String.class), any(String.class), eq(headers))).thenReturn(action);
-        when(httpParameterEncoder.encodeForHtmlAttribute(anyString())).thenAnswer(i -> i.getArguments()[0]);
 
         defaultCommandApiPhotographsUseridResource.postPeopleUploadPhotographPhotographsByUserid(UUID.randomUUID().toString(), multipartFormDataInput);
         verify(restProcessor).process(anyString(), any(Function.class), anyString(), any(HttpHeaders.class),

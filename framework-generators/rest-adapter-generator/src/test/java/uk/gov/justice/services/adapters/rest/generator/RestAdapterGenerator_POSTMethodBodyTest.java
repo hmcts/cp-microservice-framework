@@ -265,7 +265,6 @@ public class RestAdapterGenerator_POSTMethodBodyTest extends BaseRestAdapterGene
         final Object resourceObject = getInstanceOf(resourceClass);
         final String action = "theAction";
         when(actionMapper.actionOf(any(String.class), any(String.class), eq(httpHeaders))).thenReturn(action);
-        when(httpParameterEncoder.encodeForHtmlAttribute("paramValue1234")).thenReturn("paramValue1234");
 
         final Method method = firstMethodOf(resourceClass).get();
         method.invoke(resourceObject, "paramValue1234", NOT_USED_JSONOBJECT);
@@ -313,7 +312,6 @@ public class RestAdapterGenerator_POSTMethodBodyTest extends BaseRestAdapterGene
         final Object resourceObject = getInstanceOf(resourceClass);
         final String action = "theAction";
         when(actionMapper.actionOf(any(String.class), any(String.class), eq(httpHeaders))).thenReturn(action);
-        when(httpParameterEncoder.encodeForHtmlAttribute("paramValueXYZ")).thenReturn("paramValueXYZ");
 
         final List<Method> methods = methodsOf(resourceClass);
 
@@ -352,8 +350,6 @@ public class RestAdapterGenerator_POSTMethodBodyTest extends BaseRestAdapterGene
         final Object resourceObject = getInstanceOf(resourceClass);
         final String action = "theAction";
         when(actionMapper.actionOf(any(String.class), any(String.class), eq(httpHeaders))).thenReturn(action);
-        when(httpParameterEncoder.encodeForHtmlAttribute("paramValueABC")).thenReturn("paramValueABC");
-        when(httpParameterEncoder.encodeForHtmlAttribute("paramValueDEF")).thenReturn("paramValueDEF");
 
         final Method method = firstMethodOf(resourceClass).get();
         method.invoke(resourceObject, "paramValueABC", "paramValueDEF", NOT_USED_JSONOBJECT);
