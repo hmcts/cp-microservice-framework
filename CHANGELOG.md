@@ -7,7 +7,6 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Removed
 - Removed OWASP cross-site scripting check on html rest parameters introduced in release 17.6.1
 
-
 ## [17.101.3] - 2024-12-03
 ### Changed
 - Bump version to 17.101.0
