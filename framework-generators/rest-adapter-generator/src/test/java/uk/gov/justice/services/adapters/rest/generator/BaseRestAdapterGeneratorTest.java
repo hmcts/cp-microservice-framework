@@ -7,7 +7,6 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 
 import uk.gov.justice.services.adapter.rest.mapping.ActionMapper;
 import uk.gov.justice.services.adapter.rest.multipart.FileInputDetailsFactory;
-import uk.gov.justice.services.adapter.rest.parameter.HttpParameterEncoder;
 import uk.gov.justice.services.adapter.rest.parameter.ParameterCollectionBuilderFactory;
 import uk.gov.justice.services.adapter.rest.parameter.ValidParameterCollectionBuilder;
 import uk.gov.justice.services.adapter.rest.processor.RestProcessor;
@@ -82,9 +81,6 @@ public abstract class BaseRestAdapterGeneratorTest {
     @Mock
     protected HttpHeaders httpHeaders;
 
-    @Mock
-    protected HttpParameterEncoder httpParameterEncoder;
-
     @TempDir
     public File outputFolder;
 
@@ -110,7 +106,7 @@ public abstract class BaseRestAdapterGeneratorTest {
         setField(resourceObject, HTTP_HEADERS_FIELD, httpHeaders);
 
 
-        when(validParameterCollectionBuilderFactory.create()).thenReturn(new ValidParameterCollectionBuilder(httpParameterEncoder, logger));
+        when(validParameterCollectionBuilderFactory.create()).thenReturn(new ValidParameterCollectionBuilder(logger));
 
         return resourceObject;
     }

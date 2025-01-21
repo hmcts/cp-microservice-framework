@@ -4,7 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
-
+### Removed
+- Removed OWASP cross-site scripting check on html rest parameters introduced in release 17.6.1
 
 ## [17.101.3] - 2024-12-03
 ### Changed

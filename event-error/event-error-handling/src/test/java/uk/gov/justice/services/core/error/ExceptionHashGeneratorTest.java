@@ -1,5 +1,8 @@
 package uk.gov.justice.services.core.error;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,10 +14,8 @@ public class ExceptionHashGeneratorTest {
     @InjectMocks
     private ExceptionHashGenerator exceptionHashGenerator;
 
-
     @Test
-    public void shouldName() throws Exception {
-
+    public void shouldGenerateReadableHashStringFromExceptionClassNameCauseFailingClassMethodAndLineNumber() throws Exception {
 
         final String exception = "uk.gov.justice.event.SomeException";
         final String cause = NullPointerException.class.getName();
@@ -34,7 +35,6 @@ public class ExceptionHashGeneratorTest {
 
         final String hashString = exceptionHashGenerator.createHashFrom(hash);
 
-        System.out.println("hashString = '" + hashString + "', length = " + hashString.length());
-
+        assertThat(hashString, is("576b975aff05b7f2b4a1f7b26eb47aa5"));
     }
 }
