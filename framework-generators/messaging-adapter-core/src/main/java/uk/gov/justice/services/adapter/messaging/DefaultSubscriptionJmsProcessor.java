@@ -2,14 +2,13 @@ package uk.gov.justice.services.adapter.messaging;
 
 import static java.lang.String.format;
 
+import uk.gov.justice.services.core.error.JsonEnvelopeProcessingFailureHandler;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.jms.EnvelopeConverter;
 import uk.gov.justice.services.messaging.logging.JmsMessageLoggerHelper;
 import uk.gov.justice.services.messaging.logging.TraceLogger;
-import uk.gov.justice.services.subscription.JsonEnvelopeProcessingFailureHandler;
 import uk.gov.justice.services.subscription.SubscriptionManager;
 
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;

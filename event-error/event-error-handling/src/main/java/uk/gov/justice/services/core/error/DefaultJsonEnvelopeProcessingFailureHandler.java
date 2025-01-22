@@ -2,7 +2,7 @@ package uk.gov.justice.services.core.error;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
-import uk.gov.justice.services.subscription.JsonEnvelopeProcessingFailureHandler;
+import uk.gov.justice.services.core.error.JsonEnvelopeProcessingFailureHandler;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class DefaultJsonEnvelopeProcessingFailureHandler implements JsonEnvelope
     private ExceptionDetailsRetriever exceptionDetailsRetriever;
 
     @Override
-    public void onJsonEnvelopeProcessingFailure(final JsonEnvelope jsonEnvelope, final Exception exception) {
+    public void onJsonEnvelopeProcessingFailure(final JsonEnvelope jsonEnvelope, final Throwable exception) {
 
         final Metadata metadata = jsonEnvelope.metadata();
         final ExceptionDetails exceptionDetails = exceptionDetailsRetriever.getExceptionDetailsFrom(exception);
