@@ -29,7 +29,7 @@ public class EntityManagerProducer {
 
     public void close(@Disposes final EntityManager em) {
         if (em.isOpen()) {
-             em.close();
+            em.close();
         }
     }
 }
