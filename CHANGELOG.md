@@ -6,6 +6,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Unreleased]
 ### Added
 - New Interceptor `EntityManagerFlushInterceptor` for EVENT_LISTENER component that will always flush the Hibernate EntityManager to commit viewstore changes to the database
+- New JNDI value `event.error.handling.enabled` with default value of `false` to enable/disable error handling for events
 ### Removed
 - Removed OWASP cross-site scripting check on html rest parameters introduced in release 17.6.1
 
