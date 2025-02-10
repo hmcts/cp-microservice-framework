@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+
+## [17.101.5-M1] - 2024-02-10
 ### Added
 - New Interceptor `EntityManagerFlushInterceptor` for EVENT_LISTENER component that will always flush the Hibernate EntityManager to commit viewstore changes to the database
 - New JNDI value `event.error.handling.enabled` with default value of `false` to enable/disable error handling for events
