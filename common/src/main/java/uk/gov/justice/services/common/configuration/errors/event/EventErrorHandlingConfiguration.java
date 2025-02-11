@@ -4,9 +4,12 @@ import static java.lang.Boolean.parseBoolean;
 
 import uk.gov.justice.services.common.configuration.Value;
 
+import javax.inject.Inject;
+
 public class EventErrorHandlingConfiguration {
 
-    @Value(key = "event.error.handling.enabled", defaultValue = "" + false)
+    @Inject
+    @Value(key = "event.error.handling.enabled", defaultValue = "false")
     private String eventErrorHandlingEnabled;
 
     public boolean isEventErrorHandlingEnabled() {
