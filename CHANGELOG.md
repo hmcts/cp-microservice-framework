@@ -14,13 +14,32 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ### Removed
 - Removed OWASP cross-site scripting check on html rest parameters introduced in release 17.6.1
 
-## [17.101.3] - 2024-12-03
-### Changed
-- Bump version to 17.101.0
+## [17.101.6] - 2025-01-16
+### Removed
+- Removed OWASP cross-site scripting check on html rest parameters introduced in release 17.6.1
+
+## [17.101.5] - 2025-01-09
 ### Added
-- Expose prometheus metrics through /internal/metrics/prometheus endpoint
-- Provide timerRegistrar bean to register timer with metricsRegistry
-- Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to stop liquibase collecting anonymous analytics if we should ever upgrade to liquibase 4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics
+- Add dependency for org.ow2.asm version 9.3 (through maven-common-bom)
+### Changed
+- Update framework-libraries to 17.101.2
+- Update maven-parent-pom to 17.101.0
+- Update postgresql.driver.version to 42.3.2 (through maven-parent-pom)
+- Update maven-common-bom to 17.101.1
+### Security
+- Update com.jayway.json-path to version 2.9.0 to fix **security vulnerability CWE-787**
+  Detail: https://cwe.mitre.org/data/definitions/787.html (through maven-common-bom)
+- Update commons.io to 2.18.0 to fix security vulnerability CVE-2024-47554
+  Detail: https://nvd.nist.gov/vuln/detail/CVE-2024-47554 and https://cwe.mitre.org/data/definitions/400.html
+
+## [17.101.4] - 2024-12-20
+### Changed
+- Bump version framework-libraries version to 17.101.1
+  - Expose prometheus metrics through /internal/metrics/prometheus endpoint
+  - Provide timerRegistrar bean to register timer with metricsRegistry
+  - Add 'liquibase.analytics.enabled: false' to all liquibase.properties files to
+    stop liquibase collecting anonymous analytics if we should ever upgrade to liquibase  
+    4.30.0 or greater. Details can be found here: https://www.liquibase.com/blog/product-update-liquibase-now-collects-anonymous-usage-analytics
 
 ## [17.100.4] - 2024-11-27
 ### Changed
