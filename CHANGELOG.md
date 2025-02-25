@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
-## [17.102.0-M2] - 2024-02-11
+## [17.102.0] - 2024-02-26
 ### Changed
 - Bump version to 17.102.x
 ### Added
