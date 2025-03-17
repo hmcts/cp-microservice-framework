@@ -25,7 +25,7 @@ public class OversizeMessageGuard {
             final String errorMessage = "OVERSIZED_MESSAGE: %d bytes. " +
                     "The size of message '%s', with id '%s' and streamId '%s' is %d bytes. " +
                     "This exceeds the message size threshold of %d bytes.";
-            logger.error(format(errorMessage,
+            logger.warn(format(errorMessage,
                     size,
                     envelopeName,
                     envelopeId,

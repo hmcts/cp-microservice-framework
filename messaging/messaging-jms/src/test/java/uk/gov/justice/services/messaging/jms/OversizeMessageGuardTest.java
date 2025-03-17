@@ -46,7 +46,7 @@ public class OversizeMessageGuardTest {
 
         oversizeMessageGuard.checkSizeOf(largeEnvelope, envelopeName, envelopeId, streamId);
 
-        verify(logger).error("OVERSIZED_MESSAGE: 44 bytes. " +
+        verify(logger).warn("OVERSIZED_MESSAGE: 44 bytes. " +
                 "The size of message 'some.event.name', " +
                 "with id '22c9aa4f-1365-45a2-9572-bb6fa88cd20b' " +
                 "and streamId 'd4445eaa-77b7-4990-a17f-ac9b84052944' is 44 bytes. " +
