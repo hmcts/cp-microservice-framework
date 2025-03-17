@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+## [17.102.1] - 2024-03-17
+### Changed
+- Oversized messages are now logged as `WARN` rather than `ERROR`
+
 ## [17.102.0] - 2024-02-26
 ### Changed
 - Bump version to 17.102.x
