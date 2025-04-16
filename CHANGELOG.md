@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+## [17.102.2] - 2025-04-16
+### Changed
+- Extended RestPoller to include custom PollInterval implementation and introduced FibonacciPollWithStartAndMax class
+
 ## [17.102.1] - 2024-03-17
 ### Changed
 - Oversized messages are now logged as `WARN` rather than `ERROR`
