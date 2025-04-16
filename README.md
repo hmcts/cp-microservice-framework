@@ -1,6 +1,6 @@
 # Microservice Framework
 
-[![Build Status](https://travis-ci.org/CJSCommonPlatform/microservice-framework.svg?branch=master)](https://travis-ci.org/CJSCommonPlatform/microservice-framework) [![Coverage Status](https://coveralls.io/repos/github/CJSCommonPlatform/microservice-framework/badge.svg?branch=master)](https://coveralls.io/github/CJSCommonPlatform/microservice-framework?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/hmcts/cp-microservice-framework/badge.svg?branch=main)](https://coveralls.io/github/hmcts/cp-microservice-framework?branch=main)
 
 A Java framework to support applications utilising CQRS and Event Sourcing architectures.
 
