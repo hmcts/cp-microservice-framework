@@ -9,10 +9,10 @@ import javax.inject.Inject;
 public class EventErrorHandlingConfiguration {
 
     @Inject
-    @Value(key = "event.error.handling.enabled", defaultValue = "false")
-    private String eventErrorHandlingEnabled;
+    @Value(key = "event.stream.self.healing.enabled", defaultValue = "false")
+    private String eventStreamSelfHealingEnabled;
 
-    public boolean isEventErrorHandlingEnabled() {
-        return parseBoolean(eventErrorHandlingEnabled);
+    public boolean isEventStreamSelfHealingEnabled() {
+        return parseBoolean(eventStreamSelfHealingEnabled);
     }
 }

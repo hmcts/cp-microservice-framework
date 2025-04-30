@@ -28,7 +28,7 @@ public class EntityManagerFlushInterceptorProvider implements InterceptorChainEn
     @Override
     public List<InterceptorChainEntry> interceptorChainTypes() {
 
-        if (eventErrorHandlingConfiguration.isEventErrorHandlingEnabled()) {
+        if (eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled()) {
             return of(new InterceptorChainEntry(PRIORITY, EntityManagerFlushInterceptor.class));
         }
 

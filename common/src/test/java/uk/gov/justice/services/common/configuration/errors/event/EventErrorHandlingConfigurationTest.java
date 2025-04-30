@@ -16,40 +16,40 @@ public class EventErrorHandlingConfigurationTest {
     private EventErrorHandlingConfiguration eventErrorHandlingConfiguration;
 
     @Test
-    public void shouldGetTheEventErrorHandlingEnabledBooleanFromJndi() throws Exception {
+    public void shouldGetEventStreamSelfHealingEnabledBooleanFromJndi() throws Exception {
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "true");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(true));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "true");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(true));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "false");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(false));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "false");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(false));
     }
 
     @Test
     public void shouldHandleNullsDifferentCaseEtc() throws Exception {
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "TRUE");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(true));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "TRUE");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(true));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "true");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(true));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "true");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(true));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "tRUe");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(true));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "tRUe");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(true));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "false");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(false));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "false");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(false));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "FALSE");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(false));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "FALSE");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(false));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "False");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(false));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "False");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(false));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", "faLSe");
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(false));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", "faLSe");
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(false));
 
-        setField(eventErrorHandlingConfiguration, "eventErrorHandlingEnabled", null);
-        assertThat(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled(), is(false));
+        setField(eventErrorHandlingConfiguration, "eventStreamSelfHealingEnabled", null);
+        assertThat(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled(), is(false));
     }
 }
