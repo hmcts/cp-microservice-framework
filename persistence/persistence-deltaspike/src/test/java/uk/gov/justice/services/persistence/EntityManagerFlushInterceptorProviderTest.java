@@ -33,7 +33,7 @@ public class EntityManagerFlushInterceptorProviderTest {
     @Test
     public void shouldCreateInterceptorChainEntryForEntityManagerFlushInterceptorWithTheCorrectPriority() throws Exception {
 
-        when(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled()).thenReturn(true);
+        when(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled()).thenReturn(true);
 
         final List<InterceptorChainEntry> interceptorChainEntries = entityManagerFlushInterceptorProvider.interceptorChainTypes();
 
@@ -45,7 +45,7 @@ public class EntityManagerFlushInterceptorProviderTest {
     @Test
     public void shouldReturnEmptyListIfEventErrorHandlingIsDisabled() throws Exception {
 
-        when(eventErrorHandlingConfiguration.isEventErrorHandlingEnabled()).thenReturn(false);
+        when(eventErrorHandlingConfiguration.isEventStreamSelfHealingEnabled()).thenReturn(false);
 
         assertThat(entityManagerFlushInterceptorProvider.interceptorChainTypes().isEmpty(), is(true));
     }

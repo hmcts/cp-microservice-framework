@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M2] - 2025-04-30
+### Changed
+- Changed name of jndi value for self-healing from `event.error.handling.enabled` to `event.stream.self.healing.enabled`
+
 # [17.103.0-M1] - 2025-04-28
 ### Changed
 - Release file-service extraction changes (via framework-libraries)
