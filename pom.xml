@@ -42,11 +42,15 @@
         <module>persistence</module>
         <module>raml-lint-check</module>
         <module>test-utils</module>
+        <module>metrics/metrics-micrometer</module>
     </modules>
     
     <properties>
         <cpp.repo.name>microservice_framework</cpp.repo.name>
         <framework-libraries.version>17.103.0-M1</framework-libraries.version>
+
+        <!-- TODO. Important. Move this to common-bom (before release etc...). Allan: 16 May 25 -->
+        <micrometer.version>1.15.0</micrometer.version>
     </properties>
 
     <dependencyManagement>
@@ -127,6 +131,15 @@
                 <groupId>uk.gov.justice.services</groupId>
                 <artifactId>persistence-jdbc</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!-- TODO. Important. Move this to common-bom (before release etc...). Allan: 16 May 25 -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-bom</artifactId>
+                <version>${micrometer.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
