@@ -33,7 +33,6 @@ public class MetricsCountersTest {
 
     @Test
     public void shouldDoNothingForEventsSucceededCount() throws Exception {
-
         metricsCounters.incrementEventsSucceededCount();
     }
 }

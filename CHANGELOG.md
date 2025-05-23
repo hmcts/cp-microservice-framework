@@ -5,12 +5,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
-# [17.103.0-M2] - 2025-04-30
+# [17.103.0-M4] - 2025-05-23
+### Changed
+- Update framework-libraries to 17.103.0-M3 for:
+  - Move of prometheus metrics to cpp-platform-libraries in with the new azure metrics
+### Added
+- Add micrometer counter base class
+
+# [17.103.0-M3] - 2025-05-22
 ### Changed
 - Changed name of jndi value for self-healing from `event.error.handling.enabled` to `event.stream.self.healing.enabled`
-
-# [17.103.0-M1] - 2025-04-28
-### Changed
 - Release file-service extraction changes (via framework-libraries)
 
 ## [17.102.2] - 2025-04-16
