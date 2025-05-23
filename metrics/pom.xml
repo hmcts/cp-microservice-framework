@@ -17,6 +17,7 @@
     <modules>
         <module>metrics-interceptor</module>
         <module>metrics-servlet</module>
+        <module>metrics-micrometer</module>
     </modules>
 
 </project>

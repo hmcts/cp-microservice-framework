@@ -185,6 +185,11 @@
                 <artifactId>framework-healthcheck</artifactId>
                 <version>${framework.version}</version>
             </dependency>
+            <dependency>
+                <groupId>uk.gov.justice.metrics</groupId>
+                <artifactId>metrics-micrometer</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
