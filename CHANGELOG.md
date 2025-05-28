@@ -4,6 +4,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+                 
+
+# [17.103.0-M5] - 2025-05-28
+### Changed
+- Moved in Micrometer Metrics core classes 
+- Metrics wildfly extension moved to cpp-platform-libraries
+### Added
+- New jndi values for metrics:
+  - `azure.metrics.monitor.connection.string`
+  - `micrometer.metrics.enabled`
 
 # [17.103.0-M4] - 2025-05-23
 ### Changed
