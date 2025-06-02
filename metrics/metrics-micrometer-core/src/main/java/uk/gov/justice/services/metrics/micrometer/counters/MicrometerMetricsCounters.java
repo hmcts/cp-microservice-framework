@@ -1,14 +1,13 @@
 package uk.gov.justice.services.metrics.micrometer.counters;
 
-import static uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames.EVENTS_FAILED_COUNTER_NAME;
-import static uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames.EVENTS_IGNORED_COUNTER_NAME;
-import static uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames.EVENTS_PROCESSED_COUNTER_NAME;
-import static uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
-import static uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
+import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_FAILED_COUNTER_NAME;
+import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_IGNORED_COUNTER_NAME;
+import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_PROCESSED_COUNTER_NAME;
+import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
+import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
 
 import javax.inject.Inject;
 
-import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 public class MicrometerMetricsCounters {
