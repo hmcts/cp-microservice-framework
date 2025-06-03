@@ -4,7 +4,16 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
-                 
+
+# [17.103.0-M6] - 2025-06-03
+### Added
+- Add counters for:
+  - `framework.events.streams.counters.events.received`
+  - `framework.events.streams.counters.events.processed`
+  - `framework.events.streams.counters.events.succeeded`
+  - `framework.events.streams.counters.events.ignored`
+  - `framework.events.streams.counters.events.failed`
+- Define correct names for micrometer counters and gauges
 
 # [17.103.0-M5] - 2025-05-28
 ### Changed

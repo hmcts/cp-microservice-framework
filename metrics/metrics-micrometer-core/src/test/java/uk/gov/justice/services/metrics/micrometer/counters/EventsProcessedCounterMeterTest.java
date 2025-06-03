@@ -1,20 +1,14 @@
 package uk.gov.justice.services.metrics.micrometer.counters;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.when;
 
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames.EVENTS_PROCESSED_COUNTER_NAME;
-
-import uk.gov.justice.services.metrics.micrometer.config.MetricsMeterNames;
+import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_PROCESSED_COUNTER_NAME;
 
 @ExtendWith(MockitoExtension.class)
 public class EventsProcessedCounterMeterTest {
