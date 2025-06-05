@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M7] - 2025-06-05
+### Added
+- Add new gauge name: `framework.events.streams.gauges.total.unblocked.streams`
+
 # [17.103.0-M6] - 2025-06-03
 ### Added
 - Add counters for:
