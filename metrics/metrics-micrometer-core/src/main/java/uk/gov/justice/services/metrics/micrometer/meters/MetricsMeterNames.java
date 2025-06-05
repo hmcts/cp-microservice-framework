@@ -38,6 +38,11 @@ public interface MetricsMeterNames {
     String BLOCKED_EVENT_STREAMS_GAUGE_NAME = "framework.events.streams.gauges.total.blocked.streams";
 
     /**
+     * The current number of streams not in error
+     */
+    String UNBLOCKED_EVENT_STREAMS_GAUGE_NAME = "framework.events.streams.gauges.total.unblocked.streams";
+
+    /**
      * The current number of streams that are out of date
      */
     String OUT_OF_DATE_EVENT_STREAMS_GAUGE_NAME = "framework.events.streams.gauges.total.out.of.date.streams";
