@@ -1,6 +1,7 @@
 package uk.gov.justice.services.metrics.micrometer.azure.config;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -37,5 +38,11 @@ public class FrameworkAzureMonitorConfigTest {
 
         when(metricsConfiguration.azureMonitorConnectionString()).thenReturn(connectionString);
         assertThat(frameworkAzureMonitorConfig.connectionString(), is(connectionString));
+    }
+
+    @Test
+    public void shouldReturnNulForGetOfPropertyByName() throws Exception {
+
+        assertThat(frameworkAzureMonitorConfig.get("do-not-care"), is(nullValue()));
     }
 }

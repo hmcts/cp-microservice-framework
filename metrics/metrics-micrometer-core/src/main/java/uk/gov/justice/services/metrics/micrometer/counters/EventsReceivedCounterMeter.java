@@ -1,6 +1,5 @@
 package uk.gov.justice.services.metrics.micrometer.counters;
 
-import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_PROCESSED_COUNTER_NAME;
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
 
 import uk.gov.justice.services.metrics.micrometer.meters.MetricsMeter;

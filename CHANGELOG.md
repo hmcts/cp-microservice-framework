@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M8] - 2025-06-09
+### Changed
+- Only create AzureMonitorMeterRegistry if metrics are enabled
+### Fixed
+- Fix deployment error if azure connection string is not in jndi (whether metrics are enabled or not)
+
 # [17.103.0-M7] - 2025-06-05
 ### Added
 - Add new gauge name: `framework.events.streams.gauges.total.unblocked.streams`
