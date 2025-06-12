@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M9] - 2025-06-12
+### Changed
+- Update framework-libraries to 17.103.0-M5
+
 # [17.103.0-M8] - 2025-06-09
 ### Changed
 - Only create AzureMonitorMeterRegistry if metrics are enabled
