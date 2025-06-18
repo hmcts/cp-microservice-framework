@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Changed
+- Update metrics names to match design document specification
 
 # [17.103.0-M9] - 2025-06-12
 ### Changed
