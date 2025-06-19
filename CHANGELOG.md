@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+
+# [17.103.0-M11] - 2025-06-19
 ### Added
 - TimerBean delay and interval configurations for statistic calculations
 
