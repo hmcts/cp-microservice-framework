@@ -16,7 +16,7 @@ public class MetricsConfigurationTest {
     private MetricsConfiguration metricsConfiguration;
 
     @Test
-    public void shouldGetMetricsEnabledAsBoolean() throws Exception {
+    public void shouldGetMetricsEnabledAsBoolean() {
 
         assertThat(metricsConfiguration.micrometerMetricsEnabled(), is(false));
 
@@ -28,12 +28,32 @@ public class MetricsConfigurationTest {
     }
 
     @Test
-    public void shouldGetAzureMonitorConnectionString() throws Exception {
+    public void shouldGetAzureMonitorConnectionString() {
 
         final String azureConnectionString = "azure-connection-string";
 
         setField(metricsConfiguration, "azureMonitorConnectionString", azureConnectionString);
 
         assertThat(metricsConfiguration.azureMonitorConnectionString(), is(azureConnectionString));
+    }
+
+    @Test
+    public void shouldGetStatisticTimerIntervalMilliseconds() {
+
+        setField(metricsConfiguration, "statisticTimerIntervalMilliseconds", "30000");
+        assertThat(metricsConfiguration.statisticTimerIntervalMilliseconds(), is(30000L));
+
+        setField(metricsConfiguration, "statisticTimerIntervalMilliseconds", "60000");
+        assertThat(metricsConfiguration.statisticTimerIntervalMilliseconds(), is(60000L));
+    }
+
+    @Test
+    public void shouldGetStatisticTimerDelayMilliseconds() {
+
+        setField(metricsConfiguration, "statisticTimerDelayMilliseconds", "5000");
+        assertThat(metricsConfiguration.statisticTimerDelayMilliseconds(), is(5000L));
+
+        setField(metricsConfiguration, "statisticTimerDelayMilliseconds", "10000");
+        assertThat(metricsConfiguration.statisticTimerDelayMilliseconds(), is(10000L));
     }
 }
