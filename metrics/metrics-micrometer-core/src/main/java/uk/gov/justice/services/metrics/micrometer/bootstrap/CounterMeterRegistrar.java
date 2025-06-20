@@ -21,6 +21,7 @@ public class CounterMeterRegistrar {
     public void registerCounterMeter(final MetricsMeter metricsMeter, final MeterRegistry meterRegistry, List<Tag> globalTags) {
         logger.info(format("Registering Micrometer Counter '%s'", metricsMeter.metricName()));
         Counter.builder(metricsMeter.metricName())
+                .tags(globalTags)
                 .tags(metricsMeter.metricTags())
                 .description(metricsMeter.metricDescription())
                 .register(meterRegistry);

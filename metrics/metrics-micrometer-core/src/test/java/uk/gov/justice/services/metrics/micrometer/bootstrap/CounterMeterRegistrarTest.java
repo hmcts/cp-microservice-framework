@@ -4,7 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
 import uk.gov.justice.services.metrics.micrometer.meters.GaugeMetricsMeter;
 import uk.gov.justice.services.metrics.micrometer.meters.MetricsMeter;
 
@@ -35,6 +37,7 @@ public class CounterMeterRegistrarTest {
         List<Tag> globalTags = List.of(Tag.of("some-tag", "some-tag-value"));
 
         when(counterMetricsMeter.metricName()).thenReturn("some.counter.meter");
+        when(counterMetricsMeter.metricDescription()).thenReturn("some description");
 
         counterMeterRegistrar.registerCounterMeter(counterMetricsMeter, meterRegistry, globalTags);
 
