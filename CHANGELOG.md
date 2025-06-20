@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Added
+- Register Micrometer Gauge with Global tags and jndi config for env 
 
 # [17.103.0-M11] - 2025-06-19
 ### Added
