@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import io.micrometer.core.instrument.Tag;
 import uk.gov.justice.services.metrics.micrometer.meters.GaugeMetricsMeter;
 import uk.gov.justice.services.metrics.micrometer.meters.MetricsMeter;
 
@@ -15,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 public class CounterMeterRegistrarTest {
 
@@ -25,14 +28,15 @@ public class CounterMeterRegistrarTest {
     private CounterMeterRegistrar counterMeterRegistrar;
 
     @Test
-    public void shouldRegisterCounterMeter() throws Exception {
+    public void shouldRegisterCounterMeter() {
 
         final MeterRegistry meterRegistry = mock(MeterRegistry.class);
         final MetricsMeter counterMetricsMeter = mock(GaugeMetricsMeter.class);
+        List<Tag> globalTags = List.of(Tag.of("some-tag", "some-tag-value"));
 
         when(counterMetricsMeter.metricName()).thenReturn("some.counter.meter");
 
-        counterMeterRegistrar.registerCounterMeter(counterMetricsMeter, meterRegistry);
+        counterMeterRegistrar.registerCounterMeter(counterMetricsMeter, meterRegistry, globalTags);
 
         verify(logger).info("Registering Micrometer Counter 'some.counter.meter'");
         verify(counterMetricsMeter).metricDescription();
