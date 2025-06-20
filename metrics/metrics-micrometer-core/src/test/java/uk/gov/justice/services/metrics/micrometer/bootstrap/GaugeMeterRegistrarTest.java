@@ -6,7 +6,10 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.services.metrics.micrometer.meters.GaugeMetricsMeter;
 
+import java.util.List;
+
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +34,7 @@ public class GaugeMeterRegistrarTest {
 
         when(gaugeMetricsMeter.metricName()).thenReturn("some.gauge.meter");
 
-        gaugeMeterRegistrar.registerGaugeMeter(gaugeMetricsMeter, meterRegistry);
+        gaugeMeterRegistrar.registerGaugeMeter(gaugeMetricsMeter, meterRegistry, List.of(Tag.of("some-tag", "some-tag-value")) );
 
         verify(logger).info("Registering Micrometer Gauge 'some.gauge.meter'");
         verify(gaugeMetricsMeter).metricDescription();

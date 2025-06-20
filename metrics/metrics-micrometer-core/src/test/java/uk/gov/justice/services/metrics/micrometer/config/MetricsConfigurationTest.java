@@ -56,4 +56,14 @@ public class MetricsConfigurationTest {
         setField(metricsConfiguration, "statisticTimerDelayMilliseconds", "10000");
         assertThat(metricsConfiguration.statisticTimerDelayMilliseconds(), is(10000L));
     }
+
+    @Test
+    public void shouldGetMicrometerEnv() {
+
+        final String testEnv = "test-env";
+
+        setField(metricsConfiguration, "micrometerEnv", testEnv);
+
+        assertThat(metricsConfiguration.micrometerEnv(), is(testEnv));
+    }
 }

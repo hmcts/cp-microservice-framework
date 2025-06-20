@@ -28,6 +28,10 @@ public class MetricsConfiguration {
     @Value(key = "micrometer.metrics.statistic.timer.delay.milliseconds", defaultValue = TEN_SECONDS)
     private String statisticTimerDelayMilliseconds;
 
+    @Inject
+    @Value(key = "micrometer.metrics.env", defaultValue = "local")
+    private String micrometerEnv;
+
     public boolean micrometerMetricsEnabled() {
         return parseBoolean(micrometerMetricsEnabled);
     }
@@ -42,5 +46,9 @@ public class MetricsConfiguration {
 
     public long statisticTimerDelayMilliseconds() {
         return parseLong(statisticTimerDelayMilliseconds);
+    }
+
+    public String micrometerEnv() {
+        return micrometerEnv;
     }
 }
