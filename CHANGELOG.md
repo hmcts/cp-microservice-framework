@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M13] - 2025-06-23
+### Changed
+- Add source and component for micrometer counters
+
 # [17.103.0-M12] - 2025-06-20
 ### Added
 - Register Micrometer Gauge with Global tags and jndi config for env 
