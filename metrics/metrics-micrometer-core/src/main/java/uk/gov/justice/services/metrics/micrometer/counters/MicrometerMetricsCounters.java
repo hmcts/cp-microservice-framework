@@ -6,6 +6,8 @@ import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterName
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
 
+import uk.gov.justice.services.metrics.micrometer.config.MetricsConfiguration;
+
 import javax.inject.Inject;
 
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
@@ -15,25 +17,40 @@ public class MicrometerMetricsCounters {
     @Inject
     private CompositeMeterRegistry compositeMeterRegistry;
 
-    public void incrementEventsReceivedCount() {
-        compositeMeterRegistry.counter(EVENTS_RECEIVED_COUNTER_NAME).increment();
+    @Inject
+    private CounterTagFactory counterTagFactory;
+
+    @Inject
+    private MetricsConfiguration metricsConfiguration;
+
+    public void incrementEventsReceivedCount(final String source, final String component) {
+        incrementCounterByTag(source, component, EVENTS_RECEIVED_COUNTER_NAME);
     }
 
-    public void incrementEventsProcessedCount() {
-        compositeMeterRegistry.counter(EVENTS_PROCESSED_COUNTER_NAME).increment();
+    public void incrementEventsProcessedCount(final String source, final String component) {
+        incrementCounterByTag(source, component, EVENTS_PROCESSED_COUNTER_NAME);
     }
 
-    public void incrementEventsSucceededCount() {
-        compositeMeterRegistry.counter(EVENTS_SUCCEEDED_COUNTER_NAME).increment();
-
-    }
-
-    public void incrementEventsIgnoredCount() {
-        compositeMeterRegistry.counter(EVENTS_IGNORED_COUNTER_NAME).increment();
+    public void incrementEventsSucceededCount(final String source, final String component) {
+        incrementCounterByTag(source, component, EVENTS_SUCCEEDED_COUNTER_NAME);
 
     }
 
-    public void incrementEventsFailedCount() {
-        compositeMeterRegistry.counter(EVENTS_FAILED_COUNTER_NAME).increment();
+    public void incrementEventsIgnoredCount(final String source, final String component) {
+        incrementCounterByTag(source, component, EVENTS_IGNORED_COUNTER_NAME);
+
+    }
+
+    public void incrementEventsFailedCount(final String source, final String component) {
+        incrementCounterByTag(source, component, EVENTS_FAILED_COUNTER_NAME);
+    }
+
+    private void incrementCounterByTag(final String source, final String component, final String counterName) {
+        if (metricsConfiguration.micrometerMetricsEnabled()) {
+            compositeMeterRegistry.get(counterName)
+                    .tags(counterTagFactory.getCounterTags(source, component))
+                    .counter()
+                    .increment();
+        }
     }
 }
