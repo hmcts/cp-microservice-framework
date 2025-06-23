@@ -2,16 +2,16 @@ package uk.gov.justice.services.metrics.micrometer.bootstrap;
 
 import static java.lang.String.format;
 
-import io.micrometer.core.instrument.Tag;
 import uk.gov.justice.services.metrics.micrometer.meters.MetricsMeter;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
-
-import java.util.List;
 
 public class CounterMeterRegistrar {
 
@@ -22,7 +22,6 @@ public class CounterMeterRegistrar {
         logger.info(format("Registering Micrometer Counter '%s'", metricsMeter.metricName()));
         Counter.builder(metricsMeter.metricName())
                 .tags(globalTags)
-                .tags(metricsMeter.metricTags())
                 .description(metricsMeter.metricDescription())
                 .register(meterRegistry);
     }

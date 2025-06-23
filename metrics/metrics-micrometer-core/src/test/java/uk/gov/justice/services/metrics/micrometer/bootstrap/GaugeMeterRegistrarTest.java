@@ -38,6 +38,5 @@ public class GaugeMeterRegistrarTest {
 
         verify(logger).info("Registering Micrometer Gauge 'some.gauge.meter'");
         verify(gaugeMetricsMeter).metricDescription();
-        verify(gaugeMetricsMeter).metricTags();
     }
 }

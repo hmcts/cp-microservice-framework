@@ -10,7 +10,4 @@ public interface MetricsMeter {
 
     String metricName();
     String metricDescription();
-    default List<Tag> metricTags() {
-        return emptyList();
-    }
 }
