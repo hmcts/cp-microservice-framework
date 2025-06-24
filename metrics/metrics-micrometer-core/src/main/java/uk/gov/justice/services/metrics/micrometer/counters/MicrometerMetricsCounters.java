@@ -6,6 +6,7 @@ import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterName
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
 
+import uk.gov.justice.services.metrics.micrometer.config.TagFactory;
 import uk.gov.justice.services.metrics.micrometer.config.MetricsConfiguration;
 
 import javax.inject.Inject;
@@ -18,10 +19,10 @@ public class MicrometerMetricsCounters {
     private CompositeMeterRegistry compositeMeterRegistry;
 
     @Inject
-    private CounterTagFactory counterTagFactory;
+    private MetricsConfiguration metricsConfiguration;
 
     @Inject
-    private MetricsConfiguration metricsConfiguration;
+    private TagFactory tagFactory;
 
     public void incrementEventsReceivedCount(final String source, final String component) {
         incrementCounterByTag(source, component, EVENTS_RECEIVED_COUNTER_NAME);
@@ -48,7 +49,7 @@ public class MicrometerMetricsCounters {
     private void incrementCounterByTag(final String source, final String component, final String counterName) {
         if (metricsConfiguration.micrometerMetricsEnabled()) {
             compositeMeterRegistry.get(counterName)
-                    .tags(counterTagFactory.getCounterTags(source, component))
+                    .tags(tagFactory.getSourceComponentTags(source, component))
                     .counter()
                     .increment();
         }

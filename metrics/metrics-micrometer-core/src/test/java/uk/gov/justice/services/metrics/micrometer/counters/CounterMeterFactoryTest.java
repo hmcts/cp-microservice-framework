@@ -9,13 +9,12 @@ import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterName
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
 
-import uk.gov.justice.services.metrics.micrometer.config.SourceComponentPair;
 import uk.gov.justice.services.metrics.micrometer.meters.MetricsMeter;
+import uk.gov.justice.services.metrics.micrometer.meters.SourceComponentPair;
 
 import java.util.Collections;
 import java.util.List;
 
-import io.micrometer.core.instrument.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,7 +39,7 @@ public class CounterMeterFactoryTest {
 
         // verify
         assertThat(metricsMeterList.size(), is(5));
-        
+
         assertTrue(containsMeterWithName(metricsMeterList, EVENTS_FAILED_COUNTER_NAME));
         assertTrue(containsMeterWithName(metricsMeterList, EVENTS_IGNORED_COUNTER_NAME));
         assertTrue(containsMeterWithName(metricsMeterList, EVENTS_PROCESSED_COUNTER_NAME));
