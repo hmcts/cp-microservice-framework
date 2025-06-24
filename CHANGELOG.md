@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M14] - 2025-06-24
+### Changed
+- Add tags for counters
+
 # [17.103.0-M13] - 2025-06-23
 ### Changed
 - Add source and component for micrometer counters
