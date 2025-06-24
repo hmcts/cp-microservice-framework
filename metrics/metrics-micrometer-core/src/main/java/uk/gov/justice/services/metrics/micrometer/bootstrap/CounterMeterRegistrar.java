@@ -23,7 +23,7 @@ public class CounterMeterRegistrar {
 
     public void registerCounterMeter(final MetricsMeter metricsMeter, final MeterRegistry meterRegistry) {
         logger.info(format("Registering Micrometer Counter '%s'", metricsMeter.metricName()));
-        List<Tag> tags = tagFactory.getSourceComponentTags(metricsMeter.sourceComponentPair());
+        final List<Tag> tags = tagFactory.getSourceComponentTags(metricsMeter.sourceComponentPair());
         Counter.builder(metricsMeter.metricName())
                 .tags(tags)
                 .description(metricsMeter.metricDescription())

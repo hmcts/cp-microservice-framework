@@ -22,9 +22,8 @@ public class GaugeMeterRegistrar {
     private TagFactory tagFactory;
 
     public void registerGaugeMeter(final GaugeMetricsMeter gaugeMetricsMeter, final MeterRegistry meterRegistry) {
-
         logger.info(format("Registering Micrometer Gauge '%s'", gaugeMetricsMeter.metricName()));
-        List<Tag> tags = tagFactory.getSourceComponentTags(gaugeMetricsMeter.sourceComponentPair());
+        final List<Tag> tags = tagFactory.getSourceComponentTags(gaugeMetricsMeter.sourceComponentPair());
         Gauge.builder(gaugeMetricsMeter.metricName(), gaugeMetricsMeter)
                 .tags(tags)
                 .description(gaugeMetricsMeter.metricDescription())
