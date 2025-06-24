@@ -2,7 +2,6 @@ package uk.gov.justice.services.metrics.micrometer.config;
 
 public enum TagNames {
 
-
     SOURCE_TAG_NAME("source"),
     COMPONENT_TAG_NAME("component"),
     SERVICE_TAG_NAME("service"),

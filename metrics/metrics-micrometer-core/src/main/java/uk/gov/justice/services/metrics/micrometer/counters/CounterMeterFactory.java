@@ -6,8 +6,8 @@ import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterName
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
 
-import uk.gov.justice.services.metrics.micrometer.config.SourceComponentPair;
 import uk.gov.justice.services.metrics.micrometer.meters.MetricsMeter;
+import uk.gov.justice.services.metrics.micrometer.meters.SourceComponentPair;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +27,7 @@ public class CounterMeterFactory {
             SourceComponentPair sourceComponentPair) {
         return COUNTER_METER_CONFIGS.stream()
                 .map(config -> new CounterMeter(
-                        sourceComponentPair.source(),
-                        sourceComponentPair.component(),
+                        sourceComponentPair,
                         config.metricName(),
                         config.metricDescription()
                 ));
@@ -41,8 +40,7 @@ public class CounterMeterFactory {
     }
 
     private record CounterMeter(
-            String source,
-            String component,
+            SourceComponentPair sourceComponentPair,
             String metricName,
             String metricDescription) implements MetricsMeter {
     }

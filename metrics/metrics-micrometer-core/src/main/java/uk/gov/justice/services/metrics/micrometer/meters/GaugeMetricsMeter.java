@@ -1,6 +1,6 @@
 package uk.gov.justice.services.metrics.micrometer.meters;
 
-public interface GaugeMetricsMeter extends MetricsMeter {
+import java.util.function.Supplier;
 
-    int measure();
+public interface GaugeMetricsMeter extends Supplier<Integer>, MetricsMeter {
 }

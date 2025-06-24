@@ -10,6 +10,7 @@ import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterName
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_RECEIVED_COUNTER_NAME;
 import static uk.gov.justice.services.metrics.micrometer.meters.MetricsMeterNames.EVENTS_SUCCEEDED_COUNTER_NAME;
 
+import uk.gov.justice.services.metrics.micrometer.config.TagFactory;
 import uk.gov.justice.services.metrics.micrometer.config.MetricsConfiguration;
 
 import java.util.List;
@@ -31,10 +32,10 @@ public class MicrometerMetricsCountersTest {
     private CompositeMeterRegistry compositeMeterRegistry;
 
     @Mock
-    private CounterTagFactory counterTagFactory;
+    private MetricsConfiguration metricsConfiguration;
 
     @Mock
-    private MetricsConfiguration metricsConfiguration;
+    private TagFactory tagFactory;
 
     @InjectMocks
     private MicrometerMetricsCounters micrometerMetricsCounters;
@@ -51,7 +52,7 @@ public class MicrometerMetricsCountersTest {
         when(metricsConfiguration.micrometerMetricsEnabled()).thenReturn(true);
         when(compositeMeterRegistry.get(EVENTS_RECEIVED_COUNTER_NAME)).thenReturn(requiredSearch);
         when(requiredSearch.counter()).thenReturn(eventsReceivedCounter);
-        when(counterTagFactory.getCounterTags(source, component)).thenReturn(tags);
+        when(tagFactory.getSourceComponentTags(source, component)).thenReturn(tags);
         when(requiredSearch.tags(tags)).thenReturn(requiredSearch);
 
         micrometerMetricsCounters.incrementEventsReceivedCount(source, component);
@@ -71,7 +72,7 @@ public class MicrometerMetricsCountersTest {
         when(metricsConfiguration.micrometerMetricsEnabled()).thenReturn(true);
         when(compositeMeterRegistry.get(EVENTS_PROCESSED_COUNTER_NAME)).thenReturn(requiredSearch);
         when(requiredSearch.counter()).thenReturn(eventsReceivedCounter);
-        when(counterTagFactory.getCounterTags(source, component)).thenReturn(tags);
+        when(tagFactory.getSourceComponentTags(source, component)).thenReturn(tags);
         when(requiredSearch.tags(tags)).thenReturn(requiredSearch);
 
         micrometerMetricsCounters.incrementEventsProcessedCount(source, component);
@@ -91,7 +92,7 @@ public class MicrometerMetricsCountersTest {
         when(metricsConfiguration.micrometerMetricsEnabled()).thenReturn(true);
         when(compositeMeterRegistry.get(EVENTS_SUCCEEDED_COUNTER_NAME)).thenReturn(requiredSearch);
         when(requiredSearch.counter()).thenReturn(eventsReceivedCounter);
-        when(counterTagFactory.getCounterTags(source, component)).thenReturn(tags);
+        when(tagFactory.getSourceComponentTags(source, component)).thenReturn(tags);
         when(requiredSearch.tags(tags)).thenReturn(requiredSearch);
 
         micrometerMetricsCounters.incrementEventsSucceededCount(source, component);
@@ -111,7 +112,7 @@ public class MicrometerMetricsCountersTest {
         when(metricsConfiguration.micrometerMetricsEnabled()).thenReturn(true);
         when(compositeMeterRegistry.get(EVENTS_IGNORED_COUNTER_NAME)).thenReturn(requiredSearch);
         when(requiredSearch.counter()).thenReturn(eventsReceivedCounter);
-        when(counterTagFactory.getCounterTags(source, component)).thenReturn(tags);
+        when(tagFactory.getSourceComponentTags(source, component)).thenReturn(tags);
         when(requiredSearch.tags(tags)).thenReturn(requiredSearch);
 
         micrometerMetricsCounters.incrementEventsIgnoredCount(source, component);
@@ -131,7 +132,7 @@ public class MicrometerMetricsCountersTest {
         when(metricsConfiguration.micrometerMetricsEnabled()).thenReturn(true);
         when(compositeMeterRegistry.get(EVENTS_FAILED_COUNTER_NAME)).thenReturn(requiredSearch);
         when(requiredSearch.counter()).thenReturn(eventsReceivedCounter);
-        when(counterTagFactory.getCounterTags(source, component)).thenReturn(tags);
+        when(tagFactory.getSourceComponentTags(source, component)).thenReturn(tags);
         when(requiredSearch.tags(tags)).thenReturn(requiredSearch);
 
         micrometerMetricsCounters.incrementEventsFailedCount(source, component);
@@ -140,7 +141,7 @@ public class MicrometerMetricsCountersTest {
     }
 
     @Test
-    public void shouldNotCountAnythingIfMetricsDisabled() throws Exception {
+    public void shouldNotCountAnythingIfMetricsDisabled() {
         final String source = "some-source";
         final String component = "some-component";
 

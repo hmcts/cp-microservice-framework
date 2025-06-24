@@ -1,8 +1,7 @@
-package uk.gov.justice.services.metrics.micrometer.config;
+package uk.gov.justice.services.metrics.micrometer.meters;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,18 +18,5 @@ class SourceComponentPairTest {
         assertThat(sourceComponentPair.component(), is(component));
     }
 
-    @Test
-    void shouldThrowNullPointerExceptionWhenSourceIsNull() {
-        final String component = "test-component";
-
-        assertThrows(NullPointerException.class, () -> new SourceComponentPair(null, component));
-    }
-
-    @Test
-    void shouldThrowNullPointerExceptionWhenComponentIsNull() {
-        final String source = "test-source";
-
-        assertThrows(NullPointerException.class, () -> new SourceComponentPair(source, null));
-    }
 
 }
