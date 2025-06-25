@@ -1,5 +1,6 @@
 package uk.gov.justice.services.metrics.micrometer.counters;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -18,12 +19,14 @@ import java.util.List;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.search.MeterNotFoundException;
 import io.micrometer.core.instrument.search.RequiredSearch;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 
 @ExtendWith(MockitoExtension.class)
 public class MicrometerMetricsCountersTest {
@@ -36,6 +39,9 @@ public class MicrometerMetricsCountersTest {
 
     @Mock
     private TagFactory tagFactory;
+
+    @Mock
+    private Logger logger;
 
     @InjectMocks
     private MicrometerMetricsCounters micrometerMetricsCounters;
@@ -154,5 +160,29 @@ public class MicrometerMetricsCountersTest {
         micrometerMetricsCounters.incrementEventsReceivedCount(source, component);
 
         verifyNoInteractions(compositeMeterRegistry);
+    }
+
+    @Test
+    public void shouldLogWarningIfCounterNotFound() throws Exception {
+
+        final String source = "some-source";
+        final String component = "some-component";
+
+        final Counter eventsReceivedCounter = mock(Counter.class);
+        final RequiredSearch requiredSearch = mock(RequiredSearch.class);
+        final List<Tag> tags = List.of(Tag.of("some-key", "some-value"));
+
+        final MeterNotFoundException meterNotFoundException = mock(MeterNotFoundException.class);
+
+        when(metricsConfiguration.micrometerMetricsEnabled()).thenReturn(true);
+        when(compositeMeterRegistry.get(EVENTS_FAILED_COUNTER_NAME)).thenReturn(requiredSearch);
+        when(requiredSearch.counter()).thenReturn(eventsReceivedCounter);
+        when(tagFactory.getSourceComponentTags(source, component)).thenReturn(tags);
+        when(requiredSearch.tags(tags)).thenReturn(requiredSearch);
+        doThrow(meterNotFoundException).when(eventsReceivedCounter).increment();
+
+        micrometerMetricsCounters.incrementEventsFailedCount(source, component);
+
+        verify(logger).warn("Failed to find metrics counter meter 'framework.events.failed' with tags '[tag(some-key=some-value)]'");
     }
 }
