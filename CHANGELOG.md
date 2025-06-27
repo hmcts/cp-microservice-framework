@@ -4,6 +4,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+# [17.103.0-M15] - 2025-06-27
 ### Fixed
 - Fixed MeterNotFoundException thrown when looking up metrics meter with unknown tags
 
