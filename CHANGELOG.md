@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Changed
+- Update maven-framework-parent-pom to 17.103.0
+- Update framework-libraries to 17.103.0-M6
+
 # [17.103.0-M15] - 2025-06-27
 ### Fixed
 - Fixed MeterNotFoundException thrown when looking up metrics meter with unknown tags
