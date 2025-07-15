@@ -5,6 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
+# [17.103.0-M17] - 2025-07-15
+### Changed
+- Split EventErrorHandlingConfiguration into interface/implementation to allow event-store Integration Tests to run
+
 # [17.103.0-M16] - 2025-07-13
 ### Changed
 - Update maven-framework-parent-pom to 17.103.0

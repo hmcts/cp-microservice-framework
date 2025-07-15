@@ -10,10 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class EventErrorHandlingConfigurationTest {
+public class DefaultEventErrorHandlingConfigurationTest {
 
     @InjectMocks
-    private EventErrorHandlingConfiguration eventErrorHandlingConfiguration;
+    private DefaultEventErrorHandlingConfiguration eventErrorHandlingConfiguration;
 
     @Test
     public void shouldGetEventStreamSelfHealingEnabledBooleanFromJndi() throws Exception {
