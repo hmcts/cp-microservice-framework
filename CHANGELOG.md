@@ -5,55 +5,14 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
-# [17.103.0-M17] - 2025-07-15
+# [17.103.0] - 2025-07-16
 ### Changed
-- Split EventErrorHandlingConfiguration into interface/implementation to allow event-store Integration Tests to run
-
-# [17.103.0-M16] - 2025-07-13
-### Changed
-- Update maven-framework-parent-pom to 17.103.0
-- Update framework-libraries to 17.103.0-M6
-
-# [17.103.0-M15] - 2025-06-27
-### Fixed
-- Fixed MeterNotFoundException thrown when looking up metrics meter with unknown tags
-
-# [17.103.0-M14] - 2025-06-24
-### Changed
-- Add tags for counters
-
-# [17.103.0-M13] - 2025-06-23
-### Changed
-- Add source and component for micrometer counters
-
-# [17.103.0-M12] - 2025-06-20
-### Added
+- New Framework D version, to include error handling and error metrics
 - Register Micrometer Gauge with Global tags and jndi config for env 
-
-# [17.103.0-M11] - 2025-06-19
-### Added
-- TimerBean delay and interval configurations for statistic calculations
-
-# [17.103.0-M10] - 2025-06-18
-### Changed
+- Add tags for counters
+- Moved in Micrometer Metrics core classes
+- Metrics wildfly extension moved to cpp-platform-libraries
 - Update metrics names to match design document specification
-
-# [17.103.0-M9] - 2025-06-12
-### Changed
-- Update framework-libraries to 17.103.0-M5
-
-# [17.103.0-M8] - 2025-06-09
-### Changed
-- Only create AzureMonitorMeterRegistry if metrics are enabled
-### Fixed
-- Fix deployment error if azure connection string is not in jndi (whether metrics are enabled or not)
-
-# [17.103.0-M7] - 2025-06-05
-### Added
-- Add new gauge name: `framework.events.streams.gauges.total.unblocked.streams`
-
-# [17.103.0-M6] - 2025-06-03
-### Added
 - Add counters for:
   - `framework.events.streams.counters.events.received`
   - `framework.events.streams.counters.events.processed`
@@ -61,27 +20,20 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
   - `framework.events.streams.counters.events.ignored`
   - `framework.events.streams.counters.events.failed`
 - Define correct names for micrometer counters and gauges
-
-# [17.103.0-M5] - 2025-05-28
-### Changed
-- Moved in Micrometer Metrics core classes 
-- Metrics wildfly extension moved to cpp-platform-libraries
-### Added
+- Add new gauge name: `framework.events.streams.gauges.total.unblocked.streams`
 - New jndi values for metrics:
   - `azure.metrics.monitor.connection.string`
   - `micrometer.metrics.enabled`
-
-# [17.103.0-M4] - 2025-05-23
-### Changed
-- Update framework-libraries to 17.103.0-M3 for:
-  - Move of prometheus metrics to cpp-platform-libraries in with the new azure metrics
-### Added
-- Add micrometer counter base class
-
-# [17.103.0-M3] - 2025-05-22
-### Changed
+- Add source and component for micrometer counters
+- Move of prometheus metrics to cpp-platform-libraries in with the new azure metrics
+- Split EventErrorHandlingConfiguration into interface/implementation to allow event-store Integration Tests to run
 - Changed name of jndi value for self-healing from `event.error.handling.enabled` to `event.stream.self.healing.enabled`
 - Release file-service extraction changes (via framework-libraries)
+### Added
+- Add micrometer counter base class
+- TimerBean delay and interval configurations for statistic calculations
+### Fixed
+- Fix deployment error if azure connection string is not in jndi (whether metrics are enabled or not)
 
 ## [17.102.2] - 2025-04-16
 ### Changed
