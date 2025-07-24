@@ -30,7 +30,7 @@ public class MethodCodeGeneratorTest {
     public void shouldCreateMethodSpecForEvent() {
 
         final Event event = new Event("test.event", "http://justice.gov.uk/json/schema/test");
-        final EventSourceDefinition eventSourceDefinition = new EventSourceDefinition("test.service", true, new Location("jms:topic:test.event", empty(), empty()));
+        final EventSourceDefinition eventSourceDefinition = new EventSourceDefinition("test.service", true, new Location("jms:topic:test.event", null, null));
         final ClassNameAndMethodNameFactory classNameAndMethodNameFactory = mock(ClassNameAndMethodNameFactory.class);
         final String methodName = "postTestComponentTestEvent";
 

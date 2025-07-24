@@ -1,16 +1,22 @@
 package uk.gov.justice.subscription.domain.eventsource;
 
+import static java.util.Optional.ofNullable;
+
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Location {
 
     private final String jmsUri;
-    private final Optional<String> restUri;
-    private final Optional<String> dataSource;
+    private final String restUri;
+    private final String dataSource;
 
-    public Location(final String jmsUri,
-                    final Optional<String> restUri,
-                    final Optional<String> dataSource) {
+    @JsonCreator
+    public Location(@JsonProperty("jms_uri") final String jmsUri,
+                    @JsonProperty("rest_uri") final String restUri,
+                    @JsonProperty("data_source") final String dataSource) {
         this.jmsUri = jmsUri;
         this.restUri = restUri;
         this.dataSource = dataSource;
@@ -21,10 +27,10 @@ public class Location {
     }
 
     public Optional<String> getRestUri() {
-        return restUri;
+        return ofNullable(restUri);
     }
 
     public Optional<String> getDataSource() {
-        return dataSource;
+        return ofNullable(dataSource);
     }
 }
