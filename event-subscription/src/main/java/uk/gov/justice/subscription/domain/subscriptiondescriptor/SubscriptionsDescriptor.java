@@ -3,6 +3,9 @@ package uk.gov.justice.subscription.domain.subscriptiondescriptor;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class SubscriptionsDescriptor {
 
     private final String specVersion;
@@ -11,11 +14,12 @@ public class SubscriptionsDescriptor {
     private final int prioritisation;
     private final List<Subscription> subscriptions;
 
-    public SubscriptionsDescriptor(final String specVersion,
-                                   final String service,
-                                   final String serviceComponent,
-                                   final int prioritisation,
-                                   final List<Subscription> subscriptions) {
+    @JsonCreator
+    public SubscriptionsDescriptor(@JsonProperty("spec_version") final String specVersion,
+                                   @JsonProperty("service") final String service,
+                                   @JsonProperty("service_component") final String serviceComponent,
+                                   @JsonProperty("prioritisation") final int prioritisation,
+                                   @JsonProperty("subscription") final List<Subscription> subscriptions) {
         this.specVersion = specVersion;
         this.service = service;
         this.serviceComponent = serviceComponent;

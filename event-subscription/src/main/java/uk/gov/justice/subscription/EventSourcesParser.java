@@ -20,7 +20,7 @@ public class EventSourcesParser {
     private static final String EVENT_SOURCES_SCHEMA_PATH = "/json/schema/event-source-schema.json";
     private static final String EVENT_SOURCES = "event_sources";
     private static final TypeReference<HashMap<String, List<EventSourceDefinition>>> EVENT_SOURCES_TYPE_REF
-            = new TypeReference<HashMap<String, List<EventSourceDefinition>>>() {
+            = new TypeReference<>() {
     };
 
     private final YamlParser yamlParser;

@@ -17,7 +17,7 @@ public class UnifiedSearchDescriptorYamlReader {
     private static final String UNIFIED_SEARCH_SCHEMA_PATH = "/schema/unified-search-schema.json";
 
     private static final TypeReference<HashMap<String, UnifiedSearchDescriptor>> UNIFIED_SEARCH_DESCRIPTOR_TYPE_REF
-            = new TypeReference<HashMap<String, UnifiedSearchDescriptor>>() {
+            = new TypeReference<>() {
     };
 
     private final YamlParser yamlParser;

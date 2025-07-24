@@ -2,6 +2,9 @@ package uk.gov.justice.services.clients.unifiedsearch.core.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UnifiedSearchDescriptor {
 
     private final String name;
@@ -10,11 +13,12 @@ public class UnifiedSearchDescriptor {
     private final String serviceComponent;
     private final List<Event> events;
 
-    public UnifiedSearchDescriptor(final String name,
-                                   final String specVersion,
-                                   final String service,
-                                   final String serviceComponent,
-                                   final List<Event> events) {
+    @JsonCreator
+    public UnifiedSearchDescriptor(@JsonProperty("name") final String name,
+                                   @JsonProperty("spec_version") final String specVersion,
+                                   @JsonProperty("service") final String service,
+                                   @JsonProperty("service_component") final String serviceComponent,
+                                   @JsonProperty("event") final List<Event> events) {
         this.name = name;
         this.specVersion = specVersion;
         this.service = service;

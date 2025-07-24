@@ -33,6 +33,6 @@ public final class LocationBuilder {
     }
 
     public Location build() {
-        return new Location(jmsUri, ofNullable(restUri), ofNullable(dataSource));
+        return new Location(jmsUri, restUri, dataSource);
     }
 }

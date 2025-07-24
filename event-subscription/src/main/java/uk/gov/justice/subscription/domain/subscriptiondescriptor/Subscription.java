@@ -3,6 +3,9 @@ package uk.gov.justice.subscription.domain.subscriptiondescriptor;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Subscription {
 
     private final String name;
@@ -10,10 +13,11 @@ public class Subscription {
     private final String eventSourceName;
     private final int prioritisation;
 
-    public Subscription(final String name,
-                        final List<Event> events,
-                        final String eventSourceName,
-                        final int prioritisation) {
+    @JsonCreator
+    public Subscription(@JsonProperty("name") final String name,
+                        @JsonProperty("event") final List<Event> events,
+                        @JsonProperty("event_source_name") final String eventSourceName,
+                        @JsonProperty("prioritisation") final int prioritisation) {
         this.name = name;
         this.events = events;
         this.eventSourceName = eventSourceName;

@@ -29,8 +29,8 @@ public class DefaultEventSourceDefinitionFactory {
                 isDefault,
                 new Location(
                         "JMS URI not used",
-                        empty(),
-                        of(dataSourceName)
+                        null,
+                        dataSourceName
                 )
         );
     }
