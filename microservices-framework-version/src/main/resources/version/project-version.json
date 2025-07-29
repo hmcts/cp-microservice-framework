@@ -1,0 +1,6 @@
+{
+    "projectName": "Microservices Framework",
+    "displayOrder": 30,
+    "projectVersion": "${project.version}",
+    "buildTimestamp": "${maven.build.timestamp}"
+}

@@ -42,11 +42,12 @@
         <module>persistence</module>
         <module>raml-lint-check</module>
         <module>test-utils</module>
+        <module>microservices-framework-version</module>
     </modules>
     
     <properties>
         <cpp.repo.name>microservice_framework</cpp.repo.name>
-        <framework-libraries.version>17.103.0</framework-libraries.version>
+        <framework-libraries.version>17.104.0-M3</framework-libraries.version>
     </properties>
 
     <dependencyManagement>
