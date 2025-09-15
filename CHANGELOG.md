@@ -4,6 +4,11 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+# [17.104.0-M2] - 2025-09-15
+### Changed
+- Update framework-libraries for:
+  - TimerServiceManager now returns created Timer  
+
 # [17.104.0-M1] - 2025-07-29
 ### Changed
 - Updated file-service to 17.104.0-M1
