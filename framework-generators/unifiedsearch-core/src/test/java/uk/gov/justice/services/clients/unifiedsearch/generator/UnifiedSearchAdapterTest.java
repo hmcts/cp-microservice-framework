@@ -1,7 +1,6 @@
 package uk.gov.justice.services.clients.unifiedsearch.generator;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -9,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.withMetadataEnvelopedFrom;
 
 import uk.gov.justice.services.clients.unifiedsearch.core.UnifiedSearchTransformerCache;
@@ -56,10 +56,10 @@ public class UnifiedSearchAdapterTest {
 
         final JsonEnvelope jsonEnvelope = envelopeFrom(
                 metadata,
-                createObjectBuilder().build());
+                jsonBuilderFactory.createObjectBuilder().build());
 
         final UnifiedSearchIndexer unifiedSearchIndexer = mock(UnifiedSearchIndexer.class);
-        final JsonObject transformedEvent = createObjectBuilder().add("transformed", "event").build();
+        final JsonObject transformedEvent = jsonBuilderFactory.createObjectBuilder().add("transformed", "event").build();
 
         when(unifiedSearchTransformerCache.getTransformerConfigBy(eventName)).thenReturn(transformerOperations);
         when(transformerApi.transformWithJolt(transformerOperations, jsonEnvelope.payloadAsJsonObject())).thenReturn(transformedEvent);

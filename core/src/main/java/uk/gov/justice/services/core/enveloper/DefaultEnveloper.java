@@ -10,6 +10,7 @@ import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
 import static uk.gov.justice.services.messaging.JsonMetadata.STREAM;
 import static uk.gov.justice.services.messaging.JsonMetadata.STREAM_ID;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.services.common.converter.ObjectToJsonValueConverter;
@@ -30,7 +31,6 @@ import java.util.function.Function;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -104,7 +104,7 @@ public class DefaultEnveloper implements Enveloper {
         final JsonObjectBuilder metadataBuilder = JsonObjects.createObjectBuilderWithFilter(metadata.asJsonObject(),
                 x -> !Arrays.asList(ID, NAME, CAUSATION, STREAM).contains(x));
 
-        metadata.streamId().ifPresent(uuid -> metadataBuilder.add(STREAM, Json.createObjectBuilder().add(STREAM_ID, uuid.toString()).build()));
+        metadata.streamId().ifPresent(uuid -> metadataBuilder.add(STREAM, jsonBuilderFactory.createObjectBuilder().add(STREAM_ID, uuid.toString()).build()));
 
         final JsonObject jsonObject = metadataBuilder
                 .add(ID, UUID.randomUUID().toString())
@@ -117,7 +117,7 @@ public class DefaultEnveloper implements Enveloper {
     }
 
     private JsonArray createCausation(final Metadata metadata) {
-        final JsonArrayBuilder causation = Json.createArrayBuilder();
+        final JsonArrayBuilder causation = jsonBuilderFactory.createArrayBuilder();
 
         if (metadata.asJsonObject().containsKey(CAUSATION)) {
             metadata.asJsonObject().getJsonArray(CAUSATION).forEach(causation::add);

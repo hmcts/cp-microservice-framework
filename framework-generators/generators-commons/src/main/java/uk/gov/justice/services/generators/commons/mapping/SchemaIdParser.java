@@ -2,6 +2,7 @@ package uk.gov.justice.services.generators.commons.mapping;
 
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 import uk.gov.justice.services.messaging.JsonObjects;
 
@@ -32,7 +33,7 @@ public class SchemaIdParser {
     }
 
     private Optional<String> schemaIdFrom(final String schemaJson, final MimeType mimeType) {
-        try (final JsonReader reader = Json.createReader(new StringReader(schemaJson))) {
+        try (final JsonReader reader = jsonReaderFactory.createReader(new StringReader(schemaJson))) {
             final JsonObject jsonObject = reader.readObject();
             final Optional<String> schemaId = JsonObjects.getString(jsonObject, "id");
 

@@ -5,8 +5,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -29,6 +27,7 @@ import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.VERSION;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonObject;
 import static uk.gov.justice.services.messaging.JsonObjects.getString;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
 import uk.gov.justice.services.adapter.rest.parameter.DefaultParameter;
@@ -88,7 +87,7 @@ public class RestEnvelopeBuilderTest {
     @Test
     public void shouldAddInitialPayload() throws Exception {
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
                 .add("test", "value")
                 .build());
 
@@ -102,12 +101,12 @@ public class RestEnvelopeBuilderTest {
 
         final JsonEnvelope envelope = builderWithDefaultAction()
                 .withInitialPayload(
-                        Optional.of(createObjectBuilder()
+                        Optional.of(jsonBuilderFactory.createObjectBuilder()
                                 .add("test", "value")
                                 .build()))
                 .build();
 
-        final JsonObject expectedPayload = createObjectBuilder()
+        final JsonObject expectedPayload = jsonBuilderFactory.createObjectBuilder()
                 .add("test", "value")
                 .build();
 
@@ -190,18 +189,18 @@ public class RestEnvelopeBuilderTest {
 
         final String payloadCausationId = randomUUID().toString();
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, PAYLOAD_METADATA_ID.toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CONTEXT, createObjectBuilder()
+                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
                                 .add(SESSION_ID, UUID_SESSION_ID.toString())
                                 .add(USER_ID, UUID_USER_ID.toString())
                         )
-                        .add(CAUSATION, createArrayBuilder().add(payloadCausationId))
-                        .add(CORRELATION, createObjectBuilder()
+                        .add(CAUSATION, jsonBuilderFactory.createArrayBuilder().add(payloadCausationId))
+                        .add(CORRELATION, jsonBuilderFactory.createObjectBuilder()
                                 .add(CLIENT_ID, UUID_CLIENT_CORRELATION_ID.toString()))
-                        .add(STREAM, createObjectBuilder()
+                        .add(STREAM, jsonBuilderFactory.createObjectBuilder()
                                 .add(STREAM_ID, UUID_STREAM_ID.toString())
                                 .add(VERSION, POSITION_VALUE))
                 )
@@ -236,11 +235,11 @@ public class RestEnvelopeBuilderTest {
     @Test
     public void shouldMergeHeaderWithPayloadMetadata() throws Exception {
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, PAYLOAD_METADATA_ID.toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(STREAM, createObjectBuilder()
+                        .add(STREAM, jsonBuilderFactory.createObjectBuilder()
                                 .add(STREAM_ID, UUID_STREAM_ID.toString())
                                 .add(VERSION, POSITION_VALUE))
                 )
@@ -275,11 +274,11 @@ public class RestEnvelopeBuilderTest {
         final List<UUID> uuids = asList(randomUUID(), randomUUID());
         final String uuidsCsv = String.join(",", uuids.stream().map(UUID::toString).collect(toList()));
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, PAYLOAD_METADATA_ID.toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(STREAM, createObjectBuilder()
+                        .add(STREAM, jsonBuilderFactory.createObjectBuilder()
                                 .add(STREAM_ID, UUID_STREAM_ID.toString())
                                 .add(VERSION, POSITION_VALUE))
                 )
@@ -315,11 +314,11 @@ public class RestEnvelopeBuilderTest {
         final String headerUserId = randomUUID().toString();
 
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CONTEXT, createObjectBuilder()
+                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
                                 .add(USER_ID, payloadUserId)
                         ))
                 .build());
@@ -340,11 +339,11 @@ public class RestEnvelopeBuilderTest {
 
         final String payloadCausationId = randomUUID().toString();
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CAUSATION, createArrayBuilder().add(payloadCausationId))
+                        .add(CAUSATION, jsonBuilderFactory.createArrayBuilder().add(payloadCausationId))
                 )
                 .build());
 
@@ -362,11 +361,11 @@ public class RestEnvelopeBuilderTest {
     @Test
     public void shouldNotFailIfUserIdIsSetInBothHeaderAndPayloadAndAreEqual() throws Exception {
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CONTEXT, createObjectBuilder()
+                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
                                 .add(USER_ID, UUID_USER_ID.toString())
                         ))
                 .build());
@@ -388,11 +387,11 @@ public class RestEnvelopeBuilderTest {
         final String headerSessionId = randomUUID().toString();
 
         final Optional<JsonObject>
-                initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+                initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CONTEXT, createObjectBuilder()
+                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
                                 .add(SESSION_ID, payloadSessionId)
                         ))
                 .build());
@@ -412,11 +411,11 @@ public class RestEnvelopeBuilderTest {
     public void shouldNotFailIfSessionIdIsSetInBothHeaderAndPayloadAndAreEqual() throws Exception {
 
         final Optional<JsonObject>
-                initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+                initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CONTEXT, createObjectBuilder()
+                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
                                 .add(SESSION_ID, UUID_SESSION_ID.toString())
                         ))
                 .build());
@@ -439,11 +438,11 @@ public class RestEnvelopeBuilderTest {
 
 
         final Optional<JsonObject>
-                initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+                initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CORRELATION, createObjectBuilder()
+                        .add(CORRELATION, jsonBuilderFactory.createObjectBuilder()
                                 .add(CLIENT_ID, payloadClientId)
                         ))
                 .build());
@@ -463,11 +462,11 @@ public class RestEnvelopeBuilderTest {
     public void shouldNotFailIfClientCorrelationIdIsSetInBothHeaderAndPayloadAndAreEqual() throws Exception {
 
         final Optional<JsonObject>
-                initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+                initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, randomUUID().toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(CORRELATION, createObjectBuilder()
+                        .add(CORRELATION, jsonBuilderFactory.createObjectBuilder()
                                 .add(CLIENT_ID, UUID_CLIENT_CORRELATION_ID.toString())
                         ))
                 .build());
@@ -490,11 +489,11 @@ public class RestEnvelopeBuilderTest {
         final String value_1 = "external value 1";
         final String value_2 = "external value 2";
 
-        final Optional<JsonObject> initialPayload = Optional.of(createObjectBuilder()
-                .add(METADATA, createObjectBuilder()
+        final Optional<JsonObject> initialPayload = Optional.of(jsonBuilderFactory.createObjectBuilder()
+                .add(METADATA, jsonBuilderFactory.createObjectBuilder()
                         .add(ID, PAYLOAD_METADATA_ID.toString())
                         .add(NAME, PAYLOAD_NAME)
-                        .add(STREAM, createObjectBuilder()
+                        .add(STREAM, jsonBuilderFactory.createObjectBuilder()
                                 .add(STREAM_ID, UUID_STREAM_ID.toString()))
                         .add(external_1, value_1)
                         .add(external_2, value_2)

@@ -1,7 +1,6 @@
 package uk.gov.justice.services.messaging.spi;
 
 import static com.jayway.jsonassert.JsonAssert.with;
-import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,6 +22,7 @@ import static uk.gov.justice.services.messaging.JsonMetadata.STREAM;
 import static uk.gov.justice.services.messaging.JsonMetadata.STREAM_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.VERSION;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.messaging.spi.DefaultJsonMetadata.metadataBuilder;
 import static uk.gov.justice.services.messaging.spi.DefaultJsonMetadata.metadataBuilderFrom;
 
@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.google.common.collect.ImmutableList;
@@ -195,27 +194,27 @@ public class DefaultJsonMetadataTest {
     @Test
     public void shouldThrowExceptionIfIdIsMissing() throws Exception {
 
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(createObjectBuilder().build()).build());
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().build()).build());
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNotUUID() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(createObjectBuilder().add(ID, "blah").build()).build());
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().add(ID, "blah").build()).build());
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNull() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(createObjectBuilder().add(ID, NULL).build()).build());
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().add(ID, NULL).build()).build());
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsMissing() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(createObjectBuilder().add(ID, UUID_ID).build()).build());
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().add(ID, UUID_ID).build()).build());
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsEmpty() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(createObjectBuilder()
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder()
                 .add(ID, UUID_ID)
                 .add(NAME, "")
                 .build()).build());
@@ -223,7 +222,7 @@ public class DefaultJsonMetadataTest {
 
     @Test
     public void shouldThrowExceptionIfNameIsNull() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(createObjectBuilder()
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder()
                 .add(ID, UUID_ID)
                 .add(NAME, NULL)
                 .build()
@@ -261,21 +260,21 @@ public class DefaultJsonMetadataTest {
     private Metadata metadata(final String id, final String uuidClientCorrelation, final String uuidCausation, final String uuidUserId,
                               final String uuidSessionId, final String uuidStreamId, final String messageName, final Long streamVersion, final String source) {
         return metadataBuilderFrom(
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add(ID, id)
                         .add(NAME, messageName)
                         .add(SOURCE, source)
-                        .add(CORRELATION, createObjectBuilder()
+                        .add(CORRELATION, jsonBuilderFactory.createObjectBuilder()
                                 .add(CLIENT_ID, uuidClientCorrelation)
                         )
-                        .add(CAUSATION, Json.createArrayBuilder()
+                        .add(CAUSATION, jsonBuilderFactory.createArrayBuilder()
                                 .add(uuidCausation)
                         )
-                        .add(CONTEXT, createObjectBuilder()
+                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
                                 .add(USER_ID, uuidUserId)
                                 .add(SESSION_ID, uuidSessionId)
                         )
-                        .add(STREAM, createObjectBuilder()
+                        .add(STREAM, jsonBuilderFactory.createObjectBuilder()
                                 .add(STREAM_ID, uuidStreamId)
                                 .add(VERSION, streamVersion)
                         )

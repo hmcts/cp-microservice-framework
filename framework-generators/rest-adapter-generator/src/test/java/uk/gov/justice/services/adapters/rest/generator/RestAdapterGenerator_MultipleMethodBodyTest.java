@@ -1,6 +1,5 @@
 package uk.gov.justice.services.adapters.rest.generator;
 
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,6 +13,7 @@ import static uk.gov.justice.services.generators.test.utils.builder.HttpActionBu
 import static uk.gov.justice.services.generators.test.utils.builder.RamlBuilder.restRamlWithCommandApiDefaults;
 import static uk.gov.justice.services.generators.test.utils.builder.ResourceBuilder.resource;
 import static uk.gov.justice.services.generators.test.utils.config.GeneratorConfigUtil.configurationWithBasePackage;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.methodsOf;
 
 import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 
 public class RestAdapterGenerator_MultipleMethodBodyTest extends BaseRestAdapterGeneratorTest {
 
-    private static final JsonObject NOT_USED_JSONOBJECT = createObjectBuilder()
+    private static final JsonObject NOT_USED_JSONOBJECT = jsonBuilderFactory.createObjectBuilder()
             .add("name", "Frederick Bloggs")
             .build();
 

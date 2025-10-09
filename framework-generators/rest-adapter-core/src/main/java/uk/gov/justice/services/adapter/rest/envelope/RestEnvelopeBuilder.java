@@ -12,6 +12,7 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilderWithFilter;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonObject;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
 import uk.gov.justice.services.adapter.rest.parameter.Parameter;
@@ -26,7 +27,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.core.HttpHeaders;
@@ -104,7 +104,7 @@ public class RestEnvelopeBuilder {
     private JsonObject payload() {
         final JsonObjectBuilder payloadBuilder = initialPayload
                 .map(jsonObject -> createObjectBuilderWithFilter(jsonObject, key -> !key.equals(METADATA)))
-                .orElse(Json.createObjectBuilder());
+                .orElse(jsonBuilderFactory.createObjectBuilder());
 
         params.ifPresent(parameters ->
                 parameters.forEach(param -> {

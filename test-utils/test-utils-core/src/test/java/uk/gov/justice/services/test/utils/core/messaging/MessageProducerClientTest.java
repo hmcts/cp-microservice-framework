@@ -1,7 +1,6 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnvelopeFactory.createEnvelope;
 import static uk.gov.justice.services.test.utils.core.messaging.QueueUriProvider.queueUri;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.getValueOfField;
@@ -203,7 +203,7 @@ public class MessageProducerClientTest {
         final String commandName = "some-command";
         final JsonEnvelope jsonEnvelope = createEnvelope(
                 commandName,
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("propertyName", "value")
                         .build());
 
@@ -239,7 +239,7 @@ public class MessageProducerClientTest {
         final String commandName = "some-command";
         final JsonEnvelope jsonEnvelope = createEnvelope(
                 commandName,
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("propertyName", "value")
                         .build());
 

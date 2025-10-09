@@ -1,9 +1,9 @@
 package uk.gov.justice.services.adapter.messaging;
 
-import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.messaging.logging.JmsMessageLoggerHelper;
@@ -52,7 +52,7 @@ public class JmsLoggerMetadataAdder {
         parameterChecker.check(parameters);
         final TextMessage message = (TextMessage) parameters[0];
 
-        final JsonObjectBuilder builder = createObjectBuilder();
+        final JsonObjectBuilder builder = jsonBuilderFactory.createObjectBuilder();
 
         addServiceContextNameIfPresent(builder);
 

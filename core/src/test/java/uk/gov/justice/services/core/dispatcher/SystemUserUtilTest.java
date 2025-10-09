@@ -2,13 +2,13 @@ package uk.gov.justice.services.core.dispatcher;
 
 import static co.unruly.matchers.OptionalMatchers.contains;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
@@ -46,7 +46,7 @@ public class SystemUserUtilTest {
                                 .withId(id)
                                 .withName(name)
                                 .withUserId("someIdToBeReplaced"),
-                        createObjectBuilder().add("numName", BigDecimal.valueOf(123)))
+                        jsonBuilderFactory.createObjectBuilder().add("numName", BigDecimal.valueOf(123)))
         );
 
         assertThat(returnedEnvelope.metadata().id(), is(id));
@@ -63,6 +63,6 @@ public class SystemUserUtilTest {
                 envelopeFrom(metadataBuilder()
                         .withId(randomUUID())
                         .withName("name"),
-                        createObjectBuilder())));
+                        jsonBuilderFactory.createObjectBuilder())));
     }
 }

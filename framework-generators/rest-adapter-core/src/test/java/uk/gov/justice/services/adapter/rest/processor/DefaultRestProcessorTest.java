@@ -3,7 +3,6 @@ package uk.gov.justice.services.adapter.rest.processor;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,6 +13,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
@@ -56,7 +56,7 @@ public class DefaultRestProcessorTest {
     private static final String NOT_USED_RESPONSE_STRATEGY_NAME = "notUsedName";
     private static final List<Parameter> NOT_USED_PATH_PARAMS = emptyList();
 
-    private static final Optional<JsonObject> NOT_USED_PAYLOAD = Optional.of(createObjectBuilder().build());
+    private static final Optional<JsonObject> NOT_USED_PAYLOAD = Optional.of(jsonBuilderFactory.createObjectBuilder().build());
     private static final ResteasyHttpHeaders NOT_USED_HEADERS = headersWithUserId("123");
 
     @Mock
@@ -101,7 +101,7 @@ public class DefaultRestProcessorTest {
         final String payloadIdValue = "payloadIdValue1";
         final List<Parameter> pathParams = singletonList(DefaultParameter.valueOf("paramName", "someParamValue", ParameterType.STRING));
 
-        final JsonObject payload = createObjectBuilder().add("payloadId", payloadIdValue).build();
+        final JsonObject payload = jsonBuilderFactory.createObjectBuilder().add("payloadId", payloadIdValue).build();
 
         when(responseStrategyCache.responseStrategyOf(anyString())).thenReturn(responseStrategy);
 
