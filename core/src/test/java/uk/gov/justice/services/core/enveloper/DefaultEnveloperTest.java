@@ -2,7 +2,6 @@ package uk.gov.justice.services.core.enveloper;
 
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -11,6 +10,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.domain.annotation.Event;
 import uk.gov.justice.services.common.converter.ObjectToJsonValueConverter;
@@ -59,7 +59,7 @@ public class DefaultEnveloperTest {
                                 .withName(TEST_EVENT_NAME)
                                 .withStreamId(STREAM_ID)
                                 .withCausation(OLD_CAUSATION_ID),
-                        createObjectBuilder()))
+                        jsonBuilderFactory.createObjectBuilder()))
                 .apply(new TestEvent("somePayloadValue"));
 
         assertThat(event.metadata().id(), notNullValue());
@@ -74,7 +74,7 @@ public class DefaultEnveloperTest {
 
     @Test
     public void shouldThrowExceptionOnNullEvent() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> enveloper.withMetadataFrom(envelopeFrom(metadataBuilder().withId(randomUUID()).withName("name"), createObjectBuilder())).apply(null));
+        assertThrows(IllegalArgumentException.class, () -> enveloper.withMetadataFrom(envelopeFrom(metadataBuilder().withId(randomUUID()).withName("name"), jsonBuilderFactory.createObjectBuilder())).apply(null));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class DefaultEnveloperTest {
                                 .withId(COMMAND_UUID)
                                 .withName(TEST_EVENT_NAME)
                                 .withCausation(OLD_CAUSATION_ID),
-                        createObjectBuilder()), TEST_NAME)
+                        jsonBuilderFactory.createObjectBuilder()), TEST_NAME)
                 .apply(new TestEvent());
 
 
@@ -106,7 +106,7 @@ public class DefaultEnveloperTest {
                                 .withId(COMMAND_UUID)
                                 .withName(TEST_EVENT_NAME)
                                 .withCausation(OLD_CAUSATION_ID),
-                        createObjectBuilder()), TEST_NAME)
+                        jsonBuilderFactory.createObjectBuilder()), TEST_NAME)
                 .apply(null);
 
         assertThat(event.payload(), is(JsonValue.NULL));
@@ -126,7 +126,7 @@ public class DefaultEnveloperTest {
                                         .withId(COMMAND_UUID)
                                         .withName(TEST_EVENT_NAME)
                                         .withCausation(OLD_CAUSATION_ID),
-                                createObjectBuilder()), TEST_NAME)
+                                jsonBuilderFactory.createObjectBuilder()), TEST_NAME)
                 .apply(null);
 
         final IncompatibleJsonPayloadTypeException incompatibleJsonPayloadTypeException = assertThrows(IncompatibleJsonPayloadTypeException.class, event::payloadAsJsonObject);
@@ -147,7 +147,7 @@ public class DefaultEnveloperTest {
                                         .withId(COMMAND_UUID)
                                         .withName(TEST_EVENT_NAME)
                                         .withCausation(OLD_CAUSATION_ID),
-                                createObjectBuilder()), TEST_NAME)
+                                jsonBuilderFactory.createObjectBuilder()), TEST_NAME)
                 .apply(null);
 
         final IncompatibleJsonPayloadTypeException incompatibleJsonPayloadTypeException = assertThrows(IncompatibleJsonPayloadTypeException.class, event::payloadAsJsonArray);
@@ -169,7 +169,7 @@ public class DefaultEnveloperTest {
                                         .withId(COMMAND_UUID)
                                         .withName(TEST_EVENT_NAME)
                                         .withCausation(OLD_CAUSATION_ID),
-                                createObjectBuilder()), TEST_NAME)
+                                jsonBuilderFactory.createObjectBuilder()), TEST_NAME)
                 .apply(null);
 
         final IncompatibleJsonPayloadTypeException incompatibleJsonPayloadTypeException = assertThrows(IncompatibleJsonPayloadTypeException.class, event::payloadAsJsonNumber);
@@ -189,7 +189,7 @@ public class DefaultEnveloperTest {
                                         .withId(COMMAND_UUID)
                                         .withName(TEST_EVENT_NAME)
                                         .withCausation(OLD_CAUSATION_ID),
-                                createObjectBuilder()), TEST_NAME)
+                                jsonBuilderFactory.createObjectBuilder()), TEST_NAME)
                 .apply(null);
 
         final IncompatibleJsonPayloadTypeException incompatibleJsonPayloadTypeException = assertThrows(IncompatibleJsonPayloadTypeException.class, event::payloadAsJsonString);
@@ -210,7 +210,7 @@ public class DefaultEnveloperTest {
                         metadataBuilder()
                                 .withId(COMMAND_UUID)
                                 .withName(TEST_EVENT_NAME),
-                        createObjectBuilder()))
+                        jsonBuilderFactory.createObjectBuilder()))
                 .apply(new TestEvent());
 
 
@@ -229,7 +229,7 @@ public class DefaultEnveloperTest {
                         envelopeFrom(
                                 metadataBuilder()
                                         .withId(randomUUID())
-                                        .withName("name"), createObjectBuilder()))
+                                        .withName("name"), jsonBuilderFactory.createObjectBuilder()))
                         .apply("InvalidEventObject")
 
         );
@@ -248,7 +248,7 @@ public class DefaultEnveloperTest {
                                 .withName(TEST_EVENT_NAME)
                                 .withStreamId(randomUUID())
                                 .withVersion(123l),
-                        createObjectBuilder()))
+                        jsonBuilderFactory.createObjectBuilder()))
                 .apply(new TestEvent());
 
         assertThat(event.metadata().position(), is(empty()));
@@ -265,7 +265,7 @@ public class DefaultEnveloperTest {
                                 .withName(TEST_EVENT_NAME)
                                 .withStreamId(randomUUID())
                                 .withVersion(123l),
-                        createObjectBuilder()), "new.name")
+                        jsonBuilderFactory.createObjectBuilder()), "new.name")
                 .apply(new TestEvent());
 
         assertThat(event.metadata().position(), is(empty()));

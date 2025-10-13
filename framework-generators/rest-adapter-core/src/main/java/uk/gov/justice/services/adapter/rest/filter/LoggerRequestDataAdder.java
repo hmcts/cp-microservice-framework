@@ -1,6 +1,5 @@
 package uk.gov.justice.services.adapter.rest.filter;
 
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -14,6 +13,7 @@ import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.messaging.logging.LoggerUtils.trace;
 
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
@@ -63,7 +63,7 @@ public class LoggerRequestDataAdder {
     public void addToMdc(final ContainerRequestContext requestContext, final String componentName) throws IOException {
         trace(logger, () -> "Adding request data to MDC");
 
-        final JsonObjectBuilder builder = createObjectBuilder();
+        final JsonObjectBuilder builder = jsonBuilderFactory.createObjectBuilder();
         final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
         Optional.ofNullable(serviceContextNameProvider.getServiceContextName())
@@ -102,14 +102,14 @@ public class LoggerRequestDataAdder {
         final Optional<String> userId = userIdFromHeaderOrMetadataIfPresent(headers, payloadMetadata);
 
         if (id.isPresent() || name.isPresent() || correlationId.isPresent() || sessionId.isPresent() || userId.isPresent()) {
-            final JsonObjectBuilder metadataBuilder = createObjectBuilder();
+            final JsonObjectBuilder metadataBuilder = jsonBuilderFactory.createObjectBuilder();
 
             id.ifPresent(value -> metadataBuilder.add("id", value));
             name.ifPresent(value -> metadataBuilder.add("name", value));
-            correlationId.ifPresent(value -> metadataBuilder.add("correlation", createObjectBuilder().add("client", value)));
+            correlationId.ifPresent(value -> metadataBuilder.add("correlation", jsonBuilderFactory.createObjectBuilder().add("client", value)));
 
             if (sessionId.isPresent() || userId.isPresent()) {
-                final JsonObjectBuilder contextBuilder = createObjectBuilder();
+                final JsonObjectBuilder contextBuilder = jsonBuilderFactory.createObjectBuilder();
 
                 sessionId.ifPresent(value -> contextBuilder.add("session", value));
                 userId.ifPresent(value -> contextBuilder.add("user", value));

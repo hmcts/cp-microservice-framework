@@ -1,7 +1,6 @@
 package uk.gov.justice.services.core.interceptor;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -10,6 +9,7 @@ import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
 import static uk.gov.justice.services.core.interceptor.InterceptorContext.interceptorContextWithInput;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.common.MemberInjectionPoint.injectionPointWith;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
@@ -87,7 +87,7 @@ public class InterceptorChainProcessorProducerTest {
         dispatcherCache.dispatcherFor(injectionPoint).register(envelopeRecordingHandler);
         final InterceptorChainProcessor processor = interceptorChainProcessorProducer.produceProcessor(injectionPoint);
 
-        final JsonEnvelope dispatchedEnvelope = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(ACTION_NAME), createObjectBuilder());
+        final JsonEnvelope dispatchedEnvelope = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(ACTION_NAME), jsonBuilderFactory.createObjectBuilder());
 
         processor.process(interceptorContextWithInput(dispatchedEnvelope));
 
@@ -103,7 +103,7 @@ public class InterceptorChainProcessorProducerTest {
         dispatcherCache.dispatcherFor(injectionPoint).register(envelopeRecordingHandler);
         final InterceptorChainProcessor processor = interceptorChainProcessorProducer.produceProcessor(injectionPoint);
 
-        final JsonEnvelope dispatchedEnvelope = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(ACTION_NAME), createObjectBuilder());
+        final JsonEnvelope dispatchedEnvelope = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(ACTION_NAME), jsonBuilderFactory.createObjectBuilder());
 
         processor.process(interceptorContextWithInput(dispatchedEnvelope));
 
@@ -123,7 +123,7 @@ public class InterceptorChainProcessorProducerTest {
 
         final InterceptorChainProcessor processor = interceptorChainProcessorProducer.produceLocalProcessor(component);
 
-        final JsonEnvelope dispatchedEnvelope = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(ACTION_NAME), createObjectBuilder());
+        final JsonEnvelope dispatchedEnvelope = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(ACTION_NAME), jsonBuilderFactory.createObjectBuilder());
 
         processor.process(interceptorContextWithInput(dispatchedEnvelope));
 

@@ -5,6 +5,7 @@ import static uk.gov.justice.services.messaging.JsonObjects.getLong;
 import static uk.gov.justice.services.messaging.JsonObjects.getString;
 import static uk.gov.justice.services.messaging.JsonObjects.getUUID;
 import static uk.gov.justice.services.messaging.JsonObjects.getUUIDs;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.messaging.JsonMetadata;
@@ -18,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonString;
@@ -205,7 +205,7 @@ public class DefaultJsonMetadata extends JsonMetadata {
 
         @Override
         public MetadataBuilder withCausation(final UUID... uuid) {
-            final JsonArrayBuilder causationArray = Json.createArrayBuilder();
+            final JsonArrayBuilder causationArray = jsonBuilderFactory.createArrayBuilder();
             for (UUID id : uuid) {
                 causationArray.add(id.toString());
             }

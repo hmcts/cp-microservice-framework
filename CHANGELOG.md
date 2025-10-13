@@ -4,11 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
-                  
-
-# [17.103.1-M1] - 2025-11-14
 ### Changed
-- EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
+- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
 
 # [17.103.0] - 2025-07-16
 ### Changed

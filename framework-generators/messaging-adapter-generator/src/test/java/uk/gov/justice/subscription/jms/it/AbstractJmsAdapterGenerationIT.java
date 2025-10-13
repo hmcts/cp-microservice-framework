@@ -1,7 +1,7 @@
 package uk.gov.justice.subscription.jms.it;
 
-import static javax.json.Json.createObjectBuilder;
 import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 
@@ -65,7 +65,7 @@ public abstract class AbstractJmsAdapterGenerationIT {
     }
 
     protected void sendEnvelope(String metadataId, String commandName, Destination queue) throws JMSException {
-        sendEnvelope(metadataId, commandName, queue, createObjectBuilder().build());
+        sendEnvelope(metadataId, commandName, queue, jsonBuilderFactory.createObjectBuilder().build());
     }
 
     protected void sendEnvelope(String metadataId, String commandName, Destination queue, JsonObject payload) throws JMSException {

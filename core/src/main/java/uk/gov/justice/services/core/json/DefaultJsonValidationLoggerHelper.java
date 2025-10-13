@@ -1,8 +1,7 @@
 package uk.gov.justice.services.core.json;
 
 import static java.lang.String.join;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class DefaultJsonValidationLoggerHelper implements JsonValidationLoggerHe
 
     private JsonObject buildResponse(final ValidationException validationException) {
 
-        final JsonObjectBuilder builder = createObjectBuilder();
+        final JsonObjectBuilder builder = jsonBuilderFactory.createObjectBuilder();
 
         Optional.ofNullable(validationException.getMessage())
                 .ifPresent(message -> builder.add("message", message));
@@ -44,7 +43,7 @@ public class DefaultJsonValidationLoggerHelper implements JsonValidationLoggerHe
         Optional.ofNullable(validationException.getPointerToViolation())
                 .ifPresent(violation -> builder.add("violation", violation));
 
-        final JsonArrayBuilder arrayBuilder = createArrayBuilder();
+        final JsonArrayBuilder arrayBuilder = jsonBuilderFactory.createArrayBuilder();
         validationException.getCausingExceptions()
                 .forEach(exception -> arrayBuilder.add(buildResponse(exception)));
         builder.add("causingExceptions", arrayBuilder.build());

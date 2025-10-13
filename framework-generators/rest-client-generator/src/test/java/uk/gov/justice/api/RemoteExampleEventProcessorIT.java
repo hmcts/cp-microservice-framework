@@ -17,13 +17,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
@@ -244,7 +244,7 @@ public class RemoteExampleEventProcessorIT {
     public void shouldSendPostCommandToRemoteService() {
         final String path = format("/users/%s", USER_ID.toString());
         final String mimeType = "application/vnd.people.create-user+json";
-        final String bodyPayload = createObjectBuilder().add("userName", USER_NAME).build().toString();
+        final String bodyPayload = jsonBuilderFactory.createObjectBuilder().add("userName", USER_NAME).build().toString();
 
         stubFor(post(urlEqualTo(BASE_PATH + path))
                 .withRequestBody(equalToJson(bodyPayload))
@@ -267,7 +267,7 @@ public class RemoteExampleEventProcessorIT {
     public void shouldSendPutCommandToRemoteService() {
         final String path = format("/users/%s", USER_ID.toString());
         final String mimeType = "application/vnd.people.update-user+json";
-        final String bodyPayload = createObjectBuilder().add("userName", USER_NAME).build().toString();
+        final String bodyPayload = jsonBuilderFactory.createObjectBuilder().add("userName", USER_NAME).build().toString();
 
         stubFor(put(urlEqualTo(BASE_PATH + path))
                 .withRequestBody(equalToJson(bodyPayload))
@@ -290,7 +290,7 @@ public class RemoteExampleEventProcessorIT {
     public void shouldSendPatchCommandToRemoteService() {
         final String path = format("/users/%s", USER_ID.toString());
         final String mimeType = "application/vnd.people.modify-user+json";
-        final String bodyPayload = createObjectBuilder().add("userName", USER_NAME).build().toString();
+        final String bodyPayload = jsonBuilderFactory.createObjectBuilder().add("userName", USER_NAME).build().toString();
 
         stubFor(patch(urlEqualTo(BASE_PATH + path))
                 .withRequestBody(equalToJson(bodyPayload))
@@ -336,7 +336,7 @@ public class RemoteExampleEventProcessorIT {
 
         final String path = "/groups/" + GROUP_ID.toString();
         final String mimeType = "application/vnd.people.group+json";
-        final String bodyPayload = createObjectBuilder()
+        final String bodyPayload = jsonBuilderFactory.createObjectBuilder()
                 .add("groupName", GROUP_NAME)
                 .build().toString();
 
@@ -370,7 +370,7 @@ public class RemoteExampleEventProcessorIT {
 
         final String path = "/groups/" + GROUP_ID.toString();
         final String mimeType = "application/vnd.people.group+json";
-        final String bodyPayload = createObjectBuilder()
+        final String bodyPayload = jsonBuilderFactory.createObjectBuilder()
                 .add("groupName", GROUP_NAME)
                 .build().toString();
 
@@ -404,7 +404,7 @@ public class RemoteExampleEventProcessorIT {
 
         final String path = "/groups/" + GROUP_ID.toString();
         final String mimeType = "application/vnd.people.group+json";
-        final String bodyPayload = createObjectBuilder()
+        final String bodyPayload = jsonBuilderFactory.createObjectBuilder()
                 .add("groupName", GROUP_NAME)
                 .build().toString();
 

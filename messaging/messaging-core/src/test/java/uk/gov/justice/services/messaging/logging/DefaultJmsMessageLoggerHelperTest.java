@@ -1,11 +1,12 @@
 package uk.gov.justice.services.messaging.logging;
 
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 import java.io.StringReader;
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.UUID;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -63,13 +63,13 @@ public class DefaultJmsMessageLoggerHelperTest {
 
     private JsonObject toJsonObject(final Message message) {
         StringReader sw = new StringReader(jmsMessageLoggerHelper.toJmsTraceString(message));
-        JsonReader jsonReader = Json.createReader(sw);
+        JsonReader jsonReader = jsonReaderFactory.createReader(sw);
         return jsonReader.readObject();
     }
 
     private String envelopeString() {
 
-        return createObjectBuilder()
+        return jsonBuilderFactory.createObjectBuilder()
                 .add("_metadata", metadataBuilder()
                         .withId(UUID.fromString(A_MESSAGE_ID))
                         .withName(A_NAME)

@@ -80,6 +80,10 @@
             <artifactId>org.everit.json.schema</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.justice.utils</groupId>
+            <artifactId>utilities-core</artifactId>
+        </dependency>
     </dependencies>
 
 

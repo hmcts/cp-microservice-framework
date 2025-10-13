@@ -1,9 +1,10 @@
 package uk.gov.justice.services.common.rest;
 
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 
 import uk.gov.justice.services.common.exception.ForbiddenRequestException;
+
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -22,7 +23,7 @@ public class ForbiddenRequestExceptionMapper implements ExceptionMapper<Forbidde
         LOGGER.debug("Forbidden Request", exception);
 
         return Response.status(FORBIDDEN)
-                .entity(createObjectBuilder().add("error", exception.getMessage()).build().toString())
+                .entity(jsonBuilderFactory.createObjectBuilder().add("error", exception.getMessage()).build().toString())
                 .build();
     }
 

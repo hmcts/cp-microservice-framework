@@ -1,12 +1,12 @@
 package uk.gov.justice.services.test.utils.core.envelopes;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.envelopes.EnvelopeStreamGenerator.envelopeStreamGenerator;
 import static uk.gov.justice.services.test.utils.core.envelopes.StreamDefBuilder.aStream;
 
@@ -119,7 +119,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    createObjectBuilder()
+                    jsonBuilderFactory.createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }
@@ -139,7 +139,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    createObjectBuilder()
+                    jsonBuilderFactory.createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }
@@ -159,7 +159,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    createObjectBuilder()
+                    jsonBuilderFactory.createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }
@@ -179,7 +179,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    createObjectBuilder()
+                    jsonBuilderFactory.createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }

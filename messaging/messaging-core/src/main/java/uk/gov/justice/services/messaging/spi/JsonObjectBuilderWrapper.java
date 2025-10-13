@@ -1,8 +1,8 @@
 package uk.gov.justice.services.messaging.spi;
 
 
-import static javax.json.Json.createObjectBuilder;
 import static javax.json.JsonValue.ValueType.OBJECT;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.messaging.JsonObjects;
 
@@ -16,7 +16,7 @@ import javax.json.JsonObjectBuilder;
 
 class JsonObjectBuilderWrapper {
 
-    private JsonObjectBuilder jsonObjectBuilder = createObjectBuilder();
+    private final JsonObjectBuilder jsonObjectBuilder;
     private final Map<String, Object> entryMap = new HashMap<>();
 
     public JsonObjectBuilderWrapper(final JsonObject jsonObject) {
@@ -29,7 +29,7 @@ class JsonObjectBuilderWrapper {
     }
 
     public JsonObjectBuilderWrapper() {
-        jsonObjectBuilder = createObjectBuilder();
+        jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
 
     }
 
@@ -94,7 +94,7 @@ class JsonObjectBuilderWrapper {
         JsonObjectBuilder nestedJsonObject;
 
         if (object == null) {
-            nestedJsonObject = createObjectBuilder();
+            nestedJsonObject = jsonBuilderFactory.createObjectBuilder();
             entryMap.put(name, nestedJsonObject);
         } else {
             nestedJsonObject = (JsonObjectBuilder) object;

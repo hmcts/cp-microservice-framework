@@ -2,7 +2,6 @@ package uk.gov.justice.services.core.dispatcher;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -12,6 +11,7 @@ import static uk.gov.justice.services.core.annotation.Component.COMMAND_API;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -66,7 +66,7 @@ public class DispatcherTest {
     public void shouldDispatchAsynchronouslyToAValidHandler() throws Exception {
         final AsynchronousTestHandler asynchronousTestHandler = new AsynchronousTestHandler();
 
-        final JsonValue payload = createObjectBuilder()
+        final JsonValue payload = jsonBuilderFactory.createObjectBuilder()
                 .add("aField", "aValue").build();
 
         final JsonEnvelope envelope = envelopeFrom(metadata, payload);
@@ -83,7 +83,7 @@ public class DispatcherTest {
     public void shouldDispatchSynchronouslyToAValidHandler() throws Exception {
         final SynchronousTestHandler synchronousTestHandler = new SynchronousTestHandler();
 
-        final JsonValue payload = createObjectBuilder()
+        final JsonValue payload = jsonBuilderFactory.createObjectBuilder()
                 .add("aField", "aValue").build();
 
         final JsonEnvelope envelope = envelopeFrom(metadata, payload);
@@ -145,7 +145,7 @@ public class DispatcherTest {
 
 
     private JsonValue withPayloadOfTestPojo(String payloadId, String payloadName, long payloadVersion) {
-        return createObjectBuilder()
+        return jsonBuilderFactory.createObjectBuilder()
                     .add("payloadId", payloadId)
                     .add("payloadName", payloadName)
                     .add("payloadVersion", payloadVersion)
