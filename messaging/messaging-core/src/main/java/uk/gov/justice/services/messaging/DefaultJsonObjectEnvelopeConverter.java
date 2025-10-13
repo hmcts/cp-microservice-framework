@@ -14,6 +14,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 
@@ -38,7 +39,9 @@ public class DefaultJsonObjectEnvelopeConverter implements JsonObjectEnvelopeCon
 
     @Override
     public JsonEnvelope asEnvelope(final String jsonString) {
-        return asEnvelope(jsonReaderFactory.createReader(new StringReader(jsonString)).readObject());
+        try (JsonReader reader = jsonReaderFactory.createReader(new StringReader(jsonString))) {
+            return asEnvelope(reader.readObject());
+        }
     }
 
 

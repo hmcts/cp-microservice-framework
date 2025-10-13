@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Changed
+- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
+
 # [17.104.0-M2] - 2025-09-15
 ### Changed
 - Update framework-libraries for:
