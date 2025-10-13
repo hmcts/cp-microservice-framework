@@ -147,7 +147,8 @@ public class DefaultJsonObjectEnvelopeConverterTest {
 
     @Test
     public void shouldThrowExceptionWhenProvidedEnvelopeWithoutMetadata() throws IOException {
-        assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(envelopeFrom((Metadata) null, jsonBuilderFactory.createObjectBuilder().build())));
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().build();
+        assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(envelopeFrom((Metadata) null, jsonObject)));
     }
 
     public void shouldThrowExceptionIfObjectMapperFails() throws Exception {

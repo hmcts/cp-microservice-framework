@@ -194,38 +194,44 @@ public class DefaultJsonMetadataTest {
     @Test
     public void shouldThrowExceptionIfIdIsMissing() throws Exception {
 
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().build()).build());
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().build();
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNotUUID() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().add(ID, "blah").build()).build());
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, "blah").build();
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNull() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().add(ID, NULL).build()).build());
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, NULL).build();
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsMissing() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder().add(ID, UUID_ID).build()).build());
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, UUID_ID).build();
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsEmpty() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder()
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
                 .add(ID, UUID_ID)
                 .add(NAME, "")
-                .build()).build());
+                .build();
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsNull() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonBuilderFactory.createObjectBuilder()
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
                 .add(ID, UUID_ID)
                 .add(NAME, NULL)
-                .build()
+                .build();
+        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject
         ).build());
     }
 
