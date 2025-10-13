@@ -39,6 +39,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 import com.google.common.testing.EqualsTester;
 import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.messaging.MetadataBuilder;
 
 /**
  * Unit tests for the {@link DefaultJsonMetadata} class.
@@ -195,25 +196,29 @@ public class DefaultJsonMetadataTest {
     public void shouldThrowExceptionIfIdIsMissing() throws Exception {
 
         final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().build();
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
+        final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
+        assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNotUUID() throws Exception {
         final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, "blah").build();
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
+        final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
+        assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNull() throws Exception {
         final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, NULL).build();
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
+        final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
+        assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsMissing() throws Exception {
         final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, UUID_ID).build();
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
+        final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
+        assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
@@ -222,7 +227,8 @@ public class DefaultJsonMetadataTest {
                 .add(ID, UUID_ID)
                 .add(NAME, "")
                 .build();
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject).build());
+        final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
+        assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
@@ -231,8 +237,8 @@ public class DefaultJsonMetadataTest {
                 .add(ID, UUID_ID)
                 .add(NAME, NULL)
                 .build();
-        assertThrows(IllegalArgumentException.class, () -> metadataBuilderFrom(jsonObject
-        ).build());
+        final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
+        assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067", "squid:S00122"})
