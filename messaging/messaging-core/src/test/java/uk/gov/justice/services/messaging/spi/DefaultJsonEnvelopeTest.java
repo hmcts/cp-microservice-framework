@@ -2,8 +2,6 @@ package uk.gov.justice.services.messaging.spi;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
@@ -11,6 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
@@ -178,14 +177,14 @@ public class DefaultJsonEnvelopeTest {
 
         final JsonEnvelope envelope = envelopeFrom(
                 metadataBuilder().withId(metadataId).withName(metadataName).withSource(source),
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("strProperty", "valueA")
-                        .add("nested", createObjectBuilder()
+                        .add("nested", jsonBuilderFactory.createObjectBuilder()
                                 .add("strProperty1", "valueB")
                                 .add("uuidProperty1", randomUUID().toString())
                                 .add("numProperty1", 34)
                                 .add("boolProperty1", true))
-                        .add("arrayProperty", createArrayBuilder()
+                        .add("arrayProperty", jsonBuilderFactory.createArrayBuilder()
                                 .add("value1")
                                 .add("value2")
                                 .add("value3"))
@@ -211,14 +210,14 @@ public class DefaultJsonEnvelopeTest {
 
         final JsonEnvelope envelope = envelopeFrom(
                 metadataBuilder().withId(metadataId).withName(metadataName).withSource(source),
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("strProperty", "valueA")
-                        .add("nested", createObjectBuilder()
+                        .add("nested", jsonBuilderFactory.createObjectBuilder()
                                 .add("strProperty1", "valueB")
                                 .add("uuidProperty1", randomUUID().toString())
                                 .add("numProperty1", 34)
                                 .add("boolProperty1", true))
-                        .add("arrayProperty", createArrayBuilder()
+                        .add("arrayProperty", jsonBuilderFactory.createArrayBuilder()
                                 .add("value1")
                                 .add("value2")
                                 .add("value3"))
@@ -241,6 +240,6 @@ public class DefaultJsonEnvelopeTest {
     }
 
     private JsonObjectBuilder payload(final String payloadName, final String payloadValue) {
-        return createObjectBuilder().add(payloadName, payloadValue);
+        return jsonBuilderFactory.createObjectBuilder().add(payloadName, payloadValue);
     }
 }

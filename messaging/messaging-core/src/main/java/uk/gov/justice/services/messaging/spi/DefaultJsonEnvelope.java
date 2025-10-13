@@ -9,6 +9,7 @@ import static uk.gov.justice.services.messaging.JsonMetadata.SESSION_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.SOURCE;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
@@ -16,7 +17,6 @@ import uk.gov.justice.services.messaging.Metadata;
 import java.util.List;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
@@ -119,7 +119,7 @@ public class DefaultJsonEnvelope implements JsonEnvelope {
 
     @Override
     public String toString() {
-        final JsonObjectBuilder builder = Json.createObjectBuilder();
+        final JsonObjectBuilder builder = jsonBuilderFactory.createObjectBuilder();
 
         if (metadata != null) {
             builder.add("id", String.valueOf(metadata.id()))
@@ -131,7 +131,7 @@ public class DefaultJsonEnvelope implements JsonEnvelope {
             metadata.userId().ifPresent(s -> builder.add(USER_ID, s));
             metadata.source().ifPresent(s -> builder.add(SOURCE, s));
 
-            final JsonArrayBuilder causationBuilder = Json.createArrayBuilder();
+            final JsonArrayBuilder causationBuilder = jsonBuilderFactory.createArrayBuilder();
 
             final List<UUID> causes = metadata.causation();
 

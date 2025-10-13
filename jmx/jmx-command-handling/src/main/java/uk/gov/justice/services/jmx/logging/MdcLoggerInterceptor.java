@@ -1,9 +1,9 @@
 package uk.gov.justice.services.jmx.logging;
 
 import static java.util.Optional.ofNullable;
-import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 
@@ -23,7 +23,7 @@ public class MdcLoggerInterceptor {
 
         ofNullable(serviceContextNameProvider.getServiceContextName())
                 .ifPresent(value -> {
-                    final String jsonAsString = createObjectBuilder().add(SERVICE_CONTEXT, value).build().toString();
+                    final String jsonAsString = jsonBuilderFactory.createObjectBuilder().add(SERVICE_CONTEXT, value).build().toString();
                     MDC.put(REQUEST_DATA, jsonAsString);
                 });
 

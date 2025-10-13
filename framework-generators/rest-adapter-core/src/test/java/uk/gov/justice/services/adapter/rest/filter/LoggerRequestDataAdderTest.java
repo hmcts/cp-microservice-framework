@@ -4,7 +4,6 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasNoJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE;
@@ -28,6 +27,7 @@ import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 
@@ -335,8 +335,8 @@ public class LoggerRequestDataAdderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void shouldIgnoreSubFieldCalledMetadata() throws Exception {
-        final JsonObject payload = createObjectBuilder()
-                .add("toplevel", createObjectBuilder()
+        final JsonObject payload = jsonBuilderFactory.createObjectBuilder()
+                .add("toplevel", jsonBuilderFactory.createObjectBuilder()
                         .add("_metadata", JsonValue.NULL)
                 ).build();
 

@@ -1,7 +1,6 @@
 package uk.gov.justice.services.core.it;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -11,6 +10,7 @@ import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_CONTROLLER;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.schema.service.CatalogProducer;
 import uk.gov.justice.schema.service.SchemaCatalogResolverProducer;
@@ -197,7 +197,7 @@ public class SenderRequesterHandlerIT {
         UUID metadataId = randomUUID();
         commandControllerSender.send(envelopeFrom(
                 metadataBuilder().withId(metadataId).withName("contexta.command.aaa"),
-                createObjectBuilder().add("someField1", "abc")));
+                jsonBuilderFactory.createObjectBuilder().add("someField1", "abc")));
 
         assertThat(testCommandController.recordedEnvelopes(), hasSize(1));
         assertThat(testCommandController.firstRecordedEnvelope().metadata().id(), equalTo(metadataId));
@@ -211,7 +211,7 @@ public class SenderRequesterHandlerIT {
         UUID metadataId = randomUUID();
         final JsonEnvelope response = queryControllerRequester.request(envelopeFrom(
                 metadataBuilder().withId(metadataId).withName("contexta.query.aaa"),
-                createObjectBuilder().add("someField1", "abc")));
+                jsonBuilderFactory.createObjectBuilder().add("someField1", "abc")));
 
         assertThat(testQueryController.recordedEnvelopes(), hasSize(1));
         assertThat(testQueryController.firstRecordedEnvelope().metadata().id(), equalTo(metadataId));
@@ -254,7 +254,7 @@ public class SenderRequesterHandlerIT {
             record(query);
             return envelopeFrom(
                     metadataBuilder().withId(randomUUID()).withName("contexta.response.aaa"),
-                    createObjectBuilder().add("someField1", "abc"));
+                    jsonBuilderFactory.createObjectBuilder().add("someField1", "abc"));
         }
     }
 
@@ -268,7 +268,7 @@ public class SenderRequesterHandlerIT {
             record(query);
             return envelopeFrom(
                     metadataBuilder().withId(randomUUID()).withName("contexta.response.aaa"),
-                    createObjectBuilder().add("someField1", "horses"));
+                    jsonBuilderFactory.createObjectBuilder().add("someField1", "horses"));
         }
     }
 }

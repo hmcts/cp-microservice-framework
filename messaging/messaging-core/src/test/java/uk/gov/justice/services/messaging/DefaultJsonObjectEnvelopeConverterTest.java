@@ -2,8 +2,6 @@ package uk.gov.justice.services.messaging;
 
 import static co.unruly.matchers.OptionalMatchers.contains;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -16,6 +14,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
 
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 
@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
@@ -136,19 +135,21 @@ public class DefaultJsonObjectEnvelopeConverterTest {
     public void shouldThrowExceptionOnArrayPayloadType() {
         assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(
                 envelopeFrom(metadataBuilder().withId(randomUUID()).withName("name"),
-                        createArrayBuilder().add(ARRAY_ITEM_1).add(ARRAY_ITEM_2).build())));
+                        jsonBuilderFactory.createArrayBuilder().add(ARRAY_ITEM_1).add(ARRAY_ITEM_2).build())));
     }
 
     @Test
     public void shouldThrowExceptionOnNumberPayloadType() {
         assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(
                 envelopeFrom(metadataBuilder().withId(randomUUID()).withName("name"),
-                        createObjectBuilder().add(FIELD_NUMBER, 100).build().getJsonNumber(FIELD_NUMBER))));
+                        jsonBuilderFactory.createObjectBuilder().add(FIELD_NUMBER, 100).build().getJsonNumber(FIELD_NUMBER))));
     }
 
     @Test
     public void shouldThrowExceptionWhenProvidedEnvelopeWithoutMetadata() throws IOException {
-        assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(envelopeFrom((Metadata) null, createObjectBuilder().build())));
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().build();
+        final JsonEnvelope envelope = envelopeFrom((Metadata) null, jsonObject);
+        assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(envelope));
     }
 
     public void shouldThrowExceptionIfObjectMapperFails() throws Exception {
@@ -168,7 +169,7 @@ public class DefaultJsonObjectEnvelopeConverterTest {
     }
 
     private JsonObject jsonObjectFromFile(final String name) throws IOException {
-        try (final JsonReader reader = Json.createReader(new StringReader(jsonFromFile(name)))) {
+        try (final JsonReader reader = jsonReaderFactory.createReader(new StringReader(jsonFromFile(name)))) {
             return reader.readObject();
         }
     }

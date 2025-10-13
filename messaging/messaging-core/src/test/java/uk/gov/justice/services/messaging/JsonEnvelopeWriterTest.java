@@ -1,8 +1,8 @@
 package uk.gov.justice.services.messaging;
 
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import javax.json.JsonObject;
 
@@ -27,11 +27,11 @@ public class JsonEnvelopeWriterTest {
     @Test
     public void shouldWriteAJsonObjectAsAPrettyPrintedString() throws Exception {
 
-        final JsonObject jsonObject = createObjectBuilder()
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
                 .add("aProperty", "value a")
                 .add("bProperty", "value b")
                 .add("cProperty", "value c")
-                .add("anObject", createObjectBuilder()
+                .add("anObject", jsonBuilderFactory.createObjectBuilder()
                         .add("innerProperty", "innerValue"))
                 .build();
 

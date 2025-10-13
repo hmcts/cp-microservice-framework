@@ -3,7 +3,6 @@ package uk.gov.justice.services.adapter.messaging;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,6 +16,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -75,11 +75,11 @@ public class JmsLoggerMetadataAdderTest {
                         .withId(messageId)
                         .withName(name)
                         .withClientCorrelationId(clientCorrelationId),
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("data", "someData"));
 
         final TextMessage textMessage = mock(TextMessage.class);
-        final JsonObject jsonObject = createObjectBuilder()
+        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
                 .add("id", messageId.toString()).build();
 
         when(context.getParameters()).thenReturn(new Object[]{textMessage});
@@ -111,7 +111,7 @@ public class JmsLoggerMetadataAdderTest {
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadataBuilder()
                         .withId(UUID.randomUUID())
                         .withName("someName"),
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("data", "someData"));
 
         final TextMessage textMessage = mock(TextMessage.class);

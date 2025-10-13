@@ -1,13 +1,13 @@
 package uk.gov.justice.subscription.jms.it;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 import static uk.gov.justice.services.core.interceptor.InterceptorContext.interceptorContextWithInput;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.api.subscription.Service2EventListenerAnotherPeopleEventEventFilter;
 import uk.gov.justice.api.subscription.Service2EventListenerAnotherPeopleEventEventFilterInterceptor;
@@ -102,7 +102,7 @@ public class FilterInterceptorIT {
                         .withId(messageId)
                         .withName(PEOPLE_EVENT_AA)
                         .withStreamId(streamId),
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("message", messageStr));
 
         interceptorChainProcessor.process(interceptorContextWithInput(jsonEnvelope));
@@ -125,7 +125,7 @@ public class FilterInterceptorIT {
                         .withId(messageId)
                         .withName("people.unsuported-event")
                         .withStreamId(streamId),
-                createObjectBuilder()
+                jsonBuilderFactory.createObjectBuilder()
                         .add("message", messageStr));
 
         interceptorChainProcessor.process(interceptorContextWithInput(jsonEnvelope));

@@ -1,8 +1,8 @@
 package uk.gov.justice.services.adapter.rest.mapper;
 
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.Response.Status.CONFLICT;
 import static javax.ws.rs.core.Response.status;
+import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
 
 import uk.gov.justice.services.adapter.rest.exception.ConflictedResourceException;
 
@@ -24,7 +24,7 @@ public class ConflictedResourceExceptionMapper implements ExceptionMapper<Confli
     public Response toResponse(final ConflictedResourceException exception) {
         logger.debug("Conflict", exception);
 
-        final JsonObjectBuilder builder = createObjectBuilder()
+        final JsonObjectBuilder builder = jsonBuilderFactory.createObjectBuilder()
                 .add("error", exception.getMessage())
                 .add("id", exception.getConflictingId().toString());
 
