@@ -1,5 +1,15 @@
 package uk.gov.justice.services.core.dispatcher;
 
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.messaging.Envelope;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+import java.io.IOException;
+import java.util.UUID;
+
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static javax.json.JsonValue.ValueType.OBJECT;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,19 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.messaging.Envelope;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-
-import java.io.IOException;
-import java.util.UUID;
-
-import javax.json.JsonObject;
-import javax.json.JsonValue;
-
-import org.junit.jupiter.api.Test;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class EnvelopePayloadTypeConverterTest {
 
@@ -48,7 +46,7 @@ public class EnvelopePayloadTypeConverterTest {
     @Test
     public void shouldConvertJsonValueToPojo() throws IOException {
 
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder().add("myString", "newTest").build();
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder().add("myString", "newTest").build();
         final Envelope<JsonValue> inputEnvelope = getEnvelope(payload);
         final Envelope<TestObject> resultEnvelope = convert(inputEnvelope, TestObject.class);
         final TestObject testObject = resultEnvelope.payload();
@@ -60,7 +58,7 @@ public class EnvelopePayloadTypeConverterTest {
     @Test
     public void shouldConvertJsonEnvelopeToJsonEnvelope() throws IOException {
 
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder().add("myString", "newTest").build();
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder().add("myString", "newTest").build();
         final JsonEnvelope inputEnvelope = getJsonEnvelope(payload);
         final Envelope<JsonValue> resultEnvelope = convert(inputEnvelope, JsonValue.class);
         final JsonObject returnedPayload = (JsonObject) resultEnvelope.payload();
@@ -72,7 +70,7 @@ public class EnvelopePayloadTypeConverterTest {
     @Test
     public void shouldConvertJsonEnvelopeToPojo() throws IOException {
 
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder().add("myString", "newTest").build();
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder().add("myString", "newTest").build();
         final Envelope<JsonValue> inputEnvelope = getJsonEnvelope(payload);
         final Envelope<TestObject> resultEnvelope = convert(inputEnvelope, TestObject.class);
         final TestObject testObject = resultEnvelope.payload();
@@ -93,7 +91,7 @@ public class EnvelopePayloadTypeConverterTest {
     @Test
     public void shouldConvertJsonValueToJsonValue() throws IOException {
 
-        final JsonObject payload = jsonBuilderFactory.createObjectBuilder().add("myString", "newTest").build();
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder().add("myString", "newTest").build();
         final Envelope<JsonValue> inputEnvelope = getEnvelope(payload);
         final Envelope<JsonValue> objectEnvelope = convert(inputEnvelope, JsonValue.class);
 

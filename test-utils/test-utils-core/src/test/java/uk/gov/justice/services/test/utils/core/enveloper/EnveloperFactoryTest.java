@@ -1,35 +1,33 @@
 package uk.gov.justice.services.test.utils.core.enveloper;
 
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.domain.annotation.Event;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+
+import javax.json.JsonObject;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
+
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeListMatcher.listContaining;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 
-import uk.gov.justice.domain.annotation.Event;
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import javax.json.JsonObject;
-
-import org.junit.jupiter.api.Test;
-
 public class EnveloperFactoryTest {
 
     @Test
     public void shouldCreateUsableEnveloper() throws Exception {
-        final JsonObject inputPayload = jsonBuilderFactory.createObjectBuilder().add("value", "init").build();
-        final JsonObject outputPayload = jsonBuilderFactory.createObjectBuilder().add("name", "output").build();
+        final JsonObject inputPayload = getJsonBuilderFactory().createObjectBuilder().add("value", "init").build();
+        final JsonObject outputPayload = getJsonBuilderFactory().createObjectBuilder().add("name", "output").build();
         final JsonEnvelope envelope = EnvelopeFactory.createEnvelope("init.name", inputPayload);
 
         final JsonEnvelope result = EnveloperFactory.createEnveloper().withMetadataFrom(envelope, "expected.name").apply(outputPayload);
@@ -49,7 +47,7 @@ public class EnveloperFactoryTest {
         final String id2 = "id2";
         final String value = "value";
 
-        final JsonObject inputPayload = jsonBuilderFactory.createObjectBuilder().add(value, "init").build();
+        final JsonObject inputPayload = getJsonBuilderFactory().createObjectBuilder().add(value, "init").build();
         final JsonEnvelope envelope = EnvelopeFactory.createEnvelope("init.name", inputPayload);
 
         final EnveloperFactoryTest.TestEvent1 testEvent_1 = new EnveloperFactoryTest.TestEvent1(id1, name);

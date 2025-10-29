@@ -1,18 +1,17 @@
 package uk.gov.justice.services.messaging.spi;
 
 
-import static javax.json.JsonValue.ValueType.OBJECT;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
 import uk.gov.justice.services.messaging.JsonObjects;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+import static javax.json.JsonValue.ValueType.OBJECT;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 class JsonObjectBuilderWrapper {
 
@@ -29,7 +28,7 @@ class JsonObjectBuilderWrapper {
     }
 
     public JsonObjectBuilderWrapper() {
-        jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder();
+        jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder();
 
     }
 
@@ -94,7 +93,7 @@ class JsonObjectBuilderWrapper {
         JsonObjectBuilder nestedJsonObject;
 
         if (object == null) {
-            nestedJsonObject = jsonBuilderFactory.createObjectBuilder();
+            nestedJsonObject = getJsonBuilderFactory().createObjectBuilder();
             entryMap.put(name, nestedJsonObject);
         } else {
             nestedJsonObject = (JsonObjectBuilder) object;

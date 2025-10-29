@@ -1,5 +1,9 @@
 package uk.gov.justice.services.messaging.logging;
 
+import javax.json.JsonObjectBuilder;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedMap;
+
 import static java.lang.String.join;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
@@ -9,11 +13,7 @@ import static uk.gov.justice.services.common.http.HeaderConstants.NAME;
 import static uk.gov.justice.services.common.http.HeaderConstants.SESSION_ID;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MultivaluedMap;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class DefaultHttpTraceLoggerHelper implements HttpTraceLoggerHelper {
 
@@ -24,7 +24,7 @@ public class DefaultHttpTraceLoggerHelper implements HttpTraceLoggerHelper {
 
     @Override
     public String toHttpHeaderTrace(final MultivaluedMap<String, String> headers){
-        return addHttpHeadersToJsonBuilder(headers, jsonBuilderFactory.createObjectBuilder()).build().toString();
+        return addHttpHeadersToJsonBuilder(headers, getJsonBuilderFactory().createObjectBuilder()).build().toString();
 
     }
 
@@ -32,7 +32,7 @@ public class DefaultHttpTraceLoggerHelper implements HttpTraceLoggerHelper {
         addHeader(builder, headers, CONTENT_TYPE);
         addHeader(builder, headers, ACCEPT);
 
-        final JsonObjectBuilder metadataBuilder = jsonBuilderFactory.createObjectBuilder();
+        final JsonObjectBuilder metadataBuilder = getJsonBuilderFactory().createObjectBuilder();
         addHeader(metadataBuilder, headers, ID);
         addHeader(metadataBuilder, headers, CLIENT_CORRELATION_ID);
         addHeader(metadataBuilder, headers, SESSION_ID);

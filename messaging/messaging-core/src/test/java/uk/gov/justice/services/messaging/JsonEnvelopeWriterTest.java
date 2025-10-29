@@ -1,14 +1,14 @@
 package uk.gov.justice.services.messaging;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import javax.json.JsonObject;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.json.JsonObject;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -27,11 +27,11 @@ public class JsonEnvelopeWriterTest {
     @Test
     public void shouldWriteAJsonObjectAsAPrettyPrintedString() throws Exception {
 
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
                 .add("aProperty", "value a")
                 .add("bProperty", "value b")
                 .add("cProperty", "value c")
-                .add("anObject", jsonBuilderFactory.createObjectBuilder()
+                .add("anObject", getJsonBuilderFactory().createObjectBuilder()
                         .add("innerProperty", "innerValue"))
                 .build();
 

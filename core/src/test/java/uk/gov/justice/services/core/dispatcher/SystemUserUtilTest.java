@@ -1,5 +1,16 @@
 package uk.gov.justice.services.core.dispatcher;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+import java.util.UUID;
+
 import static co.unruly.matchers.OptionalMatchers.contains;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,19 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import uk.gov.justice.services.messaging.JsonEnvelope;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +45,7 @@ public class SystemUserUtilTest {
                                 .withId(id)
                                 .withName(name)
                                 .withUserId("someIdToBeReplaced"),
-                        jsonBuilderFactory.createObjectBuilder().add("numName", BigDecimal.valueOf(123)))
+                        getJsonBuilderFactory().createObjectBuilder().add("numName", BigDecimal.valueOf(123)))
         );
 
         assertThat(returnedEnvelope.metadata().id(), is(id));
@@ -63,6 +62,6 @@ public class SystemUserUtilTest {
                 envelopeFrom(metadataBuilder()
                         .withId(randomUUID())
                         .withName("name"),
-                        jsonBuilderFactory.createObjectBuilder())));
+                        getJsonBuilderFactory().createObjectBuilder())));
     }
 }

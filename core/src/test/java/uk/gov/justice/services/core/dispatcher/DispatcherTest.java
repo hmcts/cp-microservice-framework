@@ -1,18 +1,11 @@
 package uk.gov.justice.services.core.dispatcher;
 
-import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
-import static java.util.UUID.randomUUID;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isA;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static uk.gov.justice.services.core.annotation.Component.COMMAND_API;
-import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -26,16 +19,21 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
 
+import javax.json.JsonValue;
 import java.util.List;
 
-import javax.json.JsonValue;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
+import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.justice.services.core.annotation.Component.COMMAND_API;
+import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class DispatcherTest {
@@ -66,7 +64,7 @@ public class DispatcherTest {
     public void shouldDispatchAsynchronouslyToAValidHandler() throws Exception {
         final AsynchronousTestHandler asynchronousTestHandler = new AsynchronousTestHandler();
 
-        final JsonValue payload = jsonBuilderFactory.createObjectBuilder()
+        final JsonValue payload = getJsonBuilderFactory().createObjectBuilder()
                 .add("aField", "aValue").build();
 
         final JsonEnvelope envelope = envelopeFrom(metadata, payload);
@@ -83,7 +81,7 @@ public class DispatcherTest {
     public void shouldDispatchSynchronouslyToAValidHandler() throws Exception {
         final SynchronousTestHandler synchronousTestHandler = new SynchronousTestHandler();
 
-        final JsonValue payload = jsonBuilderFactory.createObjectBuilder()
+        final JsonValue payload = getJsonBuilderFactory().createObjectBuilder()
                 .add("aField", "aValue").build();
 
         final JsonEnvelope envelope = envelopeFrom(metadata, payload);
@@ -145,7 +143,7 @@ public class DispatcherTest {
 
 
     private JsonValue withPayloadOfTestPojo(String payloadId, String payloadName, long payloadVersion) {
-        return jsonBuilderFactory.createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                     .add("payloadId", payloadId)
                     .add("payloadName", payloadName)
                     .add("payloadVersion", payloadVersion)

@@ -1,5 +1,23 @@
 package uk.gov.justice.services.adapter.messaging;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.logging.JmsMessageLoggerHelper;
+import uk.gov.justice.services.messaging.logging.TraceLogger;
+
+import javax.interceptor.InvocationContext;
+import javax.jms.TextMessage;
+import javax.json.JsonObject;
+import java.util.UUID;
+
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.isJson;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
@@ -16,27 +34,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.logging.JmsMessageLoggerHelper;
-import uk.gov.justice.services.messaging.logging.TraceLogger;
-
-import java.util.UUID;
-
-import javax.interceptor.InvocationContext;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class JmsLoggerMetadataAdderTest {
@@ -75,11 +73,11 @@ public class JmsLoggerMetadataAdderTest {
                         .withId(messageId)
                         .withName(name)
                         .withClientCorrelationId(clientCorrelationId),
-                jsonBuilderFactory.createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("data", "someData"));
 
         final TextMessage textMessage = mock(TextMessage.class);
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
                 .add("id", messageId.toString()).build();
 
         when(context.getParameters()).thenReturn(new Object[]{textMessage});
@@ -111,7 +109,7 @@ public class JmsLoggerMetadataAdderTest {
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadataBuilder()
                         .withId(UUID.randomUUID())
                         .withName("someName"),
-                jsonBuilderFactory.createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("data", "someData"));
 
         final TextMessage textMessage = mock(TextMessage.class);

@@ -1,36 +1,17 @@
 package uk.gov.justice.api;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.delete;
-import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.patch;
-import static com.github.tomakehurst.wiremock.client.WireMock.patchRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.put;
-import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.Response.Status.ACCEPTED;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
-import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
-import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
-import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
-
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.apache.openejb.OpenEjbContainer;
+import org.apache.openejb.jee.Application;
+import org.apache.openejb.jee.WebApp;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
+import org.apache.openejb.testing.Classes;
+import org.apache.openejb.testing.Configuration;
+import org.apache.openejb.testing.Module;
+import org.apache.openejb.testng.PropertiesBuilder;
+import org.apache.openejb.util.NetworkUtil;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.schema.service.CatalogProducer;
 import uk.gov.justice.schema.service.SchemaCatalogResolverProducer;
 import uk.gov.justice.schema.service.SchemaCatalogService;
@@ -98,30 +79,47 @@ import uk.gov.justice.services.test.utils.common.validator.DummyJsonSchemaValida
 import uk.gov.justice.services.test.utils.core.handler.registry.TestHandlerRegistryCacheProducer;
 import uk.gov.justice.subscription.domain.eventsource.DefaultEventSourceDefinitionFactory;
 
+import javax.inject.Inject;
 import java.util.Properties;
 import java.util.UUID;
 
-import javax.inject.Inject;
-
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import org.apache.openejb.OpenEjbContainer;
-import org.apache.openejb.jee.Application;
-import org.apache.openejb.jee.WebApp;
-import org.apache.openejb.junit5.RunWithApplicationComposer;
-import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.Configuration;
-import org.apache.openejb.testing.Module;
-import org.apache.openejb.testng.PropertiesBuilder;
-import org.apache.openejb.util.NetworkUtil;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.patch;
+import static com.github.tomakehurst.wiremock.client.WireMock.patchRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.lang.String.format;
+import static java.util.UUID.randomUUID;
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 
 @RunWithApplicationComposer
 @ServiceComponent(EVENT_PROCESSOR)
-@WireMockTest(httpPort = 9090)
+@WireMockTest(httpPort = 19091)
 public class RemoteExampleEventProcessorIT {
 
-    private static final String PORT = "9090";
+    private static final String PORT = "19091";
     private static int port = -1;
     private static final String BASE_PATH = "/rest-client-generator/command/api/rest/example";
     private static final String MOCK_SERVER_PORT = "mock.server.port";
@@ -244,7 +242,7 @@ public class RemoteExampleEventProcessorIT {
     public void shouldSendPostCommandToRemoteService() {
         final String path = format("/users/%s", USER_ID.toString());
         final String mimeType = "application/vnd.people.create-user+json";
-        final String bodyPayload = jsonBuilderFactory.createObjectBuilder().add("userName", USER_NAME).build().toString();
+        final String bodyPayload = getJsonBuilderFactory().createObjectBuilder().add("userName", USER_NAME).build().toString();
 
         stubFor(post(urlEqualTo(BASE_PATH + path))
                 .withRequestBody(equalToJson(bodyPayload))
@@ -267,7 +265,7 @@ public class RemoteExampleEventProcessorIT {
     public void shouldSendPutCommandToRemoteService() {
         final String path = format("/users/%s", USER_ID.toString());
         final String mimeType = "application/vnd.people.update-user+json";
-        final String bodyPayload = jsonBuilderFactory.createObjectBuilder().add("userName", USER_NAME).build().toString();
+        final String bodyPayload = getJsonBuilderFactory().createObjectBuilder().add("userName", USER_NAME).build().toString();
 
         stubFor(put(urlEqualTo(BASE_PATH + path))
                 .withRequestBody(equalToJson(bodyPayload))
@@ -290,7 +288,7 @@ public class RemoteExampleEventProcessorIT {
     public void shouldSendPatchCommandToRemoteService() {
         final String path = format("/users/%s", USER_ID.toString());
         final String mimeType = "application/vnd.people.modify-user+json";
-        final String bodyPayload = jsonBuilderFactory.createObjectBuilder().add("userName", USER_NAME).build().toString();
+        final String bodyPayload = getJsonBuilderFactory().createObjectBuilder().add("userName", USER_NAME).build().toString();
 
         stubFor(patch(urlEqualTo(BASE_PATH + path))
                 .withRequestBody(equalToJson(bodyPayload))
@@ -336,7 +334,7 @@ public class RemoteExampleEventProcessorIT {
 
         final String path = "/groups/" + GROUP_ID.toString();
         final String mimeType = "application/vnd.people.group+json";
-        final String bodyPayload = jsonBuilderFactory.createObjectBuilder()
+        final String bodyPayload = getJsonBuilderFactory().createObjectBuilder()
                 .add("groupName", GROUP_NAME)
                 .build().toString();
 
@@ -370,7 +368,7 @@ public class RemoteExampleEventProcessorIT {
 
         final String path = "/groups/" + GROUP_ID.toString();
         final String mimeType = "application/vnd.people.group+json";
-        final String bodyPayload = jsonBuilderFactory.createObjectBuilder()
+        final String bodyPayload = getJsonBuilderFactory().createObjectBuilder()
                 .add("groupName", GROUP_NAME)
                 .build().toString();
 
@@ -404,7 +402,7 @@ public class RemoteExampleEventProcessorIT {
 
         final String path = "/groups/" + GROUP_ID.toString();
         final String mimeType = "application/vnd.people.group+json";
-        final String bodyPayload = jsonBuilderFactory.createObjectBuilder()
+        final String bodyPayload = getJsonBuilderFactory().createObjectBuilder()
                 .add("groupName", GROUP_NAME)
                 .build().toString();
 

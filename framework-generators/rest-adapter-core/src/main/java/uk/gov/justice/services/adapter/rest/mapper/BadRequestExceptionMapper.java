@@ -1,9 +1,6 @@
 package uk.gov.justice.services.adapter.rest.mapper;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.status;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
+import org.slf4j.Logger;
 import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
 import uk.gov.justice.services.core.json.JsonSchemaValidationException;
 import uk.gov.justice.services.core.json.JsonValidationLoggerHelper;
@@ -14,7 +11,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.slf4j.Logger;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.status;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @Provider
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
@@ -28,7 +27,7 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
     @Override
     public Response toResponse(final BadRequestException exception) {
         logger.debug("Bad Request", exception);
-        final JsonObjectBuilder builder = jsonBuilderFactory.createObjectBuilder().add("error", exception.getMessage());
+        final JsonObjectBuilder builder = getJsonBuilderFactory().createObjectBuilder().add("error", exception.getMessage());
         if (exception.getCause() instanceof JsonSchemaValidationException) {
             builder.add("validationErrors", jsonValidationLoggerHelper.toJsonObject((JsonSchemaValidationException) exception.getCause()));
         }

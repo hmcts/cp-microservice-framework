@@ -1,28 +1,27 @@
 package uk.gov.justice.services.messaging.logging;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
-
-import java.io.StringReader;
-import java.util.List;
-import java.util.UUID;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class DefaultJmsMessageLoggerHelperTest {
@@ -63,13 +62,13 @@ public class DefaultJmsMessageLoggerHelperTest {
 
     private JsonObject toJsonObject(final Message message) {
         StringReader sw = new StringReader(jmsMessageLoggerHelper.toJmsTraceString(message));
-        JsonReader jsonReader = jsonReaderFactory.createReader(sw);
+        JsonReader jsonReader = getJsonReaderFactory().createReader(sw);
         return jsonReader.readObject();
     }
 
     private String envelopeString() {
 
-        return jsonBuilderFactory.createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                 .add("_metadata", metadataBuilder()
                         .withId(UUID.fromString(A_MESSAGE_ID))
                         .withName(A_NAME)
