@@ -1,7 +1,5 @@
 package uk.gov.justice.services.clients.core.webclient;
 
-import static java.lang.String.format;
-
 import uk.gov.justice.services.clients.core.EndpointDefinition;
 import uk.gov.justice.services.clients.core.QueryParam;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -11,21 +9,21 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-public class WebTargetFactory implements AutoCloseable {
+import static java.lang.String.format;
 
+public class WebTargetFactory {
+
+    private static final Client CLIENT = ClientBuilder.newClient();
     public final BaseUriFactory baseUriFactory;
-
-    private final Client client;
 
     public WebTargetFactory(BaseUriFactory baseUriFactory) {
         this.baseUriFactory = baseUriFactory;
-        this.client = ClientBuilder.newClient();
     }
 
     public WebTarget createWebTarget(final EndpointDefinition definition, final JsonEnvelope envelope) {
         final JsonObject payload = envelope.payloadAsJsonObject();
 
-        WebTarget target = client
+        WebTarget target = getClient()
                 .target(baseUriFactory.createBaseUri(definition))
                 .path(definition.getPath());
 
@@ -54,8 +52,7 @@ public class WebTargetFactory implements AutoCloseable {
         return target;
     }
 
-    @Override
-    public void close() {
-        this.client.close();
+    public static Client getClient() {
+        return CLIENT;
     }
 }

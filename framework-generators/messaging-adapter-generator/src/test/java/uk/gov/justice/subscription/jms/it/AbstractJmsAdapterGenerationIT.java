@@ -1,23 +1,5 @@
 package uk.gov.justice.subscription.jms.it;
 
-import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
-import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
-
-import uk.gov.justice.artemis.EmbeddedArtemisServer;
-
-import java.util.Properties;
-
-import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.json.JsonObject;
-
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.openejb.OpenEjbContainer;
 import org.apache.openejb.testing.Configuration;
@@ -27,6 +9,22 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.justice.artemis.EmbeddedArtemisServer;
+
+import javax.jms.Connection;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.json.JsonObject;
+import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 
 public abstract class AbstractJmsAdapterGenerationIT {
 
@@ -65,7 +63,7 @@ public abstract class AbstractJmsAdapterGenerationIT {
     }
 
     protected void sendEnvelope(String metadataId, String commandName, Destination queue) throws JMSException {
-        sendEnvelope(metadataId, commandName, queue, jsonBuilderFactory.createObjectBuilder().build());
+        sendEnvelope(metadataId, commandName, queue, getJsonBuilderFactory().createObjectBuilder().build());
     }
 
     protected void sendEnvelope(String metadataId, String commandName, Destination queue, JsonObject payload) throws JMSException {

@@ -1,5 +1,18 @@
 package uk.gov.justice.services.messaging.spi;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Resources;
+import com.google.common.testing.EqualsTester;
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
+import uk.gov.justice.services.messaging.Metadata;
+import uk.gov.justice.services.messaging.MetadataBuilder;
+
+import javax.json.JsonObject;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.UUID;
+
 import static com.jayway.jsonassert.JsonAssert.with;
 import static javax.json.JsonValue.NULL;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -22,24 +35,9 @@ import static uk.gov.justice.services.messaging.JsonMetadata.STREAM;
 import static uk.gov.justice.services.messaging.JsonMetadata.STREAM_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.VERSION;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.messaging.spi.DefaultJsonMetadata.metadataBuilder;
 import static uk.gov.justice.services.messaging.spi.DefaultJsonMetadata.metadataBuilderFrom;
-
-import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
-import uk.gov.justice.services.messaging.Metadata;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.UUID;
-
-import javax.json.JsonObject;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
-import com.google.common.testing.EqualsTester;
-import org.junit.jupiter.api.Test;
-import uk.gov.justice.services.messaging.MetadataBuilder;
 
 /**
  * Unit tests for the {@link DefaultJsonMetadata} class.
@@ -195,35 +193,35 @@ public class DefaultJsonMetadataTest {
     @Test
     public void shouldThrowExceptionIfIdIsMissing() throws Exception {
 
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().build();
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder().build();
         final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
         assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNotUUID() throws Exception {
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, "blah").build();
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder().add(ID, "blah").build();
         final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
         assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfIdIsNull() throws Exception {
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, NULL).build();
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder().add(ID, NULL).build();
         final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
         assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsMissing() throws Exception {
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().add(ID, UUID_ID).build();
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder().add(ID, UUID_ID).build();
         final MetadataBuilder metadataBuilder = metadataBuilderFrom(jsonObject);
         assertThrows(IllegalArgumentException.class, metadataBuilder::build);
     }
 
     @Test
     public void shouldThrowExceptionIfNameIsEmpty() throws Exception {
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
                 .add(ID, UUID_ID)
                 .add(NAME, "")
                 .build();
@@ -233,7 +231,7 @@ public class DefaultJsonMetadataTest {
 
     @Test
     public void shouldThrowExceptionIfNameIsNull() throws Exception {
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder()
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
                 .add(ID, UUID_ID)
                 .add(NAME, NULL)
                 .build();
@@ -272,21 +270,21 @@ public class DefaultJsonMetadataTest {
     private Metadata metadata(final String id, final String uuidClientCorrelation, final String uuidCausation, final String uuidUserId,
                               final String uuidSessionId, final String uuidStreamId, final String messageName, final Long streamVersion, final String source) {
         return metadataBuilderFrom(
-                jsonBuilderFactory.createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add(ID, id)
                         .add(NAME, messageName)
                         .add(SOURCE, source)
-                        .add(CORRELATION, jsonBuilderFactory.createObjectBuilder()
+                        .add(CORRELATION, getJsonBuilderFactory().createObjectBuilder()
                                 .add(CLIENT_ID, uuidClientCorrelation)
                         )
-                        .add(CAUSATION, jsonBuilderFactory.createArrayBuilder()
+                        .add(CAUSATION, getJsonBuilderFactory().createArrayBuilder()
                                 .add(uuidCausation)
                         )
-                        .add(CONTEXT, jsonBuilderFactory.createObjectBuilder()
+                        .add(CONTEXT, getJsonBuilderFactory().createObjectBuilder()
                                 .add(USER_ID, uuidUserId)
                                 .add(SESSION_ID, uuidSessionId)
                         )
-                        .add(STREAM, jsonBuilderFactory.createObjectBuilder()
+                        .add(STREAM, getJsonBuilderFactory().createObjectBuilder()
                                 .add(STREAM_ID, uuidStreamId)
                                 .add(VERSION, streamVersion)
                         )
