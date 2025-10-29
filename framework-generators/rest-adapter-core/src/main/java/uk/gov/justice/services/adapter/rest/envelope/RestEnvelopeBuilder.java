@@ -1,5 +1,21 @@
 package uk.gov.justice.services.adapter.rest.envelope;
 
+import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
+import uk.gov.justice.services.adapter.rest.parameter.Parameter;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.Metadata;
+import uk.gov.justice.services.messaging.MetadataBuilder;
+
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.ws.rs.core.HttpHeaders;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Collections.emptyList;
@@ -11,25 +27,8 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.METADATA;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilderWithFilter;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonObject;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import uk.gov.justice.services.adapter.rest.exception.BadRequestException;
-import uk.gov.justice.services.adapter.rest.parameter.Parameter;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.Metadata;
-import uk.gov.justice.services.messaging.MetadataBuilder;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Utility class for building envelopes from a payload, headers, and path parameters.
@@ -104,7 +103,7 @@ public class RestEnvelopeBuilder {
     private JsonObject payload() {
         final JsonObjectBuilder payloadBuilder = initialPayload
                 .map(jsonObject -> createObjectBuilderWithFilter(jsonObject, key -> !key.equals(METADATA)))
-                .orElse(jsonBuilderFactory.createObjectBuilder());
+                .orElse(getJsonBuilderFactory().createObjectBuilder());
 
         params.ifPresent(parameters ->
                 parameters.forEach(param -> {

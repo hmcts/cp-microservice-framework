@@ -1,17 +1,11 @@
 package uk.gov.justice.services.core.it;
 
-import static java.util.UUID.randomUUID;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static uk.gov.justice.services.core.annotation.Component.COMMAND_API;
-import static uk.gov.justice.services.core.annotation.Component.COMMAND_CONTROLLER;
-import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
-import static uk.gov.justice.services.core.annotation.Component.QUERY_CONTROLLER;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
+import org.apache.openejb.jee.Application;
+import org.apache.openejb.jee.WebApp;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
+import org.apache.openejb.testing.Classes;
+import org.apache.openejb.testing.Module;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.schema.service.CatalogProducer;
 import uk.gov.justice.schema.service.SchemaCatalogResolverProducer;
 import uk.gov.justice.schema.service.SchemaCatalogService;
@@ -71,17 +65,21 @@ import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
 import uk.gov.justice.services.test.utils.common.validator.DummyJsonSchemaValidator;
 import uk.gov.justice.services.test.utils.messaging.jms.DummyJmsEnvelopeSender;
 
-import java.util.UUID;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.UUID;
 
-import org.apache.openejb.jee.Application;
-import org.apache.openejb.jee.WebApp;
-import org.apache.openejb.junit5.RunWithApplicationComposer;
-import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.Module;
-import org.junit.jupiter.api.Test;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static uk.gov.justice.services.core.annotation.Component.COMMAND_API;
+import static uk.gov.justice.services.core.annotation.Component.COMMAND_CONTROLLER;
+import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
+import static uk.gov.justice.services.core.annotation.Component.QUERY_CONTROLLER;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Integration tests to confirm that the correct handlers are available to senders and requesters
@@ -197,7 +195,7 @@ public class SenderRequesterHandlerIT {
         UUID metadataId = randomUUID();
         commandControllerSender.send(envelopeFrom(
                 metadataBuilder().withId(metadataId).withName("contexta.command.aaa"),
-                jsonBuilderFactory.createObjectBuilder().add("someField1", "abc")));
+                getJsonBuilderFactory().createObjectBuilder().add("someField1", "abc")));
 
         assertThat(testCommandController.recordedEnvelopes(), hasSize(1));
         assertThat(testCommandController.firstRecordedEnvelope().metadata().id(), equalTo(metadataId));
@@ -211,7 +209,7 @@ public class SenderRequesterHandlerIT {
         UUID metadataId = randomUUID();
         final JsonEnvelope response = queryControllerRequester.request(envelopeFrom(
                 metadataBuilder().withId(metadataId).withName("contexta.query.aaa"),
-                jsonBuilderFactory.createObjectBuilder().add("someField1", "abc")));
+                getJsonBuilderFactory().createObjectBuilder().add("someField1", "abc")));
 
         assertThat(testQueryController.recordedEnvelopes(), hasSize(1));
         assertThat(testQueryController.firstRecordedEnvelope().metadata().id(), equalTo(metadataId));
@@ -254,7 +252,7 @@ public class SenderRequesterHandlerIT {
             record(query);
             return envelopeFrom(
                     metadataBuilder().withId(randomUUID()).withName("contexta.response.aaa"),
-                    jsonBuilderFactory.createObjectBuilder().add("someField1", "abc"));
+                    getJsonBuilderFactory().createObjectBuilder().add("someField1", "abc"));
         }
     }
 
@@ -268,7 +266,7 @@ public class SenderRequesterHandlerIT {
             record(query);
             return envelopeFrom(
                     metadataBuilder().withId(randomUUID()).withName("contexta.response.aaa"),
-                    jsonBuilderFactory.createObjectBuilder().add("someField1", "horses"));
+                    getJsonBuilderFactory().createObjectBuilder().add("someField1", "horses"));
         }
     }
 }

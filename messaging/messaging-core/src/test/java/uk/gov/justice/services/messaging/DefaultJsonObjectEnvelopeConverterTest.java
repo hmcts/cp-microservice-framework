@@ -1,5 +1,22 @@
 package uk.gov.justice.services.messaging;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Resources;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static co.unruly.matchers.OptionalMatchers.contains;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -14,27 +31,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonReaderFactory;
-
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.Resources;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 public class DefaultJsonObjectEnvelopeConverterTest {
 
@@ -135,19 +133,19 @@ public class DefaultJsonObjectEnvelopeConverterTest {
     public void shouldThrowExceptionOnArrayPayloadType() {
         assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(
                 envelopeFrom(metadataBuilder().withId(randomUUID()).withName("name"),
-                        jsonBuilderFactory.createArrayBuilder().add(ARRAY_ITEM_1).add(ARRAY_ITEM_2).build())));
+                        getJsonBuilderFactory().createArrayBuilder().add(ARRAY_ITEM_1).add(ARRAY_ITEM_2).build())));
     }
 
     @Test
     public void shouldThrowExceptionOnNumberPayloadType() {
         assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(
                 envelopeFrom(metadataBuilder().withId(randomUUID()).withName("name"),
-                        jsonBuilderFactory.createObjectBuilder().add(FIELD_NUMBER, 100).build().getJsonNumber(FIELD_NUMBER))));
+                        getJsonBuilderFactory().createObjectBuilder().add(FIELD_NUMBER, 100).build().getJsonNumber(FIELD_NUMBER))));
     }
 
     @Test
     public void shouldThrowExceptionWhenProvidedEnvelopeWithoutMetadata() throws IOException {
-        final JsonObject jsonObject = jsonBuilderFactory.createObjectBuilder().build();
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder().build();
         final JsonEnvelope envelope = envelopeFrom((Metadata) null, jsonObject);
         assertThrows(IllegalArgumentException.class, () -> jsonObjectEnvelopeConverter.fromEnvelope(envelope));
     }
@@ -169,7 +167,7 @@ public class DefaultJsonObjectEnvelopeConverterTest {
     }
 
     private JsonObject jsonObjectFromFile(final String name) throws IOException {
-        try (final JsonReader reader = jsonReaderFactory.createReader(new StringReader(jsonFromFile(name)))) {
+        try (final JsonReader reader = getJsonReaderFactory().createReader(new StringReader(jsonFromFile(name)))) {
             return reader.readObject();
         }
     }

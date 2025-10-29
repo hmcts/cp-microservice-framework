@@ -1,15 +1,6 @@
 package uk.gov.justice.services.test.utils.core.envelopes;
 
-import static java.util.UUID.randomUUID;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-import static uk.gov.justice.services.test.utils.core.envelopes.EnvelopeStreamGenerator.envelopeStreamGenerator;
-import static uk.gov.justice.services.test.utils.core.envelopes.StreamDefBuilder.aStream;
-
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import java.util.HashMap;
@@ -18,7 +9,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.test.utils.core.envelopes.EnvelopeStreamGenerator.envelopeStreamGenerator;
+import static uk.gov.justice.services.test.utils.core.envelopes.StreamDefBuilder.aStream;
 
 public class EnvelopeStreamGeneratorTest {
 
@@ -119,7 +118,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    jsonBuilderFactory.createObjectBuilder()
+                    getJsonBuilderFactory().createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }
@@ -139,7 +138,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    jsonBuilderFactory.createObjectBuilder()
+                    getJsonBuilderFactory().createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }
@@ -159,7 +158,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    jsonBuilderFactory.createObjectBuilder()
+                    getJsonBuilderFactory().createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }
@@ -179,7 +178,7 @@ public class EnvelopeStreamGeneratorTest {
                             .withName(COMMAND)
                             .withVersion(position)
                             .withStreamId(streamId),
-                    jsonBuilderFactory.createObjectBuilder()
+                    getJsonBuilderFactory().createObjectBuilder()
                             .add("someProperty", "value_" + position)
             );
         }

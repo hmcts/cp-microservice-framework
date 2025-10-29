@@ -1,5 +1,14 @@
 package uk.gov.justice.services.messaging.spi;
 
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.Metadata;
+import uk.gov.justice.services.messaging.MetadataBuilder;
+
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
+import java.util.UUID;
+
 import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -7,18 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.jsonBuilderFactory;
-
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.Metadata;
-import uk.gov.justice.services.messaging.MetadataBuilder;
-
-import java.util.UUID;
-
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
-
-import org.junit.jupiter.api.Test;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class DefaultJsonEnvelopeProviderTest {
 
@@ -58,7 +56,7 @@ public class DefaultJsonEnvelopeProviderTest {
         final String name = "name";
 
         final MetadataBuilder metadataBuilder = metadataBuilder().withId(id).withName(name);
-        final JsonObjectBuilder jsonObjectBuilder = jsonBuilderFactory.createObjectBuilder().add("test", "value");
+        final JsonObjectBuilder jsonObjectBuilder = getJsonBuilderFactory().createObjectBuilder().add("test", "value");
 
         final JsonEnvelope envelope = new DefaultJsonEnvelopeProvider().envelopeFrom(metadataBuilder, jsonObjectBuilder);
 

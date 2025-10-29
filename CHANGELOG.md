@@ -5,7 +5,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 ### Changed
-- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
+- Used JsonFactory instead of Json.create methods as per
+- Fix HttpClient lifecycle.
 
 # [17.103.0] - 2025-07-16
 ### Changed
