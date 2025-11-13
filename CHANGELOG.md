@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Changed
+- EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
 
 # [17.104.0-M4] - 2025-10-29
 ### Changed
