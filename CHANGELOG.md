@@ -5,6 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 ### Changed
+# [17.104.0-M6] - 2025-11-14
 - EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
 
 # [17.104.0-M4] - 2025-10-29
