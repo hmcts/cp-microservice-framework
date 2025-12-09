@@ -5,13 +5,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 
-# [17.103.2-M1] - 2025-11-20
+# [17.103.2] - 2025-12-09
 ### Changed
 - Used JsonFactory instead of Json.create methods as per
 - Fix HttpClient lifecycle.
-
-# [17.103.1-M1] - 2025-11-14
-### Changed
 - EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
 
 # [17.103.0] - 2025-07-16
