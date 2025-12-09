@@ -1,6 +1,24 @@
 package uk.gov.justice.services.adapter.rest.filter;
 
-import static javax.json.Json.createObjectBuilder;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
+import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
+import uk.gov.justice.services.messaging.Metadata;
+
+import javax.inject.Inject;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.function.Function;
+
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -14,28 +32,8 @@ import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
 import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.messaging.logging.LoggerUtils.trace;
-
-import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
-import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.JsonObjectEnvelopeConverter;
-import uk.gov.justice.services.messaging.Metadata;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
 
 /**
  * Adds request information to the Logger Mapped Diagnostic Context.  This can be added to the log
@@ -63,7 +61,7 @@ public class LoggerRequestDataAdder {
     public void addToMdc(final ContainerRequestContext requestContext, final String componentName) throws IOException {
         trace(logger, () -> "Adding request data to MDC");
 
-        final JsonObjectBuilder builder = createObjectBuilder();
+        final JsonObjectBuilder builder = getJsonBuilderFactory().createObjectBuilder();
         final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
         Optional.ofNullable(serviceContextNameProvider.getServiceContextName())
@@ -102,14 +100,14 @@ public class LoggerRequestDataAdder {
         final Optional<String> userId = userIdFromHeaderOrMetadataIfPresent(headers, payloadMetadata);
 
         if (id.isPresent() || name.isPresent() || correlationId.isPresent() || sessionId.isPresent() || userId.isPresent()) {
-            final JsonObjectBuilder metadataBuilder = createObjectBuilder();
+            final JsonObjectBuilder metadataBuilder = getJsonBuilderFactory().createObjectBuilder();
 
             id.ifPresent(value -> metadataBuilder.add("id", value));
             name.ifPresent(value -> metadataBuilder.add("name", value));
-            correlationId.ifPresent(value -> metadataBuilder.add("correlation", createObjectBuilder().add("client", value)));
+            correlationId.ifPresent(value -> metadataBuilder.add("correlation", getJsonBuilderFactory().createObjectBuilder().add("client", value)));
 
             if (sessionId.isPresent() || userId.isPresent()) {
-                final JsonObjectBuilder contextBuilder = createObjectBuilder();
+                final JsonObjectBuilder contextBuilder = getJsonBuilderFactory().createObjectBuilder();
 
                 sessionId.ifPresent(value -> contextBuilder.add("session", value));
                 userId.ifPresent(value -> contextBuilder.add("user", value));

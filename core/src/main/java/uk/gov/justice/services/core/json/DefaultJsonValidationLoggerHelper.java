@@ -1,19 +1,17 @@
 package uk.gov.justice.services.core.json;
 
-import static java.lang.String.join;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
 
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
+import static java.lang.String.join;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class DefaultJsonValidationLoggerHelper implements JsonValidationLoggerHelper {
 
@@ -35,7 +33,7 @@ public class DefaultJsonValidationLoggerHelper implements JsonValidationLoggerHe
 
     private JsonObject buildResponse(final ValidationException validationException) {
 
-        final JsonObjectBuilder builder = createObjectBuilder();
+        final JsonObjectBuilder builder = getJsonBuilderFactory().createObjectBuilder();
 
         Optional.ofNullable(validationException.getMessage())
                 .ifPresent(message -> builder.add("message", message));
@@ -44,7 +42,7 @@ public class DefaultJsonValidationLoggerHelper implements JsonValidationLoggerHe
         Optional.ofNullable(validationException.getPointerToViolation())
                 .ifPresent(violation -> builder.add("violation", violation));
 
-        final JsonArrayBuilder arrayBuilder = createArrayBuilder();
+        final JsonArrayBuilder arrayBuilder = getJsonBuilderFactory().createArrayBuilder();
         validationException.getCausingExceptions()
                 .forEach(exception -> arrayBuilder.add(buildResponse(exception)));
         builder.add("causingExceptions", arrayBuilder.build());

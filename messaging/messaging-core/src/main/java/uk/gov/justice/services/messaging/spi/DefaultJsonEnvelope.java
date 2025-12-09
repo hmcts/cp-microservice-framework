@@ -1,5 +1,18 @@
 package uk.gov.justice.services.messaging.spi;
 
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.Metadata;
+
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
+import javax.json.JsonValue;
+import java.util.List;
+import java.util.UUID;
+
 import static java.util.Objects.requireNonNullElse;
 import static javax.json.JsonValue.NULL;
 import static uk.gov.justice.services.common.converter.JSONObjectValueObfuscator.obfuscated;
@@ -9,21 +22,7 @@ import static uk.gov.justice.services.messaging.JsonMetadata.SESSION_ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.SOURCE;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
-
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.Metadata;
-
-import java.util.List;
-import java.util.UUID;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Default implementation of an envelope.
@@ -119,7 +118,7 @@ public class DefaultJsonEnvelope implements JsonEnvelope {
 
     @Override
     public String toString() {
-        final JsonObjectBuilder builder = Json.createObjectBuilder();
+        final JsonObjectBuilder builder = getJsonBuilderFactory().createObjectBuilder();
 
         if (metadata != null) {
             builder.add("id", String.valueOf(metadata.id()))
@@ -131,7 +130,7 @@ public class DefaultJsonEnvelope implements JsonEnvelope {
             metadata.userId().ifPresent(s -> builder.add(USER_ID, s));
             metadata.source().ifPresent(s -> builder.add(SOURCE, s));
 
-            final JsonArrayBuilder causationBuilder = Json.createArrayBuilder();
+            final JsonArrayBuilder causationBuilder = getJsonBuilderFactory().createArrayBuilder();
 
             final List<UUID> causes = metadata.causation();
 

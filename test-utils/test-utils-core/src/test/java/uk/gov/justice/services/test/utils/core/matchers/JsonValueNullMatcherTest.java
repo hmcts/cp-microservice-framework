@@ -1,13 +1,13 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class JsonValueNullMatcherTest {
 
@@ -18,7 +18,7 @@ public class JsonValueNullMatcherTest {
 
     @Test
     public void shouldNotMatchJsonObject() throws Exception {
-        final JsonObject jsonObject = createObjectBuilder()
+        final JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
                 .add("someId", "idValue")
                 .build();
 

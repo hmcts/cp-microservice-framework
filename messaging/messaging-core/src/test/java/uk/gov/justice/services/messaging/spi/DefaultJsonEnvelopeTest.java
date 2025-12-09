@@ -1,22 +1,12 @@
 package uk.gov.justice.services.messaging.spi;
 
-import static com.jayway.jsonassert.JsonAssert.with;
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.messaging.MetadataBuilder;
-
-import java.util.UUID;
 
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
@@ -24,11 +14,18 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Unit tests for the {@link DefaultJsonEnvelope} class.
@@ -178,14 +175,14 @@ public class DefaultJsonEnvelopeTest {
 
         final JsonEnvelope envelope = envelopeFrom(
                 metadataBuilder().withId(metadataId).withName(metadataName).withSource(source),
-                createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("strProperty", "valueA")
-                        .add("nested", createObjectBuilder()
+                        .add("nested", getJsonBuilderFactory().createObjectBuilder()
                                 .add("strProperty1", "valueB")
                                 .add("uuidProperty1", randomUUID().toString())
                                 .add("numProperty1", 34)
                                 .add("boolProperty1", true))
-                        .add("arrayProperty", createArrayBuilder()
+                        .add("arrayProperty", getJsonBuilderFactory().createArrayBuilder()
                                 .add("value1")
                                 .add("value2")
                                 .add("value3"))
@@ -211,14 +208,14 @@ public class DefaultJsonEnvelopeTest {
 
         final JsonEnvelope envelope = envelopeFrom(
                 metadataBuilder().withId(metadataId).withName(metadataName).withSource(source),
-                createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("strProperty", "valueA")
-                        .add("nested", createObjectBuilder()
+                        .add("nested", getJsonBuilderFactory().createObjectBuilder()
                                 .add("strProperty1", "valueB")
                                 .add("uuidProperty1", randomUUID().toString())
                                 .add("numProperty1", 34)
                                 .add("boolProperty1", true))
-                        .add("arrayProperty", createArrayBuilder()
+                        .add("arrayProperty", getJsonBuilderFactory().createArrayBuilder()
                                 .add("value1")
                                 .add("value2")
                                 .add("value3"))
@@ -241,6 +238,6 @@ public class DefaultJsonEnvelopeTest {
     }
 
     private JsonObjectBuilder payload(final String payloadName, final String payloadValue) {
-        return createObjectBuilder().add(payloadName, payloadValue);
+        return getJsonBuilderFactory().createObjectBuilder().add(payloadName, payloadValue);
     }
 }

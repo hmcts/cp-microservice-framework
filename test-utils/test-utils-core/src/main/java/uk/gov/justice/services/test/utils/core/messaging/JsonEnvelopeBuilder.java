@@ -1,19 +1,18 @@
 package uk.gov.justice.services.test.utils.core.messaging;
 
-import static javax.json.JsonValue.NULL;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
-
 import uk.gov.justice.services.messaging.DefaultJsonObjectEnvelopeConverter;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.MetadataBuilder;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import java.math.BigDecimal;
+import java.util.UUID;
+
+import static javax.json.JsonValue.NULL;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Implementation of the {@link JsonEnvelope} specifically for testing purposes that include useful
@@ -68,7 +67,7 @@ public class JsonEnvelopeBuilder {
     }
 
     public JsonEnvelopeBuilder withPayloadOf(final String[] values, final String name) {
-        final JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        final JsonArrayBuilder jsonArray = getJsonBuilderFactory().createArrayBuilder();
         for (String value : values) {
             jsonArray.add(value);
         }

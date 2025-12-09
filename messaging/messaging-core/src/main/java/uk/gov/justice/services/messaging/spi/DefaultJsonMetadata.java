@@ -1,16 +1,13 @@
 package uk.gov.justice.services.messaging.spi;
 
-import static uk.gov.justice.services.messaging.JsonObjects.getJsonString;
-import static uk.gov.justice.services.messaging.JsonObjects.getLong;
-import static uk.gov.justice.services.messaging.JsonObjects.getString;
-import static uk.gov.justice.services.messaging.JsonObjects.getUUID;
-import static uk.gov.justice.services.messaging.JsonObjects.getUUIDs;
-
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.messaging.JsonMetadata;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.messaging.MetadataBuilder;
 
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonString;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -18,10 +15,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonString;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonString;
+import static uk.gov.justice.services.messaging.JsonObjects.getLong;
+import static uk.gov.justice.services.messaging.JsonObjects.getString;
+import static uk.gov.justice.services.messaging.JsonObjects.getUUID;
+import static uk.gov.justice.services.messaging.JsonObjects.getUUIDs;
 
 /**
  * Implementation of metadata that uses a JsonObject internally to store the metadata.
@@ -205,7 +204,7 @@ public class DefaultJsonMetadata extends JsonMetadata {
 
         @Override
         public MetadataBuilder withCausation(final UUID... uuid) {
-            final JsonArrayBuilder causationArray = Json.createArrayBuilder();
+            final JsonArrayBuilder causationArray = getJsonBuilderFactory().createArrayBuilder();
             for (UUID id : uuid) {
                 causationArray.add(id.toString());
             }

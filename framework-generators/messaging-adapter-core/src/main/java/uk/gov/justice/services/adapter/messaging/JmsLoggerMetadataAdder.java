@@ -1,22 +1,20 @@
 package uk.gov.justice.services.adapter.messaging;
 
-import static javax.json.Json.createObjectBuilder;
-import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
-import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
-import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
-
+import org.slf4j.Logger;
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.messaging.logging.JmsMessageLoggerHelper;
 import uk.gov.justice.services.messaging.logging.TraceLogger;
-
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.interceptor.InvocationContext;
 import javax.jms.TextMessage;
 import javax.json.JsonObjectBuilder;
+import java.util.Optional;
 
-import org.slf4j.Logger;
+import static uk.gov.justice.services.common.log.LoggerConstants.METADATA;
+import static uk.gov.justice.services.common.log.LoggerConstants.REQUEST_DATA;
+import static uk.gov.justice.services.common.log.LoggerConstants.SERVICE_CONTEXT;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 /**
  * Gets the Metadata from the payload and adds metadata information to the Logger Mapped Diagnostic
@@ -52,7 +50,7 @@ public class JmsLoggerMetadataAdder {
         parameterChecker.check(parameters);
         final TextMessage message = (TextMessage) parameters[0];
 
-        final JsonObjectBuilder builder = createObjectBuilder();
+        final JsonObjectBuilder builder = getJsonBuilderFactory().createObjectBuilder();
 
         addServiceContextNameIfPresent(builder);
 

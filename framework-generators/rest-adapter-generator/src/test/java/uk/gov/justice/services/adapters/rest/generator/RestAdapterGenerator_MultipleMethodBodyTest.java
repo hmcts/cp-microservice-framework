@@ -1,6 +1,17 @@
 package uk.gov.justice.services.adapters.rest.generator;
 
-import static javax.json.Json.createObjectBuilder;
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
+
+import javax.json.JsonObject;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,25 +25,12 @@ import static uk.gov.justice.services.generators.test.utils.builder.HttpActionBu
 import static uk.gov.justice.services.generators.test.utils.builder.RamlBuilder.restRamlWithCommandApiDefaults;
 import static uk.gov.justice.services.generators.test.utils.builder.ResourceBuilder.resource;
 import static uk.gov.justice.services.generators.test.utils.config.GeneratorConfigUtil.configurationWithBasePackage;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.methodsOf;
-
-import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
-
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.json.JsonObject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-
-import org.junit.jupiter.api.Test;
 
 public class RestAdapterGenerator_MultipleMethodBodyTest extends BaseRestAdapterGeneratorTest {
 
-    private static final JsonObject NOT_USED_JSONOBJECT = createObjectBuilder()
+    private static final JsonObject NOT_USED_JSONOBJECT = getJsonBuilderFactory().createObjectBuilder()
             .add("name", "Frederick Bloggs")
             .build();
 

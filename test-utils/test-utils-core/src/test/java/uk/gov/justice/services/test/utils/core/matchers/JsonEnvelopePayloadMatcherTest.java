@@ -1,22 +1,21 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
+import org.junit.jupiter.api.Test;
+
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+import java.util.UUID;
+
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonValueNullMatcher.isJsonValueNull;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
-
-import java.util.UUID;
-
-import javax.json.JsonObject;
-import javax.json.JsonValue;
-
-import org.junit.jupiter.api.Test;
 
 public class JsonEnvelopePayloadMatcherTest {
 
@@ -58,7 +57,7 @@ public class JsonEnvelopePayloadMatcherTest {
     }
 
     private JsonObject payload() {
-        return createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                 .add("someId", ID.toString())
                 .add("name", NAME)
                 .build();
