@@ -1,18 +1,16 @@
 package uk.gov.justice.services.generators.commons.mapping;
 
-import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
-
+import org.raml.model.MimeType;
 import uk.gov.justice.services.messaging.JsonObjects;
 
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.StringReader;
 import java.util.Optional;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
-import org.raml.model.MimeType;
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonReaderFactory;
 
 /**
  * Parses a schema id from the RAML {@link MimeType} object. Will return empty() if no schema
@@ -32,7 +30,7 @@ public class SchemaIdParser {
     }
 
     private Optional<String> schemaIdFrom(final String schemaJson, final MimeType mimeType) {
-        try (final JsonReader reader = Json.createReader(new StringReader(schemaJson))) {
+        try (final JsonReader reader = getJsonReaderFactory().createReader(new StringReader(schemaJson))) {
             final JsonObject jsonObject = reader.readObject();
             final Optional<String> schemaId = JsonObjects.getString(jsonObject, "id");
 

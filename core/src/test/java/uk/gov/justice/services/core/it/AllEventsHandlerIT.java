@@ -1,17 +1,12 @@
 package uk.gov.justice.services.core.it;
 
-import static java.util.Collections.emptyList;
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
-import static uk.gov.justice.services.core.interceptor.InterceptorContext.interceptorContextWithInput;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.openejb.jee.Application;
+import org.apache.openejb.jee.WebApp;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
+import org.apache.openejb.testing.Classes;
+import org.apache.openejb.testing.Module;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.schema.service.CatalogProducer;
 import uk.gov.justice.schema.service.SchemaCatalogResolverProducer;
 import uk.gov.justice.schema.service.SchemaCatalogService;
@@ -72,19 +67,22 @@ import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
 import uk.gov.justice.services.test.utils.common.validator.DummyJsonSchemaValidator;
 import uk.gov.justice.services.test.utils.messaging.jms.DummyJmsEnvelopeSender;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.openejb.jee.Application;
-import org.apache.openejb.jee.WebApp;
-import org.apache.openejb.junit5.RunWithApplicationComposer;
-import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.Module;
-import org.junit.jupiter.api.Test;
+import static java.util.Collections.emptyList;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNot.not;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
+import static uk.gov.justice.services.core.interceptor.InterceptorContext.interceptorContextWithInput;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 @RunWithApplicationComposer
 @Adapter(EVENT_LISTENER)
@@ -191,7 +189,7 @@ public class AllEventsHandlerIT {
                         .withName(EVENT_ABC)
                         .withStreamId(randomUUID())
                         .withPosition(1L),
-                createObjectBuilder());
+                getJsonBuilderFactory().createObjectBuilder());
 
         interceptorChainProcessor.process(interceptorContextWithInput(jsonEnvelope));
 
@@ -209,7 +207,7 @@ public class AllEventsHandlerIT {
                         .withName("some.unregistered.event")
                         .withStreamId(randomUUID())
                         .withPosition(1L),
-                createObjectBuilder());
+                getJsonBuilderFactory().createObjectBuilder());
 
         interceptorChainProcessor.process(interceptorContextWithInput(jsonEnvelope));
 

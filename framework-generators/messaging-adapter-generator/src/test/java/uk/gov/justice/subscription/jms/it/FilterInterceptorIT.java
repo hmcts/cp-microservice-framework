@@ -1,14 +1,10 @@
 package uk.gov.justice.subscription.jms.it;
 
-import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
-import static uk.gov.justice.services.core.interceptor.InterceptorContext.interceptorContextWithInput;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-
+import org.apache.openejb.jee.WebApp;
+import org.apache.openejb.junit5.RunWithApplicationComposer;
+import org.apache.openejb.testing.Classes;
+import org.apache.openejb.testing.Module;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.api.subscription.Service2EventListenerAnotherPeopleEventEventFilter;
 import uk.gov.justice.api.subscription.Service2EventListenerAnotherPeopleEventEventFilterInterceptor;
 import uk.gov.justice.api.subscription.Service2EventListenerAnotherPeopleEventEventInterceptorChainProvider;
@@ -34,16 +30,18 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.common.envelope.TestEnvelopeRecorder;
 import uk.gov.justice.services.test.utils.core.handler.registry.TestHandlerRegistryCacheProducer;
 
-import java.util.UUID;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.UUID;
 
-import org.apache.openejb.jee.WebApp;
-import org.apache.openejb.junit5.RunWithApplicationComposer;
-import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.Module;
-import org.junit.jupiter.api.Test;
+import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
+import static uk.gov.justice.services.core.interceptor.InterceptorContext.interceptorContextWithInput;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 
 @RunWithApplicationComposer
@@ -102,7 +100,7 @@ public class FilterInterceptorIT {
                         .withId(messageId)
                         .withName(PEOPLE_EVENT_AA)
                         .withStreamId(streamId),
-                createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("message", messageStr));
 
         interceptorChainProcessor.process(interceptorContextWithInput(jsonEnvelope));
@@ -125,7 +123,7 @@ public class FilterInterceptorIT {
                         .withId(messageId)
                         .withName("people.unsuported-event")
                         .withStreamId(streamId),
-                createObjectBuilder()
+                getJsonBuilderFactory().createObjectBuilder()
                         .add("message", messageStr));
 
         interceptorChainProcessor.process(interceptorContextWithInput(jsonEnvelope));

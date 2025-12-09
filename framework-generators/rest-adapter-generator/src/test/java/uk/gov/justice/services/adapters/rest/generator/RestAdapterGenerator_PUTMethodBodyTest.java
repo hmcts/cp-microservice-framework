@@ -1,6 +1,19 @@
 package uk.gov.justice.services.adapters.rest.generator;
 
-import static javax.json.Json.createObjectBuilder;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import uk.gov.justice.services.core.interceptor.InterceptorContext;
+import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+
+import javax.json.JsonObject;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Function;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -15,27 +28,12 @@ import static uk.gov.justice.services.generators.test.utils.builder.HttpActionBu
 import static uk.gov.justice.services.generators.test.utils.builder.RamlBuilder.restRamlWithCommandApiDefaults;
 import static uk.gov.justice.services.generators.test.utils.builder.ResourceBuilder.resource;
 import static uk.gov.justice.services.generators.test.utils.config.GeneratorConfigUtil.configurationWithBasePackage;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.firstMethodOf;
-
-import uk.gov.justice.services.core.interceptor.InterceptorContext;
-import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.json.JsonObject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 public class RestAdapterGenerator_PUTMethodBodyTest extends BaseRestAdapterGeneratorTest {
 
-    private static final JsonObject NOT_USED_JSONOBJECT = createObjectBuilder()
+    private static final JsonObject NOT_USED_JSONOBJECT = getJsonBuilderFactory().createObjectBuilder()
             .add("name", "Frederick Bloggs")
             .build();
 

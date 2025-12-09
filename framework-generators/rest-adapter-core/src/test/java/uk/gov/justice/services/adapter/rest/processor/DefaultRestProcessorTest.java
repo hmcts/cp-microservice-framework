@@ -1,23 +1,15 @@
 package uk.gov.justice.services.adapter.rest.processor;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static javax.json.Json.createObjectBuilder;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
-
+import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import org.jboss.resteasy.specimpl.ResteasyHttpHeaders;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import uk.gov.justice.services.adapter.rest.envelope.RestEnvelopeBuilderFactory;
 import uk.gov.justice.services.adapter.rest.multipart.FileBasedInterceptorContextFactory;
 import uk.gov.justice.services.adapter.rest.multipart.FileInputDetails;
@@ -31,23 +23,29 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.logging.HttpTraceLoggerHelper;
 import uk.gov.justice.services.messaging.logging.TraceLogger;
 
+import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.json.JsonObject;
-import javax.ws.rs.core.Response;
-
-import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
-import org.jboss.resteasy.specimpl.ResteasyHttpHeaders;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 
 @ExtendWith(MockitoExtension.class)
 public class DefaultRestProcessorTest {
@@ -56,7 +54,7 @@ public class DefaultRestProcessorTest {
     private static final String NOT_USED_RESPONSE_STRATEGY_NAME = "notUsedName";
     private static final List<Parameter> NOT_USED_PATH_PARAMS = emptyList();
 
-    private static final Optional<JsonObject> NOT_USED_PAYLOAD = Optional.of(createObjectBuilder().build());
+    private static final Optional<JsonObject> NOT_USED_PAYLOAD = Optional.of(getJsonBuilderFactory().createObjectBuilder().build());
     private static final ResteasyHttpHeaders NOT_USED_HEADERS = headersWithUserId("123");
 
     @Mock
@@ -101,7 +99,7 @@ public class DefaultRestProcessorTest {
         final String payloadIdValue = "payloadIdValue1";
         final List<Parameter> pathParams = singletonList(DefaultParameter.valueOf("paramName", "someParamValue", ParameterType.STRING));
 
-        final JsonObject payload = createObjectBuilder().add("payloadId", payloadIdValue).build();
+        final JsonObject payload = getJsonBuilderFactory().createObjectBuilder().add("payloadId", payloadIdValue).build();
 
         when(responseStrategyCache.responseStrategyOf(anyString())).thenReturn(responseStrategy);
 

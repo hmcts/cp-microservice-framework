@@ -1,20 +1,19 @@
 package uk.gov.justice.services.test.utils.core.matchers;
 
+import org.junit.jupiter.api.Test;
+
+import javax.json.JsonValue;
+import java.util.UUID;
+
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
-
-import java.util.UUID;
-
-import javax.json.JsonValue;
-
-import org.junit.jupiter.api.Test;
 
 public class JsonValueIsJsonMatcherTest {
 
@@ -46,7 +45,7 @@ public class JsonValueIsJsonMatcherTest {
     }
 
     private JsonValue payload() {
-        return createObjectBuilder()
+        return getJsonBuilderFactory().createObjectBuilder()
                 .add("someId", ID.toString())
                 .add("name", NAME)
                 .build();

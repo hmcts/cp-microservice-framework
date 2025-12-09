@@ -1,7 +1,26 @@
 package uk.gov.justice.services.adapters.rest.generator;
 
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import uk.gov.justice.services.adapter.rest.mapping.ActionMapperHelper;
+import uk.gov.justice.services.adapter.rest.mapping.BasicActionMapperHelper;
+import uk.gov.justice.services.adapter.rest.parameter.Parameter;
+import uk.gov.justice.services.core.interceptor.InterceptorContext;
+import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+
+import javax.json.JsonObject;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+
 import static java.lang.String.valueOf;
-import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
@@ -27,35 +46,14 @@ import static uk.gov.justice.services.generators.test.utils.builder.RamlBuilder.
 import static uk.gov.justice.services.generators.test.utils.builder.ResourceBuilder.resource;
 import static uk.gov.justice.services.generators.test.utils.builder.ResponseBuilder.response;
 import static uk.gov.justice.services.generators.test.utils.config.GeneratorConfigUtil.configurationWithBasePackage;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.firstMethodOf;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.methodsOf;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import uk.gov.justice.services.adapter.rest.mapping.ActionMapperHelper;
-import uk.gov.justice.services.adapter.rest.mapping.BasicActionMapperHelper;
-import uk.gov.justice.services.adapter.rest.parameter.Parameter;
-import uk.gov.justice.services.core.interceptor.InterceptorContext;
-import uk.gov.justice.services.generators.commons.config.CommonGeneratorProperties;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.json.JsonObject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-
 public class RestAdapterGenerator_POSTMethodBodyTest extends BaseRestAdapterGeneratorTest {
 
-    private static final JsonObject NOT_USED_JSONOBJECT = createObjectBuilder()
+    private static final JsonObject NOT_USED_JSONOBJECT = getJsonBuilderFactory().createObjectBuilder()
             .add("name", "Frederick Bloggs")
             .build();
 
@@ -206,7 +204,7 @@ public class RestAdapterGenerator_POSTMethodBodyTest extends BaseRestAdapterGene
         final String action = "theAction";
         when(actionMapper.actionOf(any(String.class), any(String.class), eq(httpHeaders))).thenReturn(action);
 
-        final Optional<JsonObject> jsonObject = Optional.of(createObjectBuilder().add("dummy", "abc").build());
+        final Optional<JsonObject> jsonObject = Optional.of(getJsonBuilderFactory().createObjectBuilder().add("dummy", "abc").build());
 
         final Method method = firstMethodOf(resourceClass).get();
         method.invoke(resourceObject, jsonObject.get());

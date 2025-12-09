@@ -1,15 +1,14 @@
 package uk.gov.justice.services.test.utils.core.converter;
 
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+
+import javax.json.JsonObject;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-
-import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-
-import org.junit.jupiter.api.Test;
+import static uk.gov.justice.services.messaging.JsonObjects.getJsonBuilderFactory;
 
 public class JsonObjectToObjectConverterFactoryTest {
 
@@ -19,7 +18,7 @@ public class JsonObjectToObjectConverterFactoryTest {
 
         assertThat(converter, is(notNullValue()));
 
-        JsonObject jsonObject = Json.createObjectBuilder()
+        JsonObject jsonObject = getJsonBuilderFactory().createObjectBuilder()
                 .add("testAttribute", "testValue")
                 .build();
 
