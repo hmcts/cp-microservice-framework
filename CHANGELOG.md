@@ -4,27 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
-### Changed
-# [17.104.0-M6] - 2025-11-14
-- EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
 
-# [17.104.0-M4] - 2025-10-29
-### Changed
-- Refactor JsonObject usages to more proper api
-- Fix HttpClient lielefecycle.
-
-# [17.104.0-M3] - 2025-10-13
-### Changed
-- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
-
-# [17.104.0-M2] - 2025-09-15
-### Changed
-- Update framework-libraries for:
-  - TimerServiceManager now returns created Timer  
-
-# [17.104.0-M1] - 2025-07-29
-### Changed
-- Updated file-service to 17.104.0-M1
+# [17.104.0] - 2025-12-16
 ### Added
 - New module `framework-libraries-version` that contains a maven generated json file that has this project's version number
 ### Security
@@ -38,6 +19,13 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
   - Update commons-lang version to **3.18.0** to fix **security vulnerability CVE-2025-48924**
     Detail: https://cwe.mitre.org/data/definitions/674.html
 
+### Changed
+- EntityManagerFlushInterceptor will now only flush the EntityManager if a transaction is active
+- Refactor JsonObject usages to more proper api
+- Fix HttpClient lielefecycle.
+- Used JsonFactory instead of Json.create methods as per https://github.com/jakartaee/jsonp-api/issues/154
+- Update framework-libraries for:
+  - TimerServiceManager now returns created Timer  
 
 # [17.103.0] - 2025-07-16
 ### Changed
