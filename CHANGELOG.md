@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Added
+- New JNDI value `events.publishing.process.events.from.event.topic` to control whether events are consumed from the event topic or read using the new event pull mechanism
+### Changed
+- Events are consumed from the event topic but not processed if `events.publishing.process.events.from.event.topic` is false
 
 # [17.104.0] - 2025-12-16
 ### Added

@@ -45,9 +45,9 @@ public class DefaultJmsProcessor implements JmsProcessor {
 
         if (!(message instanceof TextMessage)) {
             try {
-                throw new InvalildJmsMessageTypeException(format("Message is not an instance of TextMessage %s", message.getJMSMessageID()));
+                throw new InvalidJmsMessageTypeException(format("Message is not an instance of TextMessage %s", message.getJMSMessageID()));
             } catch (JMSException e) {
-                throw new InvalildJmsMessageTypeException(format("Message is not an instance of TextMessage. Failed to retrieve messageId %s",
+                throw new InvalidJmsMessageTypeException(format("Message is not an instance of TextMessage. Failed to retrieve messageId %s",
                         message), e);
             }
         }

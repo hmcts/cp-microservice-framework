@@ -50,14 +50,14 @@ public class DefaultJmsProcessorTest {
 
     @Test
     public void shouldThrowExceptionWithWrongMessageType() throws Exception {
-        assertThrows(InvalildJmsMessageTypeException.class, () -> jmsProcessor.process(envelope -> {}, objectMessage));
+        assertThrows(InvalidJmsMessageTypeException.class, () -> jmsProcessor.process(envelope -> {}, objectMessage));
     }
 
     @Test
     public void shouldThrowExceptionWhenFailToRetrieveMessageId() throws Exception {
         doThrow(JMSException.class).when(objectMessage).getJMSMessageID();
 
-        assertThrows(InvalildJmsMessageTypeException.class, () -> jmsProcessor.process(envelope -> {}, objectMessage));
+        assertThrows(InvalidJmsMessageTypeException.class, () -> jmsProcessor.process(envelope -> {}, objectMessage));
     }
 
 }

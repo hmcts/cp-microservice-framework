@@ -23,11 +23,13 @@ import uk.gov.justice.services.adapter.messaging.DefaultSubscriptionJmsProcessor
 import uk.gov.justice.services.adapter.messaging.JmsLoggerMetadataAdder;
 import uk.gov.justice.services.adapter.messaging.JsonSchemaValidationInterceptor;
 import uk.gov.justice.services.adapter.messaging.MdcWrapper;
+import uk.gov.justice.services.adapter.messaging.SubscriptionJmsProcessorDelegate;
 import uk.gov.justice.services.cdi.LoggerProducer;
 import uk.gov.justice.services.common.annotation.ComponentNameExtractor;
 import uk.gov.justice.services.common.configuration.GlobalValueProducer;
 import uk.gov.justice.services.common.configuration.ServiceContextNameProvider;
 import uk.gov.justice.services.common.configuration.ValueProducer;
+import uk.gov.justice.services.common.configuration.subscription.pull.EventPullConfiguration;
 import uk.gov.justice.services.common.converter.ObjectToJsonValueConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -206,7 +208,10 @@ public class JmsEndpointGenerationCustomIT extends AbstractJmsAdapterGenerationI
 
             OversizeMessageGuard.class,
             JmsMessagingConfiguration.class,
-            ValueProducer.class
+            ValueProducer.class,
+
+            EventPullConfiguration.class,
+            SubscriptionJmsProcessorDelegate.class
     })
     public WebApp war() {
         return new WebApp()
