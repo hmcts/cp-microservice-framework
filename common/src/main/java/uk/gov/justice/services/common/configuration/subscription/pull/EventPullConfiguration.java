@@ -16,7 +16,7 @@ public class EventPullConfiguration {
     private String shouldProcessEventsFromEventTopic;
 
 
-    public boolean shouldEventsFromEventTopic() {
+    public boolean shouldProcessEventsFromEventTopic() {
         return  lazyValue.createIfAbsent(() -> parseBoolean(shouldProcessEventsFromEventTopic));
     }
 }

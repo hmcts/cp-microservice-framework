@@ -1,18 +1,13 @@
 package uk.gov.justice.services.adapter.messaging;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.jms.EnvelopeConverter;
-import uk.gov.justice.services.messaging.logging.TraceLogger;
+import uk.gov.justice.services.common.configuration.subscription.pull.EventPullConfiguration;
 import uk.gov.justice.services.subscription.SubscriptionManager;
 
-import javax.jms.JMSException;
-import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
 import org.junit.jupiter.api.Test;
@@ -25,41 +20,37 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class DefaultSubscriptionJmsProcessorTest {
 
     @Mock
-    private TextMessage textMessage;
+    private EventPullConfiguration eventPullConfiguration;
+
     @Mock
-    private JsonEnvelope expectedEnvelope;
-    @Mock
-    private EnvelopeConverter envelopeConverter;
-    @Mock
-    private ObjectMessage objectMessage;
-    @Mock
-    private TraceLogger traceLogger;
+    private SubscriptionJmsProcessorDelegate subscriptionJmsProcessorDelegate;
 
     @InjectMocks
     private DefaultSubscriptionJmsProcessor subscriptionJmsProcessor;
 
     @Test
-    public void shouldPassValidMessageToConsumerFunction() {
+    public void shouldProcessMessageIfProcessEventsFromEventTopicJndiValueIsTrue() throws Exception {
+
+        final TextMessage message = mock(TextMessage.class);
         final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
-        when(envelopeConverter.fromMessage(textMessage)).thenReturn(expectedEnvelope);
 
-        subscriptionJmsProcessor.process(textMessage, subscriptionManager);
+        when(eventPullConfiguration.shouldProcessEventsFromEventTopic()).thenReturn(true);
 
-        verify(subscriptionManager).process(expectedEnvelope);
+        subscriptionJmsProcessor.process(message, subscriptionManager);
+
+        verify(subscriptionJmsProcessorDelegate).process(message, subscriptionManager);
     }
 
     @Test
-    public void shouldThrowExceptionWithWrongMessageType() {
-        final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
-        assertThrows(InvalildJmsMessageTypeException.class, () -> subscriptionJmsProcessor.process(objectMessage, subscriptionManager));
-    }
+    public void shouldDoNothingWithMessageIfProcessEventsFromEventTopicJndiValueIsFalse() throws Exception {
 
-    @Test
-    public void shouldThrowExceptionWhenFailToRetrieveMessageId() throws Exception {
+        final TextMessage message = mock(TextMessage.class);
         final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
 
-        doThrow(JMSException.class).when(objectMessage).getJMSMessageID();
+        when(eventPullConfiguration.shouldProcessEventsFromEventTopic()).thenReturn(false);
 
-        assertThrows(InvalildJmsMessageTypeException.class, () -> subscriptionJmsProcessor.process(objectMessage, subscriptionManager));
+        subscriptionJmsProcessor.process(message, subscriptionManager);
+
+        verify(subscriptionJmsProcessorDelegate, never()).process(message, subscriptionManager);
     }
 }

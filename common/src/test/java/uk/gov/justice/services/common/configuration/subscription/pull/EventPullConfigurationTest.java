@@ -4,9 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
-
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,26 +19,26 @@ public class EventPullConfigurationTest {
     public void shouldParseTheJndiValueAsBooleanTrueIfTheConfigStringIsTrue() throws Exception {
 
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "true");
-        assertThat(eventPullConfiguration.shouldEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
     }
 
     @Test
     public void shouldParseTheJndiValueAsBooleanFalseIfTheConfigStringIsNotTrue() throws Exception {
 
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "something-not-true");
-        assertThat(eventPullConfiguration.shouldEventsFromEventTopic(), is(false));
+        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(false));
     }
 
     @Test
     public void shouldCacheTheParsedBooleanInMemoryOnceParsed() throws Exception {
 
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "true");
-        assertThat(eventPullConfiguration.shouldEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "false");
-        assertThat(eventPullConfiguration.shouldEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "something-silly");
-        assertThat(eventPullConfiguration.shouldEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", null);
-        assertThat(eventPullConfiguration.shouldEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
     }
 }
