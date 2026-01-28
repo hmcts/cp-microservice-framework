@@ -12,11 +12,11 @@ public class EventPullConfiguration {
     private final LazyValue lazyValue = new LazyValue();
 
     @Inject
-    @Value(key = "events.publishing.process.events.from.event.topic", defaultValue = "true")
+    @Value(key = "event.processing.by.pull.mechanism.enabled", defaultValue = "false")
     private String shouldProcessEventsFromEventTopic;
 
 
-    public boolean shouldProcessEventsFromEventTopic() {
+    public boolean shouldProcessEventsByPullMechanism() {
         return  lazyValue.createIfAbsent(() -> parseBoolean(shouldProcessEventsFromEventTopic));
     }
 }

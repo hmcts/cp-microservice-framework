@@ -29,12 +29,12 @@ public class DefaultSubscriptionJmsProcessorTest {
     private DefaultSubscriptionJmsProcessor subscriptionJmsProcessor;
 
     @Test
-    public void shouldProcessMessageIfProcessEventsFromEventTopicJndiValueIsTrue() throws Exception {
+    public void shouldProcessMessageIfProcessEventsFromEventTopicJndiValueIsFalse() throws Exception {
 
         final TextMessage message = mock(TextMessage.class);
         final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
 
-        when(eventPullConfiguration.shouldProcessEventsFromEventTopic()).thenReturn(true);
+        when(eventPullConfiguration.shouldProcessEventsByPullMechanism()).thenReturn(false);
 
         subscriptionJmsProcessor.process(message, subscriptionManager);
 
@@ -42,12 +42,12 @@ public class DefaultSubscriptionJmsProcessorTest {
     }
 
     @Test
-    public void shouldDoNothingWithMessageIfProcessEventsFromEventTopicJndiValueIsFalse() throws Exception {
+    public void shouldDoNothingWithMessageIfProcessEventsFromEventTopicJndiValueIsTrue() throws Exception {
 
         final TextMessage message = mock(TextMessage.class);
         final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
 
-        when(eventPullConfiguration.shouldProcessEventsFromEventTopic()).thenReturn(false);
+        when(eventPullConfiguration.shouldProcessEventsByPullMechanism()).thenReturn(true);
 
         subscriptionJmsProcessor.process(message, subscriptionManager);
 
