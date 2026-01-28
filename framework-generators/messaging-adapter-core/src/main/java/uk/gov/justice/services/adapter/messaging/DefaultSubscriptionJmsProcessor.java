@@ -23,8 +23,12 @@ public class DefaultSubscriptionJmsProcessor implements SubscriptionJmsProcessor
     @Override
     public void process(final Message message, final SubscriptionManager subscriptionManager) {
 
-        if (eventPullConfiguration.shouldProcessEventsFromEventTopic()) {
-            subscriptionJmsProcessorDelegate.process(message, subscriptionManager);
+        if (! eventPullConfiguration.shouldProcessEventsByPullMechanism()) {
+            processEventFromEventTopic(message, subscriptionManager);
         }
+    }
+
+    private void processEventFromEventTopic(final Message message, final SubscriptionManager subscriptionManager) {
+        subscriptionJmsProcessorDelegate.process(message, subscriptionManager);
     }
 }

@@ -19,26 +19,26 @@ public class EventPullConfigurationTest {
     public void shouldParseTheJndiValueAsBooleanTrueIfTheConfigStringIsTrue() throws Exception {
 
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "true");
-        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsByPullMechanism(), is(true));
     }
 
     @Test
     public void shouldParseTheJndiValueAsBooleanFalseIfTheConfigStringIsNotTrue() throws Exception {
 
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "something-not-true");
-        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(false));
+        assertThat(eventPullConfiguration.shouldProcessEventsByPullMechanism(), is(false));
     }
 
     @Test
     public void shouldCacheTheParsedBooleanInMemoryOnceParsed() throws Exception {
 
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "true");
-        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsByPullMechanism(), is(true));
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "false");
-        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsByPullMechanism(), is(true));
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", "something-silly");
-        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsByPullMechanism(), is(true));
         setField(eventPullConfiguration, "shouldProcessEventsFromEventTopic", null);
-        assertThat(eventPullConfiguration.shouldProcessEventsFromEventTopic(), is(true));
+        assertThat(eventPullConfiguration.shouldProcessEventsByPullMechanism(), is(true));
     }
 }
