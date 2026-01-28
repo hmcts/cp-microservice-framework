@@ -138,6 +138,7 @@ public class MessageListenerCodeGeneratorTest {
                     uk.gov.moj.base.package.name.MyContextEventListenerMyContextHandlerCommandEventValidationInterceptor.class
                 })
                 @org.jboss.ejb3.annotation.Pool("my-context-handler-command-event-listener-pool")
+                @org.jboss.ejb3.annotation.DeliveryGroup("subscription-events")
                 public class MyContextEventListenerMyContextHandlerCommandJmsListener implements javax.jms.MessageListener {
                   private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(uk.gov.moj.base.package.name.MyContextEventListenerMyContextHandlerCommandJmsListener.class);
                 

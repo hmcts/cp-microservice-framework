@@ -8,12 +8,15 @@ import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
 import static uk.gov.justice.raml.jms.core.JmsEndPointGeneratorUtil.maxSessionPropertyFor;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_INDEXER;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 import static uk.gov.justice.subscription.jms.core.ClassNameFactory.EVENT_VALIDATION_INTERCEPTOR;
 import static uk.gov.justice.subscription.jms.core.ClassNameFactory.JMS_LISTENER;
 import static uk.gov.justice.subscription.jms.core.ClassNameFactory.JMS_LOGGER_METADATA_INTERCEPTOR;
 import static uk.gov.justice.subscription.jms.core.JmsEndPointGeneratorUtil.shouldGenerateEventFilter;
 import static uk.gov.justice.subscription.jms.core.JmsEndPointGeneratorUtil.shouldListenToAllMessages;
 
+import org.jboss.ejb3.annotation.DeliveryGroup;
 import uk.gov.justice.services.adapter.messaging.JsonSchemaValidationInterceptor;
 import uk.gov.justice.services.adapter.messaging.SubscriptionJmsProcessor;
 import uk.gov.justice.services.core.annotation.Adapter;
@@ -72,6 +75,7 @@ public class MessageListenerCodeGenerator {
     private static final String SUBSCRIPTION_NAME = "subscriptionName";
     private static final String SHARE_SUBSCRIPTIONS = "shareSubscriptions";
     public static final String MAX_SESSION = "maxSession";
+    public static final String SUBSCRIPTION_EVENTS = "subscription-events";
 
     private final ComponentDestinationType componentDestinationType = new ComponentDestinationType();
     private final JmsUriToDestinationConverter jmsUriToDestinationConverter = new JmsUriToDestinationConverter();
@@ -157,6 +161,12 @@ public class MessageListenerCodeGenerator {
                         .build());
             }
 
+            getDeliveryGroup(serviceComponent)
+                    .ifPresent(deliveryGroup ->
+                            typeSpecBuilder.addAnnotation(AnnotationSpec.builder(DeliveryGroup.class)
+                                    .addMember(DEFAULT_ANNOTATION_PARAMETER, "$S", deliveryGroup)
+                                    .build()));
+
             return typeSpecBuilder;
         }
 
@@ -186,6 +196,13 @@ public class MessageListenerCodeGenerator {
         return source.toLowerCase()
                 .replace("_", "-")
                 .replace(".", "-");
+    }
+
+    public Optional<String> getDeliveryGroup(final String component) {
+        if (component.contains(EVENT_LISTENER)
+            || component.contains(EVENT_INDEXER))
+            return Optional.of(SUBSCRIPTION_EVENTS);
+        else return Optional.empty();
     }
 
     /**
