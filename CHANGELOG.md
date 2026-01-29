@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Added
+- Added Delivery Group `subscription-events` for JMS Event Listeners and Indexers code generation
 
 # [17.105.0-M2] - 2025-01-28
 ### Changed
