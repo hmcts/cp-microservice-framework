@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+
+# [17.105.0-M3] - 2025-02-04
 ### Added
 - Added Delivery Group `subscription-events` for JMS Event Listeners and Indexers code generation
 - JNDI value 'event.processing.by.pull.mechanism.enabled' is removed. This flag control has been moved to event-store library.
