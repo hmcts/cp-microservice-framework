@@ -6,6 +6,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Unreleased]
 ### Added
 - Added Delivery Group `subscription-events` for JMS Event Listeners and Indexers code generation
+- JNDI value 'event.processing.by.pull.mechanism.enabled' is removed. This flag control has been moved to event-store library.
 
 # [17.105.0-M2] - 2025-01-28
 ### Changed

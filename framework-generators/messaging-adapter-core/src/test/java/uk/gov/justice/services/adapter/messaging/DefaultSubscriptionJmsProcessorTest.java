@@ -1,11 +1,8 @@
 package uk.gov.justice.services.adapter.messaging;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import uk.gov.justice.services.common.configuration.subscription.pull.EventPullConfiguration;
 import uk.gov.justice.services.subscription.SubscriptionManager;
 
 import javax.jms.TextMessage;
@@ -20,37 +17,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class DefaultSubscriptionJmsProcessorTest {
 
     @Mock
-    private EventPullConfiguration eventPullConfiguration;
-
-    @Mock
     private SubscriptionJmsProcessorDelegate subscriptionJmsProcessorDelegate;
 
     @InjectMocks
     private DefaultSubscriptionJmsProcessor subscriptionJmsProcessor;
 
     @Test
-    public void shouldProcessMessageIfProcessEventsFromEventTopicJndiValueIsFalse() throws Exception {
+    public void shouldProcessMessage() throws Exception {
 
         final TextMessage message = mock(TextMessage.class);
         final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
-
-        when(eventPullConfiguration.shouldProcessEventsByPullMechanism()).thenReturn(false);
 
         subscriptionJmsProcessor.process(message, subscriptionManager);
 
         verify(subscriptionJmsProcessorDelegate).process(message, subscriptionManager);
     }
 
-    @Test
-    public void shouldDoNothingWithMessageIfProcessEventsFromEventTopicJndiValueIsTrue() throws Exception {
-
-        final TextMessage message = mock(TextMessage.class);
-        final SubscriptionManager subscriptionManager = mock(SubscriptionManager.class);
-
-        when(eventPullConfiguration.shouldProcessEventsByPullMechanism()).thenReturn(true);
-
-        subscriptionJmsProcessor.process(message, subscriptionManager);
-
-        verify(subscriptionJmsProcessorDelegate, never()).process(message, subscriptionManager);
-    }
 }
