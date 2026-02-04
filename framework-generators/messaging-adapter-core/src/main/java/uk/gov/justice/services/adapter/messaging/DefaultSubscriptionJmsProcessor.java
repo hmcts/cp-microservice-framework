@@ -1,6 +1,5 @@
 package uk.gov.justice.services.adapter.messaging;
 
-import uk.gov.justice.services.common.configuration.subscription.pull.EventPullConfiguration;
 import uk.gov.justice.services.subscription.SubscriptionManager;
 
 import javax.inject.Inject;
@@ -15,17 +14,11 @@ import javax.jms.Message;
 public class DefaultSubscriptionJmsProcessor implements SubscriptionJmsProcessor {
 
     @Inject
-    private EventPullConfiguration eventPullConfiguration;
-
-    @Inject
     private SubscriptionJmsProcessorDelegate subscriptionJmsProcessorDelegate;
 
     @Override
     public void process(final Message message, final SubscriptionManager subscriptionManager) {
-
-        if (! eventPullConfiguration.shouldProcessEventsByPullMechanism()) {
-            processEventFromEventTopic(message, subscriptionManager);
-        }
+        processEventFromEventTopic(message, subscriptionManager);
     }
 
     private void processEventFromEventTopic(final Message message, final SubscriptionManager subscriptionManager) {
