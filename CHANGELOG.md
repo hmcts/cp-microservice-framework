@@ -5,7 +5,7 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 [Unreleased]
 ### Added
-- Add DefaultHttpCaller backed by java native HttpClient to perform simple get API invocation
+- Add DefaultHttpCaller backed by RestEasyClient to perform simple get API invocation
 
 # [17.105.0-M3] - 2025-02-04
 ### Added

@@ -10,17 +10,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.services.clients.core.HttpCallerResponse;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.http.HttpClient;
-import java.net.http.HttpTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,32 +109,7 @@ public class DefaultHttpCallerTest {
     }
 
     @Test
-    public void shouldThrowHttpCallerExceptionOnRequestTimeout() throws Exception {
-        final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.send(any(), any())).thenThrow(new HttpTimeoutException("timed out"));
-
-        setField(httpCaller, "httpClient", mockHttpClient);
-
-        assertThrows(HttpCallerException.class, () -> httpCaller.get(url, Map.of()));
-    }
-
-    @Test
-    public void shouldThrowHttpCallerExceptionOnConnectionFailure() throws Exception {
-        final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.send(any(), any())).thenThrow(new ConnectException("connection refused"));
-
-        setField(httpCaller, "httpClient", mockHttpClient);
-
-        assertThrows(HttpCallerException.class, () -> httpCaller.get(url, Map.of()));
-    }
-
-    @Test
-    public void shouldThrowHttpCallerExceptionOnIOFailure() throws Exception {
-        final HttpClient mockHttpClient = mock(HttpClient.class);
-        when(mockHttpClient.send(any(), any())).thenThrow(new IOException("network error"));
-
-        setField(httpCaller, "httpClient", mockHttpClient);
-
-        assertThrows(HttpCallerException.class, () -> httpCaller.get(url, Map.of()));
+    public void shouldThrowHttpCallerExceptionOnConnectionFailure() {
+        assertThrows(HttpCallerException.class, () -> httpCaller.get("http://localhost:1" + RESOURCE_PATH, Map.of()));
     }
 }
