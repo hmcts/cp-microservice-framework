@@ -4,19 +4,22 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+
+# [17.105.0-M4] - 2026-02-27
 ### Added
 - Add DefaultHttpCaller backed by RestEasyClient to perform simple get API invocation
+- Skip coveralls due to service outage
 
-# [17.105.0-M3] - 2025-02-04
+# [17.105.0-M3] - 2026-02-04
 ### Added
 - Added Delivery Group `subscription-events` for JMS Event Listeners and Indexers code generation
 - JNDI value 'event.processing.by.pull.mechanism.enabled' is removed. This flag control has been moved to event-store library.
 
-# [17.105.0-M2] - 2025-01-28
+# [17.105.0-M2] - 2026-01-28
 ### Changed
 - JNDI value `events.publishing.process.events.from.event.topic` renamed to `event.processing.by.pull.mechanism.enabled` and default changed to `false`
 
-# [17.105.0-M1] - 2025-01-28
+# [17.105.0-M1] - 2026-01-28
 ### Added
 - New JNDI value `events.publishing.process.events.from.event.topic` to control whether events are consumed from the event topic or read using the new event pull mechanism
 ### Changed
