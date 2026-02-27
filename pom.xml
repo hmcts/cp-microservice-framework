@@ -47,7 +47,7 @@
     
     <properties>
         <cpp.repo.name>microservice_framework</cpp.repo.name>
-        <framework-libraries.version>17.105.0-M1-SNAPSHOT</framework-libraries.version>
+        <framework-libraries.version>17.105.0-M2</framework-libraries.version>
     </properties>
 
     <dependencyManagement>
@@ -149,6 +149,9 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
