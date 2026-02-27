@@ -4,6 +4,9 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Added
+- SafeAutoFlushEventListener prevents Hibernate auto-flush from tainting JTA transactions during savepoint-based error recovery (EVENT_LISTENER only)
+- EntityManagerFlushInterceptor enables SafeAutoFlushEventListener around handler processing and catches flush failures
 
 # [17.105.0-M4] - 2026-02-27
 ### Added
