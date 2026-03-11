@@ -4,6 +4,8 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+
+# [17.105.0-M5] - 2026-03-11
 ### Added
 - New default method on `SystemCommand` interface `isDisabledByPullMechanism()`. 
     False by default. Can be overridden for all JMX commands that should be 
