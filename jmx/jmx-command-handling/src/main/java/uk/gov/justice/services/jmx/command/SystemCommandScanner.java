@@ -29,6 +29,9 @@ public class SystemCommandScanner {
     @Inject
     private BlacklistedCommands blacklistedCommands;
 
+    @Inject
+    private DisabledCommandChecker disabledCommandChecker;
+
     private final List<SystemCommand> systemCommands = new ArrayList<>();
 
     public List<SystemCommand> findCommands() {
@@ -49,6 +52,7 @@ public class SystemCommandScanner {
 
         return beans.stream()
                 .map(bean -> (SystemCommand) cdiInstanceResolver.getInstanceOf(bean.getBeanClass(), beanManager))
+                .filter(systemCommand -> ! disabledCommandChecker.isDisabledByPullMechanism(systemCommand))
                 .filter(systemCommand -> ! blackListedCommands.contains(systemCommand))
                 .collect(toList());
     }

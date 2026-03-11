@@ -4,6 +4,15 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Added
+- New default method on `SystemCommand` interface `isDisabledByPullMechanism()`. 
+    False by default. Can be overridden for all JMX commands that should be 
+    disabled by the pull mechanism
+### Changed
+- Scanning for JMX SystemCommands now ignores any commands whose method `isDisabledByPullMechanism()`
+    returns true _and_ the new pull mechanism is enabled. Calling any of these commands
+    when the pull mechanism is enabled will be treated as if the command is unknown and 
+    so the call will fail
 
 # [17.105.0-M4] - 2026-02-27
 ### Added
