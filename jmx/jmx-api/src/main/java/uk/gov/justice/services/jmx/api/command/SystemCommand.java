@@ -19,4 +19,5 @@ public interface SystemCommand extends Serializable {
     default String commandRuntimeStringType() {
         return "Not required";
     }
+    default boolean isDisabledByPullMechanism() { return false; }
 }

@@ -42,6 +42,9 @@ public class SystemCommandHandlerScannerTest {
     @Mock
     private BlacklistedCommands blacklistedCommands;
 
+    @Mock
+    private DisabledCommandChecker disabledCommandChecker;
+
     @InjectMocks
     private SystemCommandScanner systemCommandScanner;
 
@@ -61,6 +64,8 @@ public class SystemCommandHandlerScannerTest {
         final BeanManager beanManager = mock(BeanManager.class);
 
         when(blacklistedCommands.getBlackListedCommands()).thenReturn(emptyList());
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_1)).thenReturn(false);
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_2)).thenReturn(false);
         when(cdiProvider.getCdi()).thenReturn(cdi);
         when(cdi.getBeanManager()).thenReturn(beanManager);
         when(beanManager.getBeans(SystemCommand.class)).thenReturn(beans);
@@ -92,6 +97,8 @@ public class SystemCommandHandlerScannerTest {
         final BeanManager beanManager = mock(BeanManager.class);
 
         when(blacklistedCommands.getBlackListedCommands()).thenReturn(emptyList());
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_1)).thenReturn(false);
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_2)).thenReturn(false);
         when(cdiProvider.getCdi()).thenReturn(cdi);
         when(cdi.getBeanManager()).thenReturn(beanManager);
         when(beanManager.getBeans(SystemCommand.class)).thenReturn(beans);
@@ -125,6 +132,39 @@ public class SystemCommandHandlerScannerTest {
         final BeanManager beanManager = mock(BeanManager.class);
 
         when(blacklistedCommands.getBlackListedCommands()).thenReturn(singletonList(systemCommand_1));
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_1)).thenReturn(false);
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_2)).thenReturn(false);
+        when(cdiProvider.getCdi()).thenReturn(cdi);
+        when(cdi.getBeanManager()).thenReturn(beanManager);
+        when(beanManager.getBeans(SystemCommand.class)).thenReturn(beans);
+        when(bean_1.getBeanClass()).thenReturn(SystemCommand_1.class);
+        when(bean_2.getBeanClass()).thenReturn(SystemCommand_2.class);
+        when(cdiInstanceResolver.getInstanceOf(SystemCommand_1.class, beanManager)).thenReturn(systemCommand_1);
+        when(cdiInstanceResolver.getInstanceOf(SystemCommand_2.class, beanManager)).thenReturn(systemCommand_2);
+
+        final List<SystemCommand> commands = systemCommandScanner.findCommands();
+
+        assertThat(commands.size(), is(1));
+        assertThat(commands, hasItem(systemCommand_2));
+    }
+
+    @Test
+    public void shouldIgnoreCommandsDisabledByPullMechanism() throws Exception {
+
+        final Bean bean_1 = mock(Bean.class);
+        final Bean bean_2 = mock(Bean.class);
+
+        final SystemCommand_1 systemCommand_1 = new SystemCommand_1();
+        final SystemCommand_2 systemCommand_2 = new SystemCommand_2();
+
+        final Set<Bean<?>> beans = newHashSet(bean_1, bean_2);
+
+        final CDI<Object> cdi = mock(CDI.class);
+        final BeanManager beanManager = mock(BeanManager.class);
+
+        when(blacklistedCommands.getBlackListedCommands()).thenReturn(emptyList());
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_1)).thenReturn(true);
+        when(disabledCommandChecker.isDisabledByPullMechanism(systemCommand_2)).thenReturn(false);
         when(cdiProvider.getCdi()).thenReturn(cdi);
         when(cdi.getBeanManager()).thenReturn(beanManager);
         when(beanManager.getBeans(SystemCommand.class)).thenReturn(beans);
