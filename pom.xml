@@ -172,6 +172,14 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
+                <dependencies>
+                    <!-- coveralls-maven-plugin 4.3.0 ships with jakarta.xml.bind-api:2.3.1 which is unavailable in the CI repo. Pin to 2.3.2. -->
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${jakarta.xml.bind-api.raml.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
