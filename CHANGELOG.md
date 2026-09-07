@@ -5,48 +5,32 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
-## [25.104.0-M5] - 2026-08-05
-### Changed
-- Bumped parent `maven-framework-parent-pom` to `25.104.0-M9` and `framework-libraries.version` to `25.104.0-M12` — picks up the Apache Artemis client bump `2.53.0` → `2.54.0` (via common-bom M7).
+## [25.104.0] - 2026-09-07
+First official (non-milestone) release of the Java 25 / WildFly 40 / Jakarta EE 11 line,
+consolidating milestones `25.104.0-M1` to `25.104.0-M5`.
 
-## [25.104.0-M4] - 2026-07-27
-### Changed
-- Bumped parent `maven-framework-parent-pom` to `25.104.0-M8` — picks up Jackson `2.21.5` (**CVE-2026-54515**) and the `org.junit:junit-bom` import via `maven-common-bom` M6, plus the `buildnumber-maven-plugin` warning fix.
-- Bumped `framework-libraries.version` to `25.104.0-M11`.
-
-## [25.104.0-M3] - 2026-07-06
 ### Added
 - New `persistence-jpa` module providing `EntityManagerProducer` and the event-stream self-healing `EntityManagerFlushInterceptor` (with its provider and exception), relocated from the orphaned `persistence-deltaspike` module. Package `uk.gov.justice.services.persistence` is retained so consumers need no import changes; the interceptor now uses `@PersistenceContext` for the container-managed `EntityManager`
+- `containsHeaderString` implementation on `HeadersBuilder`, for Jakarta WS-RS 4.0 compatibility
+- Root-level `mockito-junit-jupiter` test dependency, so every module gets the JUnit 5 Mockito extension
+
+### Changed
+- Upgraded to Java 25 / WildFly 40 / Jakarta EE 11 (25.104.x release line)
+- Migrated all Java source files from Jakarta EE 10 to Jakarta EE 11 APIs
+- Bumped parent `maven-framework-parent-pom` and `framework-libraries.version` to the released `25.104.0` — Java 25 / Jakarta EE 11 targeting (`java.major.version=25`, `enforcer.java.version.range=[25,)`), Jakarta EE 11 API set, WildFly `40.0.0.Final`, Weld 6, RESTEasy 7, Hibernate ORM 6, Apache Artemis `2.54.0` under the new `org.apache.artemis` groupId, `liquibase.version=5.0.3`, Jackson `2.21.5` (**CVE-2026-54515**) and the `org.junit:junit-bom` import
+- Pinned `jakarta.xml.bind-api` to `2.3.2` in the root pom's `coveralls-maven-plugin` `<dependencies>` block; `coveralls-maven-plugin:4.3.0` ships with `2.3.1`, which is unavailable in the CI repository
 
 ### Fixed
 - Restored the event-stream self-healing `EntityManager` flush that was silently lost when the Java 25 upgrade orphaned `persistence-deltaspike`. Hibernate insert/update constraint violations again surface **inside the interceptor chain** (attributed to `EntityManagerFlushInterceptor`) and are captured in the stream error tables, instead of only failing later at transaction commit. Proven end-to-end via cp-cake-shop `StreamErrorHandlingIT`
+- `lint-check-rules`: pinned `jakarta.xml.bind-api` to `${jakarta.xml.bind-api.raml.version}` (2.3.2) — the BOM-managed version 4.0.0 lacks the `javax.xml.bind.*` namespace that the RAML parser requires, causing `NoClassDefFoundError: javax/xml/bind/SchemaOutputResolver` in tests
+- `shuttering-persistence`: removed the explicit `<version>` tag from the Liquibase plugin config inside the `integration-tests` profile — the version is now correctly inherited from the parent's `pluginManagement`
+- `generators-commons` test isolation: use `@TempDir outputFolder` directly instead of `outputFolder.getParentFile()`, to prevent cross-test temp directory contamination
+- `JavaCompilerUtility.getClassNames()`: return only subtype values from the reflections 0.10.x store, not keys (supertypes) — prevented `compiledInterfaceOf` finding multiple interfaces
 
 ### Removed
 - Orphaned `persistence-deltaspike` module (dropped from the reactor build during the Java 25 upgrade; its DeltaSpike infrastructure is obsolete after the DeltaSpike→JPA migration)
-
-## [25.104.0-M2] - 2026-06-18
-### Changed
-- Bumped parent `maven-framework-parent-pom` to `25.104.0-M7` — picks up `liquibase.version=5.0.3`
-- Updated `framework-libraries.version` to `25.104.0-M10`
-- Removed `liquibase.maven.plugin.version` property — now obsolete; plugin version is managed at `${liquibase.version}` via parent
-- Removed `liquibase.hub.mode` property — removed in Liquibase 4.12.0
-
-### Fixed
-- `lint-check-rules`: pinned `jakarta.xml.bind-api` to `${jakarta.xml.bind-api.raml.version}` (2.3.2) — the BOM-managed version 4.0.0 lacks the `javax.xml.bind.*` namespace that the RAML parser requires, causing `NoClassDefFoundError: javax/xml/bind/SchemaOutputResolver` in tests
-- `shuttering-persistence`: removed explicit `<version>` tag from Liquibase plugin config inside `integration-tests` profile — version now correctly inherited from parent `pluginManagement`
-
-## [25.104.0-M1] - 2026-06-09
-### Changed
-- Upgraded to Java 25 and Jakarta EE 11 (25.104.x release line)
-- Upgraded parent POM to `maven-framework-parent-pom:25.104.0-M3`
-- Updated `framework-libraries.version` to `25.104.0-M6`
-- Migrated all Java source files from Jakarta EE 10 to Jakarta EE 11 APIs
-- Added `containsHeaderString` implementation to `HeadersBuilder` for Jakarta WS-RS 4.0 compatibility
-
-### Fixed
-- Fixed `generators-commons` test isolation: use `@TempDir outputFolder` directly instead of `outputFolder.getParentFile()` to prevent cross-test temp directory contamination
-- Fixed `JavaCompilerUtility.getClassNames()`: return only subtype values from the reflections 0.10.x store, not keys (supertypes) — prevented `compiledInterfaceOf` finding multiple interfaces
-- Fixed Liquibase Maven plugin mojo loading failure (`LOG_FORMAT` field removed in 4.24+): pinned `liquibase-maven-plugin` to `4.10.0` via `liquibase.maven.plugin.version` root pom property
+- `liquibase.hub.mode` property — removed in Liquibase 4.12.0, and any JAR bundling 4.12.0 or later rejects it under strict checking, causing the Kubernetes pre-install Liquibase job to time out
+- Local `jakarta.xml.bind-api.raml.version` property — the value (`2.3.2`) now comes from `maven-framework-parent-pom`, which centralised it so child projects could drop their copies. The explanatory comment stays in the root pom, since the generator submodule poms refer to it
 
 ## [21.0.0-M1] - 2026-06-02
 ### Changed

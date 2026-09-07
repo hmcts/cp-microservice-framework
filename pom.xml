@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.justice</groupId>
         <artifactId>maven-framework-parent-pom</artifactId>
-        <version>25.104.0-M9</version>
+        <version>25.104.0</version>
     </parent>
 
     <groupId>uk.gov.justice.services</groupId>
@@ -47,10 +47,14 @@
     
     <properties>
         <cpp.repo.name>microservice_framework</cpp.repo.name>
-        <framework-libraries.version>25.104.0-M12</framework-libraries.version>
+        <framework-libraries.version>25.104.0</framework-libraries.version>
         <!--
-            jakarta.xml.bind-api is managed by the BOM at 4.0.0 (Jakarta EE 10,
-            namespace jakarta.xml.bind.*). The RAML parser (org.raml:raml-parser)
+            jakarta.xml.bind-api.raml.version (2.3.2) now comes from
+            maven-framework-parent-pom and must NOT be re-pinned here — a local copy
+            silently overrides the centralised value.
+
+            Why the pin exists: jakarta.xml.bind-api is managed by the BOM at 4.0.0
+            (namespace jakarta.xml.bind.*). The RAML parser (org.raml:raml-parser)
             uses javax.xml.bind.* classes internally. Those classes only exist in
             versions 2.x of jakarta.xml.bind-api (before the EE 9 namespace change).
             From 3.0.0 onwards the namespace became jakarta.xml.bind.* and
@@ -59,7 +63,6 @@
             to ${jakarta.xml.bind-api.raml.version} to avoid NoClassDefFoundError on
             javax/xml/bind/SchemaOutputResolver. DO NOT upgrade to 3.x or 4.x.
         -->
-        <jakarta.xml.bind-api.raml.version>2.3.2</jakarta.xml.bind-api.raml.version>
     </properties>
 
     <dependencyManagement>
