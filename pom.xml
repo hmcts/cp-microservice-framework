@@ -47,7 +47,7 @@
     
     <properties>
         <cpp.repo.name>microservice_framework</cpp.repo.name>
-        <framework-libraries.version>25.104.1</framework-libraries.version>
+        <framework-libraries.version>25.104.2</framework-libraries.version>
         <!--
             jakarta.xml.bind-api.raml.version (2.3.2) now comes from
             maven-framework-parent-pom and must NOT be re-pinned here — a local copy
