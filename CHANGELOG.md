@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file, which follo
 on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
+## [25.104.3] - 2026-09-15
+### Changed
+- Updated `framework-libraries` to 25.104.3, which adds `liquibase-postgres-compatibility` to `framework-libraries-bom`. Nothing here consumes it directly — the bump carries the BOM entry down the chain to the platform poms, where the context Liquibase jars pick it up without pinning a version.
+
 ## [25.104.2] - 2026-09-14
 ### Changed
 - Updated `framework-libraries` to 25.104.2, which adds the `liquibase-postgres-compatibility` module restoring Liquibase 4's handling of the MySQL-only `afterColumn` hint. No change is required here to consume it — the module is pulled in by the `liquibase-jar` profile in `cpp-platform-maven-parent-pom`; this bump only keeps the framework chain on the current release.
