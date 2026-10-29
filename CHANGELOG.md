@@ -4,6 +4,10 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 [Semantic Versioning](http://semver.org/).
 
 [Unreleased]
+### Fixed
+- `CachingFeatureProviderTimerBean` now keeps the previously cached Features and logs an error if a refresh
+  from the remote feature store fails, instead of replacing them with an empty map, which silently disabled
+  every feature until the next successful refresh ([PEG-3655](https://hmcts.atlassian.net/browse/PEG-3655))
 
 # [17.104.0] - 2025-12-16
 ### Added
