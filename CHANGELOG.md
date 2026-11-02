@@ -5,6 +5,12 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 
 ## [Unreleased]
 
+## [25.104.6] - 2026-11-03
+### Fixed
+- `CachingFeatureProviderTimerBean` now catches a failed refresh from the remote feature store, keeps the
+  previously cached Features and logs an error saying how many it kept, rather than letting the failure
+  escape the EJB timer ([PEG-3655](https://hmcts.atlassian.net/browse/PEG-3655))
+
 ## [25.104.5] - 2026-10-27
 ### Security
 - Updated the parent `maven-framework-parent-pom` to 25.104.3 and `framework-libraries` to 25.104.5, which carry
